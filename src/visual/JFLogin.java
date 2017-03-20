@@ -135,14 +135,15 @@ public class JFLogin extends javax.swing.JFrame {
 
     private void jbtnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEntrarActionPerformed
         String passText = new String(jpwdSenha.getPassword());
-        String comparaSenha=null;
+        String comparaSenha;
         try {
-        comparaSenha = verificaSenha(passText);
-        } catch (NoSuchAlgorithmException e){}
-        if (passText.equals("") && jtxtUsuario.getText().equalsIgnoreCase("suporte")){
+            comparaSenha = verificaSenha(passText);
+        } catch (NoSuchAlgorithmException e) {
+        }
+        if (passText.equals("") && jtxtUsuario.getText().equalsIgnoreCase("suporte")) {
             new JFPrincipal().setVisible(true);
             this.dispose();
-            
+
         } else {
             Toolkit.getDefaultToolkit().beep();
             jtxtInvalidos.setVisible(true);
@@ -203,7 +204,7 @@ public class JFLogin extends javax.swing.JFrame {
             jlblAlerta.setVisible(false);
         }
     }
-    
+
     private void limparCampos() {
         jtxtUsuario.setText(null);
         jpwdSenha.setText(null);
