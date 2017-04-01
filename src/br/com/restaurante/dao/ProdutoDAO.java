@@ -78,7 +78,7 @@ public class ProdutoDAO implements DAO<Produto>{
         EntityManager em = getEM();
         try {
             em.getTransaction().begin();
-            Query q = em.createQuery("SELECT g FROM Produto g");
+            Query q = em.createQuery("SELECT p FROM Produto p");
             return q.getResultList();
         } finally {
             em.close();

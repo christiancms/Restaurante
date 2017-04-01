@@ -6,6 +6,9 @@
 package br.com.restaurante.controle.filtro;
 
 import br.com.restaurante.controle.InterfaceFilter;
+import br.com.restaurante.dao.MarcaDAO;
+import br.com.restaurante.modelo.Marca;
+import java.util.List;
 
 /**
  *
@@ -23,6 +26,11 @@ public class MarcaFiltro implements InterfaceFilter {
 
     @Override
     public void filterFind() {
+    }
+    
+    public List<Marca> loadCmbMarca() {
+        MarcaDAO marcaDAO = new MarcaDAO();
+        return marcaDAO.listAll();
     }
     
 }

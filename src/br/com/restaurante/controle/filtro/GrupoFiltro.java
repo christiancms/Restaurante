@@ -6,6 +6,9 @@
 package br.com.restaurante.controle.filtro;
 
 import br.com.restaurante.controle.InterfaceFilter;
+import br.com.restaurante.dao.GrupoDAO;
+import br.com.restaurante.modelo.Grupo;
+import java.util.List;
 
 /**
  *
@@ -24,5 +27,9 @@ public class GrupoFiltro implements InterfaceFilter {
     @Override
     public void filterFind() {
     }
-    
+
+    public List<Grupo> loadCmbGrupo() {
+        GrupoDAO gdao = new GrupoDAO();
+        return gdao.listAll();
+    }
 }

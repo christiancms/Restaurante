@@ -27,6 +27,17 @@ public class Produto implements Serializable {
     @Column(name = "dataCadastro")
     @Temporal(TemporalType.DATE)
     private Date dataCadastro;
+    
+    @OneToOne
+    @JoinColumn(name ="grupo_id")
+    private Grupo grupo;
+    @OneToOne
+    @JoinColumn(name ="marca_id")
+    private Marca marca;
+    @OneToOne
+    @JoinColumn(name ="unidade_id")
+    private Unidade unidade;
+    
 
     public Integer getId() {
         return id;
@@ -58,6 +69,30 @@ public class Produto implements Serializable {
 
     public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public Unidade getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
     }
     
 }

@@ -5,7 +5,9 @@
  */
 package br.com.restaurante.visual;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import jdk.nashorn.internal.runtime.regexp.joni.exception.JOniException;
 
 /**
  *
@@ -19,9 +21,10 @@ public class JFPrincipal extends javax.swing.JFrame {
     public JFPrincipal() {
         this.setLocationRelativeTo(this);
         initComponents();
-        this.setTitle("Restaurante Sistema de Controle de Mesas 03/2017");
+        setTitle("EzzySoft - Restaurante Sistema de Controle de Mesas 03/2017");
         setExtendedState(MAXIMIZED_BOTH);
         jbtnCaixa.setVerticalTextPosition(SwingConstants.BOTTOM);
+        
     }
 
     /**
@@ -36,13 +39,22 @@ public class JFPrincipal extends javax.swing.JFrame {
         jdpPrincipal = new javax.swing.JDesktopPane();
         jbtnCaixa = new javax.swing.JButton();
         jbtnPedido = new javax.swing.JButton();
-        jbtnProduto = new javax.swing.JButton();
+        jbtnCadastro = new javax.swing.JButton();
         jbtnRelatorio = new javax.swing.JButton();
+        jbtnGrupo = new javax.swing.JButton();
+        jbtnMarca = new javax.swing.JButton();
+        jbtnProduto = new javax.swing.JButton();
+        jbtnUnidade = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jbtnCaixa.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jbtnCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/restaurante/visual/imagens/money_bag.png"))); // NOI18N
@@ -52,6 +64,11 @@ public class JFPrincipal extends javax.swing.JFrame {
         jbtnCaixa.setMaximumSize(new java.awt.Dimension(140, 140));
         jbtnCaixa.setMinimumSize(new java.awt.Dimension(140, 140));
         jbtnCaixa.setPreferredSize(new java.awt.Dimension(140, 140));
+        jbtnCaixa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCaixaActionPerformed(evt);
+            }
+        });
 
         jbtnPedido.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jbtnPedido.setText("Pedido");
@@ -65,15 +82,15 @@ public class JFPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jbtnProduto.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
-        jbtnProduto.setText("Produto");
-        jbtnProduto.setToolTipText("Produto");
-        jbtnProduto.setMaximumSize(new java.awt.Dimension(140, 140));
-        jbtnProduto.setMinimumSize(new java.awt.Dimension(140, 140));
-        jbtnProduto.setPreferredSize(new java.awt.Dimension(140, 140));
-        jbtnProduto.addActionListener(new java.awt.event.ActionListener() {
+        jbtnCadastro.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jbtnCadastro.setText("Cadastro");
+        jbtnCadastro.setToolTipText("Cadastro");
+        jbtnCadastro.setMaximumSize(new java.awt.Dimension(140, 140));
+        jbtnCadastro.setMinimumSize(new java.awt.Dimension(140, 140));
+        jbtnCadastro.setPreferredSize(new java.awt.Dimension(140, 140));
+        jbtnCadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnProdutoActionPerformed(evt);
+                jbtnCadastroActionPerformed(evt);
             }
         });
 
@@ -83,11 +100,34 @@ public class JFPrincipal extends javax.swing.JFrame {
         jbtnRelatorio.setMaximumSize(new java.awt.Dimension(140, 140));
         jbtnRelatorio.setMinimumSize(new java.awt.Dimension(140, 140));
         jbtnRelatorio.setPreferredSize(new java.awt.Dimension(140, 140));
+        jbtnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnRelatorioActionPerformed(evt);
+            }
+        });
 
-        jMenu1.setText("File");
+        jbtnGrupo.setText("Grupo");
+
+        jbtnMarca.setText("Marca");
+
+        jbtnProduto.setText("Produto");
+        jbtnProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnProdutoActionPerformed(evt);
+            }
+        });
+
+        jbtnUnidade.setText("Unidade");
+        jbtnUnidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnUnidadeActionPerformed(evt);
+            }
+        });
+
+        jMenu1.setText("Arquivo");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Editar");
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -97,49 +137,99 @@ public class JFPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtnProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jdpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-                .addGap(1, 1, 1))
+                    .addComponent(jbtnMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtnPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtnCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtnRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtnUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtnProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(5, 5, 5)
+                .addComponent(jdpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(1, 1, 1)
                 .addComponent(jbtnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(jbtnPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(jbtnProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbtnCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(jbtnRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jdpPrincipal)
-                .addGap(1, 1, 1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtnRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addComponent(jbtnUnidade))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jbtnMarca))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jbtnGrupo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addComponent(jbtnProduto))))
+            .addComponent(jdpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 674, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbtnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCadastroActionPerformed
+        btnRestore();
+        jbtnRelatorio.setLocation(1, 565);
+        jbtnGrupo.setVisible(true);
+        jbtnMarca.setVisible(true);
+        jbtnProduto.setVisible(true);
+        jbtnUnidade.setVisible(true);
+
+//        jbtnCadastro.setEnabled(false);
+
+    }//GEN-LAST:event_jbtnCadastroActionPerformed
+
+    private void jbtnPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnPedidoActionPerformed
+        btnRestore();
+        jbtnCadastro.setLocation(1, 424);
+        jbtnRelatorio.setLocation(1, 565);
+//        JFIUnidade objUnidade = new JFIUnidade();
+//        jdpPrincipal.add(objUnidade);
+//        objUnidade.setVisible(true);
+//        jbtnPedido.setEnabled(false);
+
+    }//GEN-LAST:event_jbtnPedidoActionPerformed
+
+    private void jbtnCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCaixaActionPerformed
+        btnRestore();
+        jbtnPedido.setLocation(1, 283);
+        jbtnCadastro.setLocation(1, 424);
+        jbtnRelatorio.setLocation(1, 565);
+    }//GEN-LAST:event_jbtnCaixaActionPerformed
+
+    private void jbtnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRelatorioActionPerformed
+        btnRestore();
+    }//GEN-LAST:event_jbtnRelatorioActionPerformed
+
     private void jbtnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnProdutoActionPerformed
         JFIProdutoCad objProdutoCad = new JFIProdutoCad();
         jdpPrincipal.add(objProdutoCad);
         objProdutoCad.setVisible(true);
-        jbtnProduto.setEnabled(false);
+        btnRestore();
     }//GEN-LAST:event_jbtnProdutoActionPerformed
 
-    private void jbtnPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnPedidoActionPerformed
-        JFIUnidade objUnidade = new JFIUnidade();
-        jdpPrincipal.add(objUnidade);
-        objUnidade.setVisible(true);
-        jbtnPedido.setEnabled(false);
-    }//GEN-LAST:event_jbtnPedidoActionPerformed
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        btnRestore();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jbtnUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUnidadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnUnidadeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,10 +270,27 @@ public class JFPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JButton jbtnCadastro;
     private javax.swing.JButton jbtnCaixa;
+    private javax.swing.JButton jbtnGrupo;
+    private javax.swing.JButton jbtnMarca;
     private javax.swing.JButton jbtnPedido;
     private javax.swing.JButton jbtnProduto;
     private javax.swing.JButton jbtnRelatorio;
+    private javax.swing.JButton jbtnUnidade;
     private javax.swing.JDesktopPane jdpPrincipal;
     // End of variables declaration//GEN-END:variables
+
+    public void btnRestore() {
+        jbtnGrupo.setVisible(false);
+        jbtnMarca.setVisible(false);
+        jbtnProduto.setVisible(false);
+        jbtnUnidade.setVisible(false);
+        jbtnCaixa.setLocation(1, 1);
+        jbtnPedido.setLocation(1, 142);
+        jbtnCadastro.setLocation(1, 283);
+        jbtnRelatorio.setLocation(1, 424);
+        
+    }
+
 }

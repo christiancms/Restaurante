@@ -6,7 +6,10 @@
 package br.com.restaurante.controle.filtro;
 
 import br.com.restaurante.controle.InterfaceFilter;
+import br.com.restaurante.dao.UnidadeDAO;
+import br.com.restaurante.modelo.Unidade;
 import br.com.restaurante.visual.JFIUnidade;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -32,5 +35,10 @@ public class UnidadeFiltro implements InterfaceFilter {
     public void fillGrid() {
         DefaultTableModel model;
 
+    }
+    
+    public List<Unidade> loadCmbUnidade(){
+        UnidadeDAO unidadeDAO = new UnidadeDAO();
+        return unidadeDAO.listAll();
     }
 }
