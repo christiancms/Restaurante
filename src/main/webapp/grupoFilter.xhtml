@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+    
+        <h:form>
+            <p:messages autoUpdate="true" showDetail="true"></p:messages>
+            <p:fieldset legend="Grupos">
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Novo" action="#{grupoBean.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{grupoBean.salvar()}" disabled="" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{grupoBean.buscar()}" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <p:panelGrid columns="2" rendered="#{grupoBean.buscar() == false}">
+                    <h:outputLabel value="Id"></h:outputLabel>
+                    <p:inputText value="#{grupoBean.entidade.id}"></p:inputText>
+                    <h:outputLabel value="Descrição"></h:outputLabel>
+                    <p:inputText value="#{grupoBean.entidade.descricao}"></p:inputText>
+                    
+                </p:panelGrid>
+                <p:dataTable value="#{grupoBean.entidades}" var="grupo" rendered="#{grupoBean.buscar() == true}">
+                    <p:column>
+                        <p:commandButton value="Editar" action="#{grupoBean.editar(grupo)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{grupoBean.deletar(grupo)}" update="@form"></p:commandButton>
+                    </p:column>
+                    <p:column headerText="Id" sortBy="#{grupo.id}">
+                        <h:outputText value="#{grupo.id}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Descrição" sortBy="#{grupo.descricao}">
+                        <h:outputText value="#{grupo.descricao}"></h:outputText>
+                    </p:column>
+                    
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+</ui:decorate>

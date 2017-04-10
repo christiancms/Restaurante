@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+    
+        <h:form>
+            <p:messages autoUpdate="true" showDetail="true"></p:messages>
+            <p:fieldset legend="Marcas">
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Novo" action="#{marcaBean.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{marcaBean.salvar()}" disabled="" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{marcaBean.listAll()}" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <p:panelGrid columns="2" rendered="#{marcaBean.buscar() == false}">
+                    <h:outputLabel value="Id"></h:outputLabel>
+                    <p:inputText value="#{marcaBean.entidade.id}"></p:inputText>
+                    <h:outputLabel value="Descrição"></h:outputLabel>
+                    <p:inputText value="#{marcaBean.entidade.descricao}"></p:inputText>
+                    
+                </p:panelGrid>
+                <p:dataTable value="#{marcaBean.entidades}" var="marca" rendered="#{marcaBean.buscar() == true}">
+                    <p:column>
+                        <p:commandButton value="Editar" action="#{marcaBean.editar(marca)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{marcaBean.deletar(marca)}" update="@form"></p:commandButton>
+                    </p:column>
+                    <p:column headerText="Id" sortBy="#{marca.id}">
+                        <h:outputText value="#{marca.id}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Descrição" sortBy="#{marca.descricao}">
+                        <h:outputText value="#{marca.descricao}"></h:outputText>
+                    </p:column>
+                    
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+</ui:decorate>

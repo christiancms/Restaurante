@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+    
+        <h:form>
+            <p:messages autoUpdate="true" showDetail="true"></p:messages>
+            <p:fieldset legend="Unidades">
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Novo" action="#{unidadeBean.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{unidadeBean.salvar()}" disabled="#{unidadeBean.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{unidadeBean.buscar()}" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <p:panelGrid columns="2" rendered="#{unidadeBean.busca == false}">
+                    <h:outputLabel value="Id"></h:outputLabel>
+                    <p:inputText value="#{unidadeBean.entidade.id}"></p:inputText>
+                    <h:outputLabel value="Descrição"></h:outputLabel>
+                    <p:inputText value="#{unidadeBean.entidade.descricao}"></p:inputText>
+                    <h:outputLabel value="Sigla"></h:outputLabel>
+                    <p:inputText value="#{unidadeBean.entidade.sigla}"></p:inputText>
+                    
+                </p:panelGrid>
+                <p:dataTable value="#{unidadeBean.entidades}" emptyMessage="Nenhum Registro Encontrado" var="unidade" rendered="#{unidadeBean.busca == true}">
+                    <p:column>
+                        <p:commandButton value="Editar" action="#{unidadeBean.editar(unidade)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{unidadeBean.deletar(unidade)}" update="@form"></p:commandButton>
+                    </p:column>
+                    <p:column headerText="Id" sortBy="#{unidade.id}">
+                        <h:outputText value="#{unidade.id}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Descrição" sortBy="#{unidade.descricao}">
+                        <h:outputText value="#{unidade.descricao}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Sigla" sortBy="#{unidade.sigla}">
+                        <h:outputText value="#{unidade.sigla}"></h:outputText>
+                    </p:column>
+                    
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+</ui:decorate>
