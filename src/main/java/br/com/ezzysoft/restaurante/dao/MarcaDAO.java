@@ -36,12 +36,14 @@ public class MarcaDAO implements CrudDAO<Marca>{
 
     @Override
     public List<Marca> buscar() throws ErroSistema {
+        EntityManager em = getEM();
         try {
-            List<Marca> marcas = new ArrayList<>();
-            return marcas;
-        } catch (Exception e) {
-            throw new ErroSistema("Erro ao buscar as marcas!", e);
-        } //To change body of generated methods, choose Tools | Templates.
+            em.getTransaction().begin();
+            Query q = em.createQuery("SELECT m FROM Marca m");
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
     @Override

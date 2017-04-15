@@ -1,6 +1,5 @@
 package br.com.ezzysoft.restaurante.dao;
 
-import br.com.ezzysoft.restaurante.bean.DAO;
 import br.com.ezzysoft.restaurante.entidade.Grupo;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 import java.util.List;
@@ -13,7 +12,33 @@ import javax.persistence.Query;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-public class GrupoDAO implements DAO<Grupo>{
+public class GrupoDAO implements CrudDAO<Grupo>{
+    
+    @Override
+    public void salvar(Grupo grupo) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void deletar(Long id) throws ErroSistema {
+        try {
+
+        } catch (Exception e) {
+            throw new ErroSistema("Erro ao deletar o grupo", e);
+        }
+    }
+    
+
+    @Override
+    public List<Grupo> buscar() throws ErroSistema {
+        EntityManager em = getEM();
+        try {
+            em.getTransaction().begin();
+            Query q = em.createQuery("SELECT g FROM Grupo g");
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
     @Override
     public EntityManager getEM() {
@@ -81,13 +106,10 @@ public class GrupoDAO implements DAO<Grupo>{
         }
     }
 
+    
     @Override
-    public void delete(Grupo entidade) throws ErroSistema {
-        try {
-
-        } catch (Exception e) {
-            throw new ErroSistema("Erro ao deletar o grupo", e);
-        }
+    public void deletar(Grupo grupo) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -13,18 +13,18 @@
                 <p:toolbar>
                     <p:toolbarGroup>
                         <p:commandButton value="Novo" action="#{produtoBean.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{produtoBean.salvar()}" disabled="" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{produtoBean.salvar()}" disabled="#{produtoBean.busca == true}" update="@form"></p:commandButton>
                         <p:commandButton value="Buscar" action="#{produtoBean.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:panelGrid columns="2" rendered="#{produtoBean.buscar() == false}">
+                <p:panelGrid columns="2" rendered="#{produtoBean.busca == false}">
                     <h:outputLabel value="Id"></h:outputLabel>
                     <p:inputText value="#{produtoBean.entidade.id}"></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
                     <p:inputText value="#{produtoBean.entidade.descricao}"></p:inputText>
                     
                 </p:panelGrid>
-                <p:dataTable value="#{produtoBean.entidades}" var="produto" rendered="#{produtoBean.buscar() == true}">
+                <p:dataTable value="#{produtoBean.entidades}" emptyMessage="Nenhum Registro Encontrado" var="produto" rendered="#{produtoBean.busca == true}">
                     <p:column>
                         <p:commandButton value="Editar" action="#{produtoBean.editar(produto)}" update="@form"></p:commandButton>
                         <p:commandButton value="Deletar" action="#{produtoBean.deletar(produto)}" update="@form"></p:commandButton>

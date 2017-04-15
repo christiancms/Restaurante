@@ -13,18 +13,18 @@
                 <p:toolbar>
                     <p:toolbarGroup>
                         <p:commandButton value="Novo" action="#{marcaBean.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{marcaBean.salvar()}" disabled="" update="@form"></p:commandButton>
-                        <p:commandButton value="Buscar" action="#{marcaBean.listAll()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{marcaBean.salvar()}" disabled="#{marcaBean.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{marcaBean.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:panelGrid columns="2" rendered="#{marcaBean.buscar() == false}">
+                <p:panelGrid columns="2" rendered="#{marcaBean.busca == false}">
                     <h:outputLabel value="Id"></h:outputLabel>
                     <p:inputText value="#{marcaBean.entidade.id}"></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
                     <p:inputText value="#{marcaBean.entidade.descricao}"></p:inputText>
                     
                 </p:panelGrid>
-                <p:dataTable value="#{marcaBean.entidades}" var="marca" rendered="#{marcaBean.buscar() == true}">
+                <p:dataTable value="#{marcaBean.entidades}" emptyMessage="Nenhum Registro Encontrado" var="marca" rendered="#{marcaBean.busca == true}">
                     <p:column>
                         <p:commandButton value="Editar" action="#{marcaBean.editar(marca)}" update="@form"></p:commandButton>
                         <p:commandButton value="Deletar" action="#{marcaBean.deletar(marca)}" update="@form"></p:commandButton>
