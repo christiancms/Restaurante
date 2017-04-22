@@ -1,6 +1,7 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
@@ -21,17 +22,19 @@ public class Produto implements Serializable {
     @Column
     private double precoCompra;
     @Column
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
-    
-    @OneToOne
-    @JoinColumn(name ="grupo_id")
+    /**
+     * Se a associação é opcional. Se definido como falso, uma relação não nula sempre deve existir.
+     */
+    @ManyToOne(optional = false)
+    @JoinColumn(name ="grupo_id", referencedColumnName = "id")
     private Grupo grupo;
-    @OneToOne
-    @JoinColumn(name ="marca_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name ="marca_id", referencedColumnName = "id")
     private Marca marca;
-    @OneToOne
-    @JoinColumn(name ="unidade_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name ="unidade_id", referencedColumnName = "id")
     private Unidade unidade;
     
 
@@ -66,7 +69,7 @@ public class Produto implements Serializable {
     public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
-
+    
     public Grupo getGrupo() {
         return grupo;
     }
@@ -115,5 +118,5 @@ public class Produto implements Serializable {
         }
         return true;
     }
-    
+
 }

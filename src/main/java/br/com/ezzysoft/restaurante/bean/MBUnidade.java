@@ -9,9 +9,9 @@ import javax.faces.bean.SessionScoped;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean
+@ManagedBean(name = "MBUnidade")
 @SessionScoped
-public class UnidadeBean extends CrudBean<Unidade, UnidadeDAO> {
+public class MBUnidade extends CrudBean<Unidade, UnidadeDAO> {
 
     private UnidadeDAO unidadeDAO;
 

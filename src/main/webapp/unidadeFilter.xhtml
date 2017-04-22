@@ -6,30 +6,31 @@
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core"
               template="template.xhtml">
-    
+
+    <ui:define name="body">
         <h:form>
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Unidades">
                 <p:toolbar>
                     <p:toolbarGroup>
-                        <p:commandButton value="Novo" action="#{unidadeBean.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{unidadeBean.salvar()}" disabled="#{unidadeBean.busca == true}" update="@form"></p:commandButton>
-                        <p:commandButton value="Buscar" action="#{unidadeBean.buscar()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Novo" action="#{MBUnidade.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBUnidade.salvar()}" disabled="#{MBUnidade.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{MBUnidade.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:panelGrid columns="2" rendered="#{unidadeBean.busca == false}">
+                <p:panelGrid columns="2" rendered="#{MBUnidade.busca == false}">
                     <h:outputLabel value="Id"></h:outputLabel>
-                    <p:inputText value="#{unidadeBean.entidade.id}"></p:inputText>
+                    <p:inputText value="#{MBUnidade.entidade.id}" disabled="true"></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
-                    <p:inputText value="#{unidadeBean.entidade.descricao}"></p:inputText>
+                    <p:inputText value="#{MBUnidade.entidade.descricao}"></p:inputText>
                     <h:outputLabel value="Sigla"></h:outputLabel>
-                    <p:inputText value="#{unidadeBean.entidade.sigla}"></p:inputText>
-                    
+                    <p:inputText value="#{MBUnidade.entidade.sigla}"></p:inputText>
+
                 </p:panelGrid>
-                <p:dataTable value="#{unidadeBean.entidades}" emptyMessage="Nenhum Registro Encontrado" var="unidade" rendered="#{unidadeBean.busca == true}">
+                <p:dataTable value="#{MBUnidade.entidades}" emptyMessage="Nenhum Registro Encontrado" var="unidade" rendered="#{MBUnidade.busca == true}">
                     <p:column>
-                        <p:commandButton value="Editar" action="#{unidadeBean.editar(unidade)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{unidadeBean.deletar(unidade)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Editar" action="#{MBUnidade.editar(unidade)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{MBUnidade.deletar(unidade)}" update="@form"></p:commandButton>
                     </p:column>
                     <p:column headerText="Id" sortBy="#{unidade.id}">
                         <h:outputText value="#{unidade.id}"></h:outputText>
@@ -40,8 +41,9 @@
                     <p:column headerText="Sigla" sortBy="#{unidade.sigla}">
                         <h:outputText value="#{unidade.sigla}"></h:outputText>
                     </p:column>
-                    
+
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+    </ui:define>
 </ui:decorate>

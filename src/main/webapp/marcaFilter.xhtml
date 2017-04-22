@@ -6,28 +6,29 @@
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core"
               template="template.xhtml">
-    
+
+    <ui:define name="body">
         <h:form>
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Marcas">
                 <p:toolbar>
                     <p:toolbarGroup>
-                        <p:commandButton value="Novo" action="#{marcaBean.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{marcaBean.salvar()}" disabled="#{marcaBean.busca == true}" update="@form"></p:commandButton>
-                        <p:commandButton value="Buscar" action="#{marcaBean.buscar()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Novo" action="#{MBMarca.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBMarca.salvar()}" disabled="#{MBMarca.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{MBMarca.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:panelGrid columns="2" rendered="#{marcaBean.busca == false}">
+                <p:panelGrid columns="2" rendered="#{MBMarca.busca == false}">
                     <h:outputLabel value="Id"></h:outputLabel>
-                    <p:inputText value="#{marcaBean.entidade.id}"></p:inputText>
+                    <p:inputText value="#{MBMarca.entidade.id}" disabled="true"></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
-                    <p:inputText value="#{marcaBean.entidade.descricao}"></p:inputText>
-                    
+                    <p:inputText value="#{MBMarca.entidade.descricao}"></p:inputText>
+
                 </p:panelGrid>
-                <p:dataTable value="#{marcaBean.entidades}" emptyMessage="Nenhum Registro Encontrado" var="marca" rendered="#{marcaBean.busca == true}">
+                <p:dataTable value="#{MBMarca.entidades}" emptyMessage="Nenhum Registro Encontrado" var="marca" rendered="#{MBMarca.busca == true}">
                     <p:column>
-                        <p:commandButton value="Editar" action="#{marcaBean.editar(marca)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{marcaBean.deletar(marca)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Editar" action="#{MBMarca.editar(marca)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{MBMarca.deletar(marca)}" update="@form"></p:commandButton>
                     </p:column>
                     <p:column headerText="Id" sortBy="#{marca.id}">
                         <h:outputText value="#{marca.id}"></h:outputText>
@@ -35,8 +36,9 @@
                     <p:column headerText="Descrição" sortBy="#{marca.descricao}">
                         <h:outputText value="#{marca.descricao}"></h:outputText>
                     </p:column>
-                    
+
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+    </ui:define>
 </ui:decorate>

@@ -1,6 +1,7 @@
 package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.dao.CrudDAO;
+import br.com.ezzysoft.restaurante.entidade.Produto;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,6 +24,9 @@ public abstract class CrudBean<E, D extends CrudDAO> {
     
     public void novo(){
         entidade =  criarNovaEntidade();
+        if (entidade.getClass().getSimpleName().equalsIgnoreCase("Produto")){ 
+            
+        }
         mudarParaInsere();
     }
     public void salvar(){
@@ -52,13 +56,13 @@ public abstract class CrudBean<E, D extends CrudDAO> {
         }
     }
     public void buscar(){
-        if(isBusca() == false){
+        if(!isBusca()){
            mudarParaBusca();
            return;
         }
         try {
             entidades = getDao().buscar();
-            if(entidades == null || entidades.size() < 1){
+            if(entidades == null || entidades.isEmpty()){
                 adicionarMensagem("Não temos nada cadastrado!", FacesMessage.SEVERITY_WARN);
             }
         } catch (ErroSistema ex) {
@@ -89,7 +93,7 @@ public abstract class CrudBean<E, D extends CrudDAO> {
         this.entidades = entidades;
     }
     
-    //Responsvel por criar os métodos nas classes bean
+    //Responsável por criar os métodos nas classes bean
     public abstract D getDao();
     public abstract E criarNovaEntidade();
     

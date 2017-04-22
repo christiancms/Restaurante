@@ -6,28 +6,29 @@
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core"
               template="template.xhtml">
-    
+
+    <ui:define name="body">
         <h:form>
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Grupos">
                 <p:toolbar>
                     <p:toolbarGroup>
-                        <p:commandButton value="Novo" action="#{grupoBean.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{grupoBean.salvar()}" disabled="#{grupoBean.busca == true}" update="@form"></p:commandButton>
-                        <p:commandButton value="Buscar" action="#{grupoBean.buscar()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Novo" action="#{MBGrupo.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{MBGrupo.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:panelGrid columns="2" rendered="#{grupoBean.busca == false}">
+                <p:panelGrid columns="2" rendered="#{MBGrupo.busca == false}">
                     <h:outputLabel value="Id"></h:outputLabel>
-                    <p:inputText value="#{grupoBean.entidade.id}"></p:inputText>
+                    <p:inputText value="#{MBGrupo.entidade.id}" disabled="true"></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
-                    <p:inputText value="#{grupoBean.entidade.descricao}"></p:inputText>
-                    
+                    <p:inputText value="#{MBGrupo.entidade.descricao}"></p:inputText>
+
                 </p:panelGrid>
-                <p:dataTable value="#{grupoBean.entidades}" emptyMessage="Nenhum Registro Encontrado" var="grupo" rendered="#{grupoBean.busca == true}">
+                <p:dataTable value="#{MBGrupo.entidades}" emptyMessage="Nenhum Registro Encontrado" var="grupo" rendered="#{MBGrupo.busca == true}">
                     <p:column>
-                        <p:commandButton value="Editar" action="#{grupoBean.editar(grupo)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{grupoBean.deletar(grupo)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Editar" action="#{MBGrupo.editar(grupo)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{MBGrupo.deletar(grupo)}" update="@form"></p:commandButton>
                     </p:column>
                     <p:column headerText="Id" sortBy="#{grupo.id}">
                         <h:outputText value="#{grupo.id}"></h:outputText>
@@ -35,8 +36,9 @@
                     <p:column headerText="Descrição" sortBy="#{grupo.descricao}">
                         <h:outputText value="#{grupo.descricao}"></h:outputText>
                     </p:column>
-                    
+
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+    </ui:define>
 </ui:decorate>

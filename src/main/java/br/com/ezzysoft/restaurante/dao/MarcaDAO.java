@@ -1,9 +1,7 @@
 package br.com.ezzysoft.restaurante.dao;
 
-import br.com.ezzysoft.restaurante.bean.*;
 import br.com.ezzysoft.restaurante.entidade.Marca;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,14 +12,26 @@ import javax.persistence.Query;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-public class MarcaDAO implements CrudDAO<Marca>{
+public class MarcaDAO implements CrudDAO<Marca> {
 
     @Override
-    public void salvar(Marca entidade) throws ErroSistema {
+    public void salvar(Marca m) throws ErroSistema {
+        EntityManager em = getEM();
         try {
-
-        } catch (Exception e) {
-            throw new ErroSistema("Erro ao tentar salvar!", e);
+            em.getTransaction().begin();
+            if (m.getId() == null) {
+                em.persist(m); // insert    
+            } else {
+                if (!em.contains(m)) {
+                    if (em.find(Marca.class, m.getId()) == null) {
+                        throw new ErroSistema("Erro ao tentar salvar!");
+                    }
+                }
+                m = em.merge(m); // update
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
     }
 
@@ -48,10 +58,10 @@ public class MarcaDAO implements CrudDAO<Marca>{
 
     @Override
     public EntityManager getEM() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("Ezzysoft_RestaurantePU");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("EzzysoftPU");
         return factory.createEntityManager();
     }
-    
+
     @Override
     public Marca findById(Long id) {
         EntityManager em = getEM();
@@ -66,7 +76,7 @@ public class MarcaDAO implements CrudDAO<Marca>{
 
     @Override
     public Marca save(Marca m) throws Exception {
-        
+
         EntityManager em = getEM();
         try {
             em.getTransaction().begin();
@@ -105,11 +115,11 @@ public class MarcaDAO implements CrudDAO<Marca>{
         EntityManager em = getEM();
         try {
             em.getTransaction().begin();
-            Query q = em.createQuery("SELECT m FROM Marca m");
+            Query q = em.createQuery("SELECT m FROM Marca m ORDER BY m.descricao");
             return q.getResultList();
         } finally {
             em.close();
         }
     }
-    
+
 }

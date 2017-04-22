@@ -54,7 +54,7 @@ public class UnidadeDAO implements CrudDAO<Unidade> {
 
     @Override
     public EntityManager getEM() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("Ezzysoft_RestaurantePU");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("EzzysoftPU");
         return factory.createEntityManager();
     }
 
@@ -111,7 +111,7 @@ public class UnidadeDAO implements CrudDAO<Unidade> {
         EntityManager em = getEM();
         try {
             em.getTransaction().begin();
-            Query q = em.createQuery("SELECT u FROM Unidade u");
+            Query q = em.createQuery("SELECT u FROM Unidade u ORDER BY u.descricao");
             return q.getResultList();
         } finally {
             em.close();

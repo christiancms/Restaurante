@@ -42,7 +42,7 @@ public class GrupoDAO implements CrudDAO<Grupo>{
 
     @Override
     public EntityManager getEM() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("Ezzysoft_RestaurantePU");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("EzzysoftPU");
         return factory.createEntityManager();
     }
     
@@ -99,7 +99,7 @@ public class GrupoDAO implements CrudDAO<Grupo>{
         EntityManager em = getEM();
         try {
             em.getTransaction().begin();
-            Query q = em.createQuery("SELECT g FROM Grupo g");
+            Query q = em.createQuery("SELECT g FROM Grupo g ORDER BY g.descricao");
             return q.getResultList();
         } finally {
             em.close();

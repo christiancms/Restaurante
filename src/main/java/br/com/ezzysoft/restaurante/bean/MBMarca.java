@@ -14,12 +14,12 @@ import javax.faces.bean.SessionScoped;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean
+@ManagedBean(name = "MBMarca")
 @SessionScoped
-public class MarcaBean extends CrudBean<Marca, MarcaDAO>{
+public class MBMarca extends CrudBean<Marca, MarcaDAO> {
 
     private MarcaDAO marcaDAO;
-    
+
     @Override
     public MarcaDAO getDao() {
         if (marcaDAO == null) {
@@ -32,5 +32,5 @@ public class MarcaBean extends CrudBean<Marca, MarcaDAO>{
     public Marca criarNovaEntidade() {
         return new Marca();
     }
-    
+
 }

@@ -6,28 +6,53 @@
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core"
               template="template.xhtml">
-    
+
+    <ui:define name="body">
         <h:form>
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Produtos">
                 <p:toolbar>
                     <p:toolbarGroup>
-                        <p:commandButton value="Novo" action="#{produtoBean.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{produtoBean.salvar()}" disabled="#{produtoBean.busca == true}" update="@form"></p:commandButton>
-                        <p:commandButton value="Buscar" action="#{produtoBean.buscar()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Novo" action="#{MBProduto.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBProduto.salvar()}" disabled="#{MBProduto.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{MBProduto.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:panelGrid columns="2" rendered="#{produtoBean.busca == false}">
+                <p:panelGrid columns="2" rendered="#{MBProduto.busca == false}">
                     <h:outputLabel value="Id"></h:outputLabel>
-                    <p:inputText value="#{produtoBean.entidade.id}"></p:inputText>
+                    <p:inputText value="#{MBProduto.entidade.id}" disabled="true"></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
-                    <p:inputText value="#{produtoBean.entidade.descricao}"></p:inputText>
-                    
+                    <p:inputText value="#{MBProduto.entidade.descricao}"></p:inputText>
+                    <h:outputLabel value="Preço"/>
+                    <p:inputText value="#{MBProduto.entidade.precoCompra}"/>
+                    <h:outputLabel value="Cadastro"/>
+                    <p:inputText value="#{MBProduto.entidade.dataCadastro}" disabled="true"></p:inputText>
+
+
+
+                    <h:outputLabel value="Grupo"/>
+                    <p:selectOneMenu value="#{MBProduto.grupo.id}" id="listaGrupo">
+                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{MBProduto.grupos}"/>
+                    </p:selectOneMenu>
+
+                    <h:outputLabel value="Marca"/>
+                    <p:selectOneMenu value="#{MBProduto.marca.id}" id="listaMarca">
+                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{MBProduto.marcas}" />
+                    </p:selectOneMenu>
+
+                    <h:outputLabel value="Unidade"/>
+                    <p:selectOneMenu value="#{MBProduto.unidade.id}" id="listaUnidade">
+                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{MBProduto.unidades}" />
+                    </p:selectOneMenu>
+
                 </p:panelGrid>
-                <p:dataTable value="#{produtoBean.entidades}" emptyMessage="Nenhum Registro Encontrado" var="produto" rendered="#{produtoBean.busca == true}">
+                <p:dataTable value="#{MBProduto.entidades}" emptyMessage="Nenhum Registro Encontrado" var="produto" rendered="#{MBProduto.busca == true}">
                     <p:column>
-                        <p:commandButton value="Editar" action="#{produtoBean.editar(produto)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{produtoBean.deletar(produto)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Editar" action="#{MBProduto.editar(produto)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{MBProduto.deletar(produto)}" update="@form"></p:commandButton>
                     </p:column>
                     <p:column headerText="Id" sortBy="#{produto.id}">
                         <h:outputText value="#{produto.id}"></h:outputText>
@@ -35,8 +60,24 @@
                     <p:column headerText="Descrição" sortBy="#{produto.descricao}">
                         <h:outputText value="#{produto.descricao}"></h:outputText>
                     </p:column>
-                    
+                    <p:column headerText="Preço R$" sortBy="#{produto.precoCompra}">
+                        <h:outputText value="#{produto.precoCompra}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Cadastro" sortBy="#{produto.dataCadastro}">
+                        <h:outputText value="#{produto.dataCadastro}">
+                            <f:convertDateTime pattern="dd/MM/yyyy hh:mm" /></h:outputText>
+                    </p:column>
+                    <p:column headerText="Grupo" sortBy="#{produto.grupo.descricao}">
+                        <h:outputText value="#{produto.grupo.descricao}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Marca" sortBy="#{produto.marca.descricao}">
+                        <h:outputText value="#{produto.marca.descricao}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="UN" sortBy="#{produto.unidade.sigla}">
+                        <h:outputText value="#{produto.unidade.sigla}"></h:outputText>
+                    </p:column>
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+    </ui:define>
 </ui:decorate>

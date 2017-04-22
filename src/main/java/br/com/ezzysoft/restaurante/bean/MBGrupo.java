@@ -9,9 +9,9 @@ import javax.faces.bean.SessionScoped;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean
+@ManagedBean(name = "MBGrupo")
 @SessionScoped
-public class GrupoBean extends CrudBean<Grupo, GrupoDAO> {
+public class MBGrupo extends CrudBean<Grupo, GrupoDAO> {
 
     private GrupoDAO grupoDAO;
 

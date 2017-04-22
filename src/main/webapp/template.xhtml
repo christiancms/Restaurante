@@ -25,13 +25,13 @@
                         <p:submenu label="Caixa">
                         </p:submenu>
                         <p:submenu label="Pedido">
-                            <p:menuitem value="Visualizar" url="index.jsf" />
+                            <p:menuitem value="Visualizar" outcome="/index" />
                         </p:submenu>
                         <p:submenu label="Cadastro">
-                            <p:menuitem value="Grupo" url="grupoFilter.jsf" />
-                            <p:menuitem value="Marca" url="marcaFilter.jsf" />
-                            <p:menuitem value="Produto" url="produtoFilter.jsf" />
-                            <p:menuitem value="Unidade" url="unidadeFilter.jsf" />
+                            <p:menuitem value="Grupo" outcome="/grupoFilter" />
+                            <p:menuitem value="Marca" outcome="/marcaFilter" />
+                            <p:menuitem value="Produto" outcome="/produtoFilter" />
+                            <p:menuitem value="Unidade" outcome="/unidadeFilter" />
                         </p:submenu>
                         <p:submenu label="Relatório">
                             <p:menuitem value="Vendas" url="" />
@@ -40,7 +40,7 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center" id="centro">
-                    <ui:insert></ui:insert>
+                    <ui:insert name="body"/>
                 </p:layoutUnit>
             </p:layout>
         </h:body>

@@ -17,7 +17,7 @@ public class ProdutoDAO implements CrudDAO<Produto>{
 
     @Override
     public EntityManager getEM() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("Ezzysoft_RestaurantePU");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("EzzysoftPU");
         return factory.createEntityManager();
     }
     

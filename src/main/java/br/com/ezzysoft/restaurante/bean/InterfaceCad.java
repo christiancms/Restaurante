@@ -6,7 +6,7 @@ package br.com.ezzysoft.restaurante.bean;
  */
 public interface InterfaceCad {
     
-    public void cadNew();
+    public void cadOnLoad();
     public void cadOpen();
     public void cadRemove();
     public void cadSave();
