@@ -16,6 +16,10 @@ public class Grupo implements Serializable {
     private Long id;
     @Column
     private String descricao;
+    @Lob
+    @Column(columnDefinition = "blob", length = 65000)
+    private byte[] foto;
+    
 
     public Long getId() {
         return id;
@@ -32,6 +36,12 @@ public class Grupo implements Serializable {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    
 
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
 }
