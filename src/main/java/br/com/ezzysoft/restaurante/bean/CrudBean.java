@@ -1,7 +1,6 @@
 package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.dao.CrudDAO;
-import br.com.ezzysoft.restaurante.entidade.Produto;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,6 +38,7 @@ public abstract class CrudBean<E, D extends CrudDAO> {
             Logger.getLogger(CrudBean.class.getName()).log(Level.SEVERE, null, ex);
             adicionarMensagem(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
+        refresh();
     }
     public void editar(E entidade){
         this.entidade = entidade;
@@ -50,6 +50,22 @@ public abstract class CrudBean<E, D extends CrudDAO> {
             getDao().deletar(entidade);
             entidades.remove(entidade);
             adicionarMensagem("Deletado com sucesso!", FacesMessage.SEVERITY_INFO);
+        } catch (ErroSistema ex) {
+            Logger.getLogger(CrudBean.class.getName()).log(Level.SEVERE, null, ex);
+            adicionarMensagem(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+     
+    public void refresh(){
+        if(!isBusca()){
+           mudarParaBusca();
+           return;
+        }
+        try {
+            entidades = getDao().buscar();
+            if(entidades == null || entidades.isEmpty()){
+                adicionarMensagem("Não temos nada cadastrado!", FacesMessage.SEVERITY_WARN);
+            }
         } catch (ErroSistema ex) {
             Logger.getLogger(CrudBean.class.getName()).log(Level.SEVERE, null, ex);
             adicionarMensagem(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -72,7 +88,7 @@ public abstract class CrudBean<E, D extends CrudDAO> {
     }
     
     public void adicionarMensagem(String mensagem, FacesMessage.Severity tipoErro){
-        FacesMessage fm = new FacesMessage(tipoErro, mensagem, null);
+        FacesMessage fm = new FacesMessage(tipoErro.toString().replace("0", ""), mensagem);
         FacesContext.getCurrentInstance().addMessage(null, fm);
     }
     
