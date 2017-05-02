@@ -92,3 +92,5 @@ INSERT INTO produto VALUES
 (1,'Refrigerante Lata',2.49,NOW(),1,5,8),
 (2,'Refrigerante Lata',2.49,NOW(),1,6,8);
 
+ALTER TABLE grupo ADD COLUMN foto BLOB NULL;
+
