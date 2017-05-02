@@ -15,11 +15,23 @@ import javax.persistence.Query;
 public class UnidadeDAO implements CrudDAO<Unidade> {
 
     @Override
-    public void salvar(Unidade unidade) throws ErroSistema {
+    public void salvar(Unidade u) throws ErroSistema {
+        EntityManager em = getEM();
         try {
-
-        } catch (Exception e) {
-            throw new ErroSistema("Erro ao tentar salvar!", e);
+            em.getTransaction().begin();
+            if (u.getId() == null) {
+                em.persist(u); // insert    
+            } else {
+                if (!em.contains(u)) {
+                    if (em.find(Unidade.class, u.getId()) == null) {
+                        throw new ErroSistema("Erro ao atualizar a unidade!");
+                    }
+                }
+                u = em.merge(u); // update
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
     }
 
@@ -73,24 +85,8 @@ public class UnidadeDAO implements CrudDAO<Unidade> {
     @Override
     public Unidade save(Unidade u) throws Exception {
 
-        EntityManager em = getEM();
-        try {
-            em.getTransaction().begin();
-            if (u.getId() == null) {
-                em.persist(u); // insert    
-            } else {
-                if (!em.contains(u)) {
-                    if (em.find(Unidade.class, u.getId()) == null) {
-                        throw new Exception("Erro ao atualizar a unidade!");
-                    }
-                }
-                u = em.merge(u); // update
-            }
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return u;
+        
+        return null;
     }
 
     @Override

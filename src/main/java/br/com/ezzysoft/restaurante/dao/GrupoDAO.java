@@ -12,11 +12,40 @@ import javax.persistence.Query;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-public class GrupoDAO implements CrudDAO<Grupo>{
-    
+
+public class GrupoDAO implements CrudDAO<Grupo> {
     @Override
-    public void salvar(Grupo grupo) throws ErroSistema {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void salvar(Grupo g) throws ErroSistema {
+        if (g.getFoto() == null) {
+            
+        }
+        EntityManager em = getEM();
+        try {
+            em.getTransaction().begin();
+            if (g.getId() == null) {
+                em.persist(g); // insert    
+            } else {
+                if (!em.contains(g)) {
+                    if (em.find(Grupo.class, g.getId()) == null) {
+                        throw new ErroSistema("Erro ao atualizar o grupo!");
+                    }
+                }
+                g = em.merge(g); // update
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public byte[] loadImage(Integer id){
+        EntityManager em = getEM();
+        return em.find(Grupo.class, id).getFoto();
+    }
+
+    @Override
+    public Grupo save(Grupo g) throws ErroSistema {
+        return null;
     }
 
     public void deletar(Long id) throws ErroSistema {
@@ -26,7 +55,6 @@ public class GrupoDAO implements CrudDAO<Grupo>{
             throw new ErroSistema("Erro ao deletar o grupo", e);
         }
     }
-    
 
     @Override
     public List<Grupo> buscar() throws ErroSistema {
@@ -45,7 +73,7 @@ public class GrupoDAO implements CrudDAO<Grupo>{
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("EzzysoftPU");
         return factory.createEntityManager();
     }
-    
+
     @Override
     public Grupo findById(Long id) {
         EntityManager em = getEM();
@@ -56,29 +84,6 @@ public class GrupoDAO implements CrudDAO<Grupo>{
             em.close();
         }
         return grupo;
-    }
-
-    @Override
-    public Grupo save(Grupo g) throws ErroSistema {
-        
-        EntityManager em = getEM();
-        try {
-            em.getTransaction().begin();
-            if (g.getId() == null) {
-                em.persist(g); // insert    
-            } else {
-                if (!em.contains(g)) {
-                    if (em.find(Grupo.class, g.getId()) == null) {
-                        throw new ErroSistema("Erro ao atualizar o grupo!");
-                    }
-                }
-                g = em.merge(g); // update
-            }
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return g;
     }
 
     @Override
@@ -106,10 +111,8 @@ public class GrupoDAO implements CrudDAO<Grupo>{
         }
     }
 
-    
     @Override
     public void deletar(Grupo grupo) throws ErroSistema {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -36,24 +36,8 @@ public class ProdutoDAO implements CrudDAO<Produto>{
     @Override
     public Produto save(Produto p) throws Exception {
         
-        EntityManager em = getEM();
-        try {
-            em.getTransaction().begin();
-            if (p.getId() == null) {
-                em.persist(p); // insert    
-            } else {
-                if (!em.contains(p)) {
-                    if (em.find(Produto.class, p.getId()) == null) {
-                        throw new Exception("Erro ao atualizar a unidade!");
-                    }
-                }
-                p = em.merge(p); // update
-            }
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return p;
+        
+        return null;
     }
 
     @Override
@@ -82,8 +66,24 @@ public class ProdutoDAO implements CrudDAO<Produto>{
     }
 
     @Override
-    public void salvar(Produto entidade) throws ErroSistema {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void salvar(Produto p) throws ErroSistema {
+        EntityManager em = getEM();
+        try {
+            em.getTransaction().begin();
+            if (p.getId() == null) {
+                em.persist(p); // insert    
+            } else {
+                if (!em.contains(p)) {
+                    if (em.find(Produto.class, p.getId()) == null) {
+                        throw new ErroSistema("Erro ao atualizar a unidade!");
+                    }
+                }
+                p = em.merge(p); // update
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
