@@ -8,14 +8,13 @@
               template="template.xhtml">
 
     <ui:define name="body">
-        <h:form enctype="multipart/form-data">
-            <p:growl id="growl" showDetail="true" sticky="true" /> 
-
+        <h:form>
+            <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Grupos">
                 <p:toolbar>
                     <p:toolbarGroup>
                         <p:commandButton value="Novo" action="#{MBGrupo.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"/>
+                        <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"></p:commandButton>
                         <p:commandButton value="Buscar" action="#{MBGrupo.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
@@ -23,18 +22,8 @@
                     <h:outputLabel value="Id"></h:outputLabel>
                     <p:inputText value="#{MBGrupo.entidade.id}" disabled="true"></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
-                    <p:inputText value="#{MBGrupo.entidade.descricao}"/>
-                    <h:outputLabel value="Foto"/>
-                    <p:fileUpload value="#{MBGrupo.arquivo}"
-                                  fileUploadListener="#{MBGrupo.doUpload}" mode="advanced" skinSimple="true"
-                                  dragDropSupport="false" cancelLabel="Cancelar" label="Escolha" uploadLabel="Enviar"
-                                  update="msg" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                  onstart="console.log('Iniciando envio da foto')"
-                                  onerror="console.log('Erro na requisiçao do arquivo')"
-                                  oncomplete="console.log('Envio concluido')"
-                                  />
-                    <!--<p:graphicImage value="# {MBGrupo.entidade.foto}" />-->
-                    <p:growl id="msg" showDetail="true" />
+                    <p:inputText value="#{MBGrupo.entidade.descricao}"></p:inputText>
+
                 </p:panelGrid>
                 <p:dataTable value="#{MBGrupo.entidades}" emptyMessage="Nenhum Registro Encontrado" var="grupo" rendered="#{MBGrupo.busca == true}">
                     <p:column>
@@ -46,9 +35,6 @@
                     </p:column>
                     <p:column headerText="Descrição" sortBy="#{grupo.descricao}">
                         <h:outputText value="#{grupo.descricao}"></h:outputText>
-                    </p:column>
-                    <p:column headerText="Foto">
-                       <!-- <p:graphicImage value="# {grupo.foto}" />-->
                     </p:column>
 
                 </p:dataTable>
