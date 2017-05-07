@@ -25,32 +25,39 @@
                     <h:outputLabel value="Descrição"></h:outputLabel>
                     <p:inputText value="#{MBGrupo.entidade.descricao}"/>
                     <h:outputLabel value="Foto"/>
+                    <p:graphicImage value="#{MBGrupo.picture}" id="foto" cache="false" 
+                                    style="width:120px;height:120px" alt="#{MBGrupo.entidade.descricao}" >
+                        <f:param name="id" value="#{MBGrupo.entidade.id}"/>
+                    </p:graphicImage>
+                    <h:outputLabel/>
                     <p:fileUpload value="#{MBGrupo.arquivo}"
                                   fileUploadListener="#{MBGrupo.doUpload}" mode="advanced" skinSimple="true"
                                   dragDropSupport="false" cancelLabel="Cancelar" label="Escolha" uploadLabel="Enviar"
                                   update="msg" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                  sizeLimit="65000"
                                   onstart="console.log('Iniciando envio da foto')"
                                   onerror="console.log('Erro na requisiçao do arquivo')"
                                   oncomplete="console.log('Envio concluido')"
                                   />
-                    <!--<p:graphicImage value="# {MBGrupo.entidade.foto}" />-->
                     <p:growl id="msg" showDetail="true" />
                 </p:panelGrid>
                 <p:dataTable value="#{MBGrupo.entidades}" emptyMessage="Nenhum Registro Encontrado" var="grupo" rendered="#{MBGrupo.busca == true}">
-                    <p:column>
+                    <p:column style="width: 190px">
                         <p:commandButton value="Editar" action="#{MBGrupo.editar(grupo)}" update="@form"></p:commandButton>
                         <p:commandButton value="Deletar" action="#{MBGrupo.deletar(grupo)}" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Id" sortBy="#{grupo.id}">
+                    <p:column headerText="Id" sortBy="#{grupo.id}" style="width: 35px">
                         <h:outputText value="#{grupo.id}"></h:outputText>
                     </p:column>
                     <p:column headerText="Descrição" sortBy="#{grupo.descricao}">
                         <h:outputText value="#{grupo.descricao}"></h:outputText>
                     </p:column>
-                    <p:column headerText="Foto">
-                       <!-- <p:graphicImage value="# {grupo.foto}" />-->
+                    <p:column headerText="Foto" style="text-align: center">
+                       <p:graphicImage value="#{MBGrupo.picture}" id="foto" cache="false" 
+                                    style="width:30px;height:30px" alt="#{grupo.descricao}" >
+                        <f:param name="id" value="#{grupo.id}"/>
+                    </p:graphicImage>
                     </p:column>
-
                 </p:dataTable>
             </p:fieldset>
         </h:form>

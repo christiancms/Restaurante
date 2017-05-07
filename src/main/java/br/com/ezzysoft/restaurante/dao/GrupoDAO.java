@@ -86,6 +86,17 @@ public class GrupoDAO implements CrudDAO<Grupo> {
         return grupo;
     }
 
+    public byte[] findImageById(Long id) {
+        EntityManager em = getEM();
+        Grupo grupo = null;
+        try {
+            grupo = em.find(Grupo.class, id); //select
+        } finally {
+            em.close();
+        }
+        return grupo.getFoto();
+    }
+    
     @Override
     public void remove(Long id) {
         EntityManager em = getEM();

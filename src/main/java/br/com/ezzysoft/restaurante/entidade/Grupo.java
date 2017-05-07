@@ -1,6 +1,8 @@
 package br.com.ezzysoft.restaurante.entidade;
 
+//import br.com.ezzysoft.restaurante.util.Upload;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.*;
 
 /**
@@ -37,11 +39,47 @@ public class Grupo implements Serializable {
         this.descricao = descricao;
     }
 
+//    @OneToOne
+//    private Upload imagem;
+    
     public byte[] getFoto() {
         return foto;
     }
 
     public void setFoto(byte[] foto) {
         this.foto = foto;
+    }
+
+//    public Upload getImagem() {
+//        return imagem;
+//    }
+//
+//    public void setImagem(Upload imagem) {
+//        this.imagem = imagem;
+//    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Grupo other = (Grupo) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 }
