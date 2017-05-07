@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="EzzysoftPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>br.com.ezzysoft.restaurante.entidade.Bairro</class>
@@ -9,11 +11,12 @@
     <class>br.com.ezzysoft.restaurante.entidade.ItemPedido</class>
     <class>br.com.ezzysoft.restaurante.entidade.Logradouro</class>
     <class>br.com.ezzysoft.restaurante.entidade.Marca</class>
+    <class>br.com.ezzysoft.restaurante.entidade.Pais</class>
     <class>br.com.ezzysoft.restaurante.entidade.Pedido</class>
     <class>br.com.ezzysoft.restaurante.entidade.Pessoa</class>
     <class>br.com.ezzysoft.restaurante.entidade.Produto</class>
-    <class>br.com.ezzysoft.restaurante.entidade.Uf</class>
     <class>br.com.ezzysoft.restaurante.entidade.Unidade</class>
+    <class>br.com.ezzysoft.restaurante.entidade.UnidadeFederacao</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/restaurante"/>

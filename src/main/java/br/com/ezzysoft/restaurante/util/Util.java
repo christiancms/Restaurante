@@ -9,6 +9,9 @@ package br.com.ezzysoft.restaurante.util;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-public class FileUpload {
-    
+public class Util {
+
+    public Boolean isNumber(String x) {
+        return x.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+");
+    }
 }
