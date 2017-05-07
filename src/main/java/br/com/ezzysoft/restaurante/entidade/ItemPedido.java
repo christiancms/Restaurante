@@ -12,11 +12,11 @@ import javax.persistence.*;
 public class ItemPedido implements Serializable{
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private Long id;
-    @Column(name = "codigoProduto")
+    @Column
     private Integer codigoProduto;
-    @Column(name = "quantidade")
+    @Column
     private Integer quantidade;
 //---------------- Pedido ----------------
     @ManyToOne

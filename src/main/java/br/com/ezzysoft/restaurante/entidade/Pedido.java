@@ -2,6 +2,7 @@ package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 
 /**
@@ -13,9 +14,9 @@ import javax.persistence.*;
 public class Pedido implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private Long id;
-    @Column(name = "mesa")
+    @Column
     private Integer mesa;
     @Column(name = "garcom")
     private Integer numeroGarcom;
@@ -53,6 +54,31 @@ public class Pedido implements Serializable {
 
     public void setItensPedido(List<ItemPedido> itensPedido) {
         this.itensPedido = itensPedido;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Pedido other = (Pedido) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
     
    

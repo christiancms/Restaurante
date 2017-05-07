@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Pessoa implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private Long id;
     @Column(name = "nome_razsoc")
     private String nomeRazsoc;
@@ -24,11 +24,11 @@ public class Pessoa implements Serializable {
     @Column(name = "aniver_abertura")
     @Temporal(TemporalType.DATE)
     private Date aniverAbertura;
-    @Column(name = "telefone")
+    @Column
     private String telefone;
-    @Column(name = "celular")
+    @Column
     private String celular;
-    @Column(name = "email")
+    @Column
     private String email;
     @Column(name = "tipo_pessoa", length = 1)
     private String tipoPessoa; // Pessoa Física ou Pessoa Jurídica
@@ -36,9 +36,9 @@ public class Pessoa implements Serializable {
     private String fisicaJuridica;
     @Column(name = "docrg_insest")
     private String docrgInsest;
-    @Column(name = "categoria", length = 1)
+    @Column(length = 1)
     private String categoria; // Cliente, Fornecedor, Transportadora, Outros
-    @Column(name = "observacao", length = 500)
+    @Column(length = 500)
     private String observacao;
     //---------------- Endereço ----------------
     @OneToMany(mappedBy = "pessoa")

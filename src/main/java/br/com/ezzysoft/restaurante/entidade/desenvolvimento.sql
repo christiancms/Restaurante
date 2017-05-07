@@ -94,3 +94,4 @@ INSERT INTO produto VALUES
 
 ALTER TABLE grupo ADD COLUMN foto BLOB NULL;
 
+ALTER TABLE uf RENAME TO unidadefederacao;

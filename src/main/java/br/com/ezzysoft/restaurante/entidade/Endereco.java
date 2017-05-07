@@ -1,6 +1,7 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.*;
 
 /**
@@ -12,27 +13,27 @@ import javax.persistence.*;
 public class Endereco implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private Long id;
-    @Column(name = "cep")
+    @Column
     private String cep;
-    @Column(name = "logradouro")
+    @Column
     private String logradouro;
-    @Column(name = "numero")
+    @Column
     private Integer numero;
-    @Column(name = "complemento")
+    @Column
     private String complemento;
-    @Column(name = "bairro")
+    @Column
     private String bairro;
-    @Column(name = "municipio")
+    @Column
     private String municipio;
     @Column(name = "unid_fed")
     private String unidFed;
-    @Column(name = "pais")
+    @Column
     private String pais;
 //---------------- Endereço ----------------
     @ManyToOne
-    @JoinColumn(name = "pessoa_id")
+    @JoinColumn(name = "pessoa_id", referencedColumnName = "id", nullable = false)
     private Pessoa pessoa;
 
     public Long getId() {
@@ -113,6 +114,31 @@ public class Endereco implements Serializable {
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Endereco other = (Endereco) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
     
 }
