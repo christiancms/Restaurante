@@ -22,12 +22,6 @@
 
                 <p:layoutUnit position="west" size="175" header="Ocultar" collapsible="true">
                     <p:menu>
-                        <p:submenu label="Caixa">
-                            <p:menuitem value="PDV" outcome="/caixaFilter" />
-                        </p:submenu>
-                        <p:submenu label="Pedido">
-                            <p:menuitem value="Visualizar" outcome="/index" />
-                        </p:submenu>
                         <p:submenu label="Cadastro">
                             <p:menuitem value="Cliente" outcome="/clienteFilter" />
                             <p:menuitem value="Colaborador" outcome="/colaboradorFilter" />
@@ -36,6 +30,16 @@
                             <p:menuitem value="Produto" outcome="/produtoFilter" />
                             <p:menuitem value="Unidade" outcome="/unidadeFilter" />
                         </p:submenu>
+                        <p:submenu label="Caixa">
+                            <p:menuitem value="PDV" outcome="/caixaFilter" />
+                        </p:submenu>
+                         <p:submenu label="Config">
+                            <p:menuitem value="Empresa" outcome="/empresaFilter" />
+                        </p:submenu>
+                        <p:submenu label="Pedido">
+                            <p:menuitem value="Visualizar" outcome="/index" />
+                        </p:submenu>
+                        
                         <p:submenu label="Relatório">
                             <p:menuitem value="Vendas" url="" />
                         </p:submenu>
