@@ -1,8 +1,32 @@
 <resources>
-    <string name="app_name">CardapioMobile</string>
+    <string name="app_name">Cardápio Mobile</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_logout">Sair</string>
+    <string name="title_activity_login">Autenticação</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Senha (opcional)</string>
+    <string name="action_sign_in">Iniciar</string>
+    <string name="action_sign_in_short">Autenticação</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!-- Lista de colaboradores/garçons -->
+    <string-array name="colaboradores">
+        <item>Escolha o usuário</item>
+        <item>Root</item>
+        <item>Admin</item>
+        <item>Christian</item>
+        <item>Cliente</item>
+    </string-array>
 </resources>

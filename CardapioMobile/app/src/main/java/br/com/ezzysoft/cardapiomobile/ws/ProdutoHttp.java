@@ -16,15 +16,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ezzysoft.cardapiomobile.bean.Grupo;
+import br.com.ezzysoft.cardapiomobile.bean.Produto;
 
 /**
- * Created by christian on 07/05/17.
+ * Created by christian on 21/06/17.
  */
-public class GrupoHttp {
 
-    public static final String
-    GRUPOS_URL_JSON = "";
+public class ProdutoHttp {
 
     private static HttpURLConnection connectar(String urlArquivo) throws IOException {
         final int SEGUNDOS = 1000;
@@ -40,22 +38,20 @@ public class GrupoHttp {
         conexao.connect();
         return conexao;
     }
-
     public static boolean temConexao(Context ctx) {
         ConnectivityManager cm = (ConnectivityManager)
                 ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         return (info != null && info.isConnected());
     }
-
-    public static List<Grupo> carregarGruposJson() {
+    public static List<Produto> carregarProdutosJson(String var) {
         try {
-            HttpURLConnection conexao = connectar(GRUPOS_URL_JSON);
+            HttpURLConnection conexao = connectar("http://" + var + "/wsrest/jfrmservices/estg/produto/get");
             int resposta = conexao.getResponseCode();
             if (resposta == HttpURLConnection.HTTP_OK) {
                 InputStream is = conexao.getInputStream();
                 JSONObject json = new JSONObject(bytesParaString(is));
-                return lerJsonGrupos(json);
+                return lerJsonProdutos(json);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,19 +59,25 @@ public class GrupoHttp {
         return null;
     }
 
-    public static List<Grupo> lerJsonGrupos(JSONObject json) throws JSONException {
-        List<Grupo> listaDeGrupos = new ArrayList<Grupo>();
+    public static List<Produto> lerJsonProdutos(JSONObject json) throws JSONException {
+        List<Produto> listaDeProdutos = new ArrayList<Produto>();
 
-        JSONArray jsonGrupo = json.getJSONArray("grupo");
-        for (int i = 0; i < jsonGrupo.length(); i++) {
-            JSONObject jsonGrupos = jsonGrupo.getJSONObject(i);
-            Grupo grupo = new Grupo(
-                    jsonGrupos.getInt("id"),
-                    jsonGrupos.getString("descricao")
+        JSONArray jsonEstgproduto = json.getJSONArray("estgproduto");
+        for (int i = 0; i < jsonEstgproduto.length(); i++) {
+            JSONObject jsonProduto = jsonEstgproduto.getJSONObject(i);
+            Produto produto = new Produto(
+                    jsonProduto.getInt("id"),
+                    jsonProduto.getString("descricao"),
+                    jsonProduto.getString("observacao"),
+                    jsonProduto.getString("unidade"),
+                    jsonProduto.getString("marca"),
+                    jsonProduto.getString("precoVenda"),
+                    jsonProduto.getString("saldo")
+
             );
-            listaDeGrupos.add(grupo);
+            listaDeProdutos.add(produto);
         }
-        return listaDeGrupos;
+        return listaDeProdutos;
     }
 
     private static String bytesParaString(InputStream is) throws IOException {
