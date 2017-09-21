@@ -13,8 +13,9 @@ Pré-requisitos de instalação e compatibilidade
 
 Servidor
 * <a href="https://www.mysql.com/products/community/">MySQL Server 5.7</a>
-* Glassfish 4.1
-* Java JDK 8
+* <a href="http://www.oracle.com/technetwork/middleware/glassfish/community/default-153758.html">Glassfish 4.1</a>
+* <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java JDK 8</a>
+* <a href="https://www.primefaces.org/">PrimeFaces</a>
 
 Dispositivo móvel
 * Android 5.1(API 22)
