@@ -1,4 +1,5 @@
 # Restaurante
+O EzzySoft - Controle de pedidos para restaurante é um facilitador tecnológico no segmento de alimentação com ênfase em restaurantes com atendimento por comanda. Os processos são online, e isso agiliza a comunicação entre as partes envolvidas e minimiza erros/falhas de comunicação. Divide-se principalmente em duas frentes: retaguarda ou caixa e coletor de pedidos com acesso aos produtos disponíveis em tempo real.
 App Java Web e Mobile - Sistemas Distribuídos
 
 Pré-requisitos de instalação;
