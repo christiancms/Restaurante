@@ -12,7 +12,7 @@ Glassfish 4.1
 Pré-requisitos de instalação e compatibilidade
 
 Servidor
-* MySQL Server 5.7
+* <a href="https://www.mysql.com/products/community/">MySQL Server 5.7</a>
 * Glassfish 4.1
 * Java JDK 8
 
