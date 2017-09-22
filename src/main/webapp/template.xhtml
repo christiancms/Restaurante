@@ -10,15 +10,20 @@
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>EzzySoft - Restaurante Sistema de Controle de Mesas 03/2017</title>
+                <!--<link rel="stylesheet" type="text/css" href="resources/jsfcrud.css" />-->
             </f:facet>
+            <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
         </h:head>
         <h:body>
+            <p:growl id="growl" life="3000" />
             <p:layout fullPage="true">
-               <!-- <p:layoutUnit position="north" size="0" resizable="true" closable="true" collapsible="true">
-                </p:layoutUnit>
-
-                <p:layoutUnit position="south" size="0" closable="true" collapsible="true">
-                </p:layoutUnit>-->
+                
+                <!-- <p:layoutUnit position="north" size="0" resizable="true" closable="true" collapsible="true">
+                 </p:layoutUnit>
+ 
+                 <p:layoutUnit position="south" size="0" closable="true" collapsible="true">
+                 </p:layoutUnit>-->
 
                 <p:layoutUnit position="west" size="175" header="Ocultar" collapsible="true">
                     <p:menu>
@@ -33,15 +38,18 @@
                         <p:submenu label="Caixa">
                             <p:menuitem value="PDV" outcome="/caixaFilter" />
                         </p:submenu>
-                         <p:submenu label="Config">
+                        <p:submenu label="Config">
                             <p:menuitem value="Empresa" outcome="/empresaFilter" />
                         </p:submenu>
                         <p:submenu label="Pedido">
-                            <p:menuitem value="Visualizar" outcome="/index" />
+                            <p:menuitem value="Visualizar" outcome="/pedidoFilter" />
                         </p:submenu>
-                        
+
                         <p:submenu label="Relatório">
                             <p:menuitem value="Vendas" url="" />
+                        </p:submenu>
+                        <p:submenu label="Gráfico">
+                            <p:menuitem value="Produto" outcome="/grafico" />
                         </p:submenu>
                     </p:menu>
                 </p:layoutUnit>

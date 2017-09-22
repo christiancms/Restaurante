@@ -12,10 +12,36 @@
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Colaborador">
                 <p:toolbar>
-                    <p:commandButton value="Novo" action="#{MBGrupo.novo()}" update="@form"/>
-                    <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"/>
-                    <p:commandButton value="Buscar" action="#{MBGrupo.buscar()}" update="@form"/>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Novo" action="#{MBColaborador.novo()}" update="@form"/>
+                        <p:commandButton value="Salvar" action="#{MBColaborador.salvar()}" disabled="#{MBColaborador.busca == true}" update="@form"/>
+                        <p:commandButton value="Buscar" action="#{MBColaborador.buscar()}" update="@form"/>
+                    </p:toolbarGroup>
                 </p:toolbar>
+                <!-- Cadastro -->
+                <p:panelGrid columns="2" rendered="#{MBColaborador.busca == false}">
+                    <h:outputLabel value="Código"></h:outputLabel>
+                    <p:inputText value="#{MBColaborador.entidade.id}" disabled="false">
+
+                    </p:inputText>
+                    <h:outputLabel value="Nome"></h:outputLabel>
+                    <p:inputText value="#{MBColaborador.entidade.nome}"></p:inputText>
+                </p:panelGrid>
+                <!-- Pesquisa -->
+                <p:dataTable value="#{MBColaborador.entidades}" emptyMessage="Nenhum Registro Encontrado" var="colaborador" rendered="#{MBColaborador.busca == true}">
+                    <p:column style="width: 190px">
+                        <p:commandButton value="Editar" action="#{MBColaborador.editar(colaborador)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{MBColaborador.deletar(colaborador)}" update="@form"></p:commandButton>
+                    </p:column>
+                    <p:column headerText="Código" sortBy="#{colaborador.id}" filterBy="#{colaborador.id}">
+                        <h:outputText value="#{colaborador.id}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Nome" sortBy="#{colaborador.nome}" filterBy="#{colaborador.nome}">
+                        <h:outputText value="#{colaborador.nome}"></h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+
             </p:fieldset>
         </h:form>
     </ui:define>

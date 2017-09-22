@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+
+    <ui:define name="body">
+        <h:form>
+            <p:messages autoUpdate="true" showDetail="true"></p:messages>
+            <p:fieldset legend="Pedidos">
+                <!-- Botões -->
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Novo" action="#{MBPedido.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBPedido.salvar()}" disabled="#{MBPedido.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{MBPedido.buscar()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Imprimir" type="button" icon="ui-icon-print">
+                            <p:printer target="tabela" />
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <!-- Cadastro -->
+                <p:panelGrid columns="2" rendered="#{MBPedido.busca == false}">
+                    <h:outputLabel value="Código"></h:outputLabel>
+                    <p:inputText value="#{MBPedido.entidade.id}" disabled="false">
+                    </p:inputText>
+                    <h:outputLabel value="Mesa"></h:outputLabel>
+                    <p:inputText value="#{MBPedido.entidade.mesa}"></p:inputText>
+                    <h:outputLabel value="Garçom"></h:outputLabel>
+                    <p:inputText value="#{MBPedido.entidade.colaborador.nome}"></p:inputText>
+                </p:panelGrid>
+                <!-- Pesquisa -->
+                <p:dataTable value="#{MBPedido.entidades}" id="tabela" emptyMessage="Nenhum Registro Encontrado" var="pedido" rendered="#{MBPedido.busca == true}">
+                    <p:column style="width: 190px">
+                        <p:commandButton value="Editar" action="#{MBPedido.editar(pedido)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{MBPedido.deletar(pedido)}" update="@form"></p:commandButton>
+                    </p:column>
+                    <p:column headerText="Código" sortBy="#{pedido.id}" filterBy="#{pedido.id}">
+                        <h:outputText value="#{pedido.id}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Mesa" sortBy="#{pedido.mesa}" filterBy="#{pedido.mesa}">
+                        <h:outputText value="#{pedido.mesa}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Garçom" sortBy="#{pedido.colaborador.nome}" filterBy="#{pedido.colaborador.nome}">
+                        <h:outputText value="#{pedido.colaborador.nome}"></h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+</ui:decorate>

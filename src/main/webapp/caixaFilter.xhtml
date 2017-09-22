@@ -10,34 +10,46 @@
     <ui:define name="body">
         <h:form>
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
-            <p:fieldset legend="Grupos">
-                <p:toolbar>
-                    <p:toolbarGroup>
-                        <p:commandButton value="Novo" action="#{MBGrupo.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"></p:commandButton>
-                        <p:commandButton value="Buscar" action="#{MBGrupo.buscar()}" update="@form"></p:commandButton>
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <p:panelGrid columns="2" rendered="#{MBGrupo.busca == false}">
-                    <h:outputLabel value="Id"></h:outputLabel>
-                    <p:inputText value="#{MBGrupo.entidade.id}" disabled="true"></p:inputText>
-                    <h:outputLabel value="Descrição"></h:outputLabel>
-                    <p:inputText value="#{MBGrupo.entidade.descricao}"></p:inputText>
+            <p:fieldset legend="PDV">
+                <p:clock  autoSync="true"/>
+                <p:focus context="codigoProduto" />
+                <p:panelGrid columns="2" >
+                    
+                    <p:fieldset legend="COD" id="cod" style="width: 250px; height: 355px">
+                        <p:inputText value="#{MBProduto.entidade.id}" id="codigoProduto" >
+                            
+                        </p:inputText>
+                        <p:watermark for="codigoProduto" value="Código do Produto" id="codigoProduto" /><br />
+                        <p:inputText value="#{MBCaixa.init()}" id="quantidade" disabled="false"></p:inputText>
+                        <p:watermark for="quantidade" value="Quantidade" id="quantidade" /><br />
+                        <p:inputText value="" id="vlrUnitario" disabled="false"></p:inputText>
+                        <p:watermark for="vlrUnitario" value="Valor Unitário(R$)" id="vlrUnitario" /><br />
+                        <p:inputText value="" id="vlrItem" disabled="false"></p:inputText>
+                        <p:watermark for="vlrItem" value="Valor Total Item(R$)" id="vlrItem" /><br />
+                        <p:inputText value="" id="qtdeTotal" disabled="false"></p:inputText>
+                        <p:watermark for="qtdeTotal" value="Quantidade Total" id="qtdeTotal" /><br />
+                        <p:inputText value="" id="vlrTotal" disabled="false"></p:inputText>
+                        <p:watermark for="vlrTotal" value="Valor Total da Venda" id="vlrTotal"/><br />     
+                        <p:commandButton value="Fechar Venda" action="#{MBCaixa.fecharVenda()}" update="@form" style="width: 222px; color: white; background: green"></p:commandButton>
+                        <p:commandButton value="Cancelar Produto" action="#{MBCaixa.cancelarProduto()}" update="@form" style="width: 222px; color: white; background: orange"></p:commandButton>
+                        <p:commandButton value="Cancelar Venda" action="#{MBCaixa.cancelarVenda()}" update="@form" style="width: 222px; color: white; background: red"></p:commandButton>
+                        <p:commandButton value="Fechar Caixa" action="#{MBCaixa.fecharCaixa()}" update="@form" style="width: 222px; color: white; background: blue"></p:commandButton>
+                    </p:fieldset>
+
+                    <p:fieldset legend="PRODUTO" id="prod" style="width: 600px; height: 355px" >
+                        <p:panelGrid columns="7" >
+                            <h:outputLabel value="ITEM" />
+                            <h:outputLabel value="CÓDIGO" />
+                            <h:outputLabel value="DESCRIÇÃO" />
+                            <h:outputLabel value="UN" />
+                            <h:outputLabel value="QTDE" />
+                            <h:outputLabel value="PREÇO" />
+                            <h:outputLabel value="TOTAL" />
+                        </p:panelGrid>
+                    </p:fieldset>
 
                 </p:panelGrid>
-                <p:dataTable value="#{MBGrupo.entidades}" emptyMessage="Nenhum Registro Encontrado" var="grupo" rendered="#{MBGrupo.busca == true}">
-                    <p:column>
-                        <p:commandButton value="Editar" action="#{MBGrupo.editar(grupo)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{MBGrupo.deletar(grupo)}" update="@form"></p:commandButton>
-                    </p:column>
-                    <p:column headerText="Id" sortBy="#{grupo.id}">
-                        <h:outputText value="#{grupo.id}"></h:outputText>
-                    </p:column>
-                    <p:column headerText="Descrição" sortBy="#{grupo.descricao}">
-                        <h:outputText value="#{grupo.descricao}"></h:outputText>
-                    </p:column>
 
-                </p:dataTable>
             </p:fieldset>
         </h:form>
     </ui:define>

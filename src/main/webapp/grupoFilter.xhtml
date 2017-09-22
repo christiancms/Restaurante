@@ -12,20 +12,22 @@
             <p:growl id="growl" showDetail="true" sticky="true" /> 
 
             <p:fieldset legend="Grupos">
+                <!-- Botões -->
                 <p:toolbar>
-                    <p:toolbarGroup>
+                    <p:toolbarGroup align="right">
                         <p:commandButton value="Novo" action="#{MBGrupo.novo()}" update="@form"></p:commandButton>
                         <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"/>
                         <p:commandButton value="Buscar" action="#{MBGrupo.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
+                <!-- Cadastro -->
                 <p:panelGrid columns="2" rendered="#{MBGrupo.busca == false}">
-                    <h:outputLabel value="Id"></h:outputLabel>
-                    <p:inputText value="#{MBGrupo.entidade.id}" disabled="true"></p:inputText>
+                    <h:outputLabel value="Código"></h:outputLabel>
+                    <p:inputText value="#{MBGrupo.entidade.id}" disabled="false" onblur=""></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
                     <p:inputText value="#{MBGrupo.entidade.descricao}"/>
                     <h:outputLabel value="Foto"/>
-                    <p:graphicImage value="#{MBGrupo.picture}" id="foto" cache="false" 
+                    <p:graphicImage value="#{MBGrupo.picture}" id="foto" cache="true" 
                                     style="width:120px;height:120px" alt="#{MBGrupo.entidade.descricao}" >
                         <f:param name="id" value="#{MBGrupo.entidade.id}"/>
                     </p:graphicImage>
@@ -41,22 +43,19 @@
                                   />
                     <p:growl id="msg" showDetail="true" />
                 </p:panelGrid>
+                <!-- Pesquisa -->
                 <p:dataTable value="#{MBGrupo.entidades}" emptyMessage="Nenhum Registro Encontrado" var="grupo" rendered="#{MBGrupo.busca == true}">
                     <p:column style="width: 190px">
                         <p:commandButton value="Editar" action="#{MBGrupo.editar(grupo)}" update="@form"></p:commandButton>
                         <p:commandButton value="Deletar" action="#{MBGrupo.deletar(grupo)}" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Id" sortBy="#{grupo.id}" style="width: 35px">
+                    <p:column headerText="Código" sortBy="#{grupo.id}" filterBy="#{grupo.id}">
                         <h:outputText value="#{grupo.id}"></h:outputText>
                     </p:column>
-                    <p:column headerText="Descrição" sortBy="#{grupo.descricao}">
+                    <p:column headerText="Descrição" sortBy="#{grupo.descricao}" filterBy="#{grupo.descricao}" >
                         <h:outputText value="#{grupo.descricao}"></h:outputText>
                     </p:column>
                     <p:column headerText="Foto" style="text-align: center">
-                       <p:graphicImage value="#{MBGrupo.picture}" id="foto" cache="false" 
-                                    style="width:30px;height:30px" alt="#{grupo.descricao}" >
-                        <f:param name="id" value="#{grupo.id}"/>
-                    </p:graphicImage>
                     </p:column>
                 </p:dataTable>
             </p:fieldset>

@@ -5,16 +5,62 @@
               xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core"
-    template="template.xhtml">
-                  <ui:define name="body">
+              template="template.xhtml">
+    <ui:define name="body">
         <h:form>
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Empresa">
                 <p:toolbar>
-                    <p:commandButton value="Novo" action="#{MBGrupo.novo()}" update="@form"></p:commandButton>
-                    <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"></p:commandButton>
-                    <p:commandButton value="Buscar" action="#{MBGrupo.buscar()}" update="@form"></p:commandButton>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Novo" action="#{MBEmpresa.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBEmpresa.salvar()}" disabled="#{MBEmpresa.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{MBEmpresa.buscar()}" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
                 </p:toolbar>
+                <p:panelGrid columns="2" rendered="#{MBEmpresa.busca == false}">
+                    <h:outputLabel value="Código"/>
+                    <p:inputText value="#{MBEmpresa.entidade.id}" disabled="true"/>
+                    <h:outputLabel value="CNPJ"/>
+                    <p:inputText value="#{MBEmpresa.entidade.fisicaJuridica}">
+                        <p:ajax event="blur" listener="#{MBEmpresa.getVerificaCNPJ('12709186000131')}" />
+                    </p:inputText>
+                    <h:outputLabel value="Razao Social"/>
+                    <p:inputText value="#{MBEmpresa.entidade.nomeRazsoc}"/>
+                    <h:outputLabel value="Inscriçao Municipal"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Atividade Principal"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Data Situaçao"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Complemento"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="UF"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Telefone"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Email"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Atividade Secundaria"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Situaçao"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Bairro"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Logradouro"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Numero"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="CEP"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Municipio"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Abertura"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Natureza Juridica"/>
+                    <p:inputText value=""/>
+                    <h:outputLabel value="Fantasia"/>
+                    <p:inputText value=""/>
+                </p:panelGrid>
             </p:fieldset>
         </h:form>
     </ui:define>

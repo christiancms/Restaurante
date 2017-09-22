@@ -12,10 +12,35 @@
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Clientes">
                 <p:toolbar>
-                    <p:commandButton value="Novo" action="#{MBGrupo.novo()}" update="@form"></p:commandButton>
-                    <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"></p:commandButton>
-                    <p:commandButton value="Buscar" action="#{MBGrupo.buscar()}" update="@form"></p:commandButton>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Novo" action="#{MBCliente.novo()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBCliente.salvar()}" disabled="#{MBCliente.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Buscar" action="#{MBCliente.buscar()}" update="@form"></p:commandButton>
+                    </p:toolbarGroup>
                 </p:toolbar>
+                <!-- Cadastro -->
+                <p:panelGrid columns="2" rendered="#{MBCliente.busca == false}">
+                    <h:outputLabel value="Código"></h:outputLabel>
+                    <p:inputText value="#{MBCliente.entidade.id}" disabled="false">
+
+                    </p:inputText>
+                    <h:outputLabel value="Nome"></h:outputLabel>
+                    <p:inputText value="#{MBCliente.entidade.nome}"></p:inputText>
+                </p:panelGrid>
+                <!-- Pesquisa -->
+                <p:dataTable value="#{MBCliente.entidades}" emptyMessage="Nenhum Registro Encontrado" var="cliente" rendered="#{MBCliente.busca == true}">
+                    <p:column style="width: 190px">
+                        <p:commandButton value="Editar" action="#{MBCliente.editar(cliente)}" update="@form"></p:commandButton>
+                        <p:commandButton value="Deletar" action="#{MBCliente.deletar(cliente)}" update="@form"></p:commandButton>
+                    </p:column>
+                    <p:column headerText="Código" sortBy="#{cliente.id}" filterBy="#{cliente.id}" >
+                        <h:outputText value="#{cliente.id}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Nome" sortBy="#{cliente.nome}" filterBy="#{cliente.nome}">
+                        <h:outputText value="#{cliente.nome}"></h:outputText>
+                    </p:column>
+
+                </p:dataTable>
             </p:fieldset>
         </h:form>
     </ui:define>

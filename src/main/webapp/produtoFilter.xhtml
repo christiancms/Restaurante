@@ -8,72 +8,79 @@
               template="template.xhtml">
 
     <ui:define name="body">
-        <h:form>
+        
+        <h:form enctype="multipart/form-data">
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Produtos">
+                <!-- Botões -->
                 <p:toolbar>
-                    <p:toolbarGroup>
+                    <p:toolbarGroup align="right">
                         <p:commandButton value="Novo" action="#{MBProduto.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{MBProduto.salvar()}" disabled="#{MBProduto.busca == true}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBProduto.salvar()}" disabled="#{MBProduto.busca == true}" update="@form"/>
                         <p:commandButton value="Buscar" action="#{MBProduto.buscar()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Imprimir" type="button" icon="ui-icon-print">
+                            <p:printer target="tabela" />
+                        </p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
+                <!-- Cadastro -->
                 <p:panelGrid columns="2" rendered="#{MBProduto.busca == false}">
-                    <h:outputLabel value="Id"></h:outputLabel>
-                    <p:inputText value="#{MBProduto.entidade.id}" disabled="true"></p:inputText>
+                    <h:outputLabel value="Código"></h:outputLabel>
+                    <p:inputText value="#{MBProduto.entidade.id}" disabled="true"/>
                     <h:outputLabel value="Descrição"></h:outputLabel>
-                    <p:inputText value="#{MBProduto.entidade.descricao}"></p:inputText>
-                    <h:outputLabel value="Preço"/>
-                    <p:inputText value="#{MBProduto.entidade.precoCompra}"/>
-                    <h:outputLabel value="Cadastro"/>
-                    <p:inputText value="#{MBProduto.entidade.dataCadastro}" disabled="true"></p:inputText>
+                    <p:inputText value="#{MBProduto.entidade.descricao}" required="true"/>
+                    <h:outputLabel value="Preço"></h:outputLabel>
+                    <p:inputText value="#{MBProduto.entidade.precoCompra}" type="" required="true">
+                    <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </p:inputText>
+                    <h:outputLabel value="Dt. Cadastro"/>
+                    <p:inputText value="" disabled="true"/>
 
-
-
-                    <h:outputLabel value="Grupo"/>
-                    <p:selectOneMenu value="#{MBProduto.grupo.id}" id="listaGrupo">
-                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true" />
+                    <h:outputLabel value="Grupo" for="listaGrupo"/>
+                    <p:selectOneMenu value="#{MBProduto.entidade.grupo.id}" id="listaGrupo" required="true" style="width: 192px">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true" />
                         <f:selectItems value="#{MBProduto.grupos}"/>
                     </p:selectOneMenu>
 
-                    <h:outputLabel value="Marca"/>
-                    <p:selectOneMenu value="#{MBProduto.marca.id}" id="listaMarca">
-                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true" />
+                    <h:outputLabel value="Marca" for="listaMarca"/>
+                    <p:selectOneMenu value="#{MBProduto.entidade.marca.id}" id="listaMarca" style="width: 192px">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
                         <f:selectItems value="#{MBProduto.marcas}" />
                     </p:selectOneMenu>
 
-                    <h:outputLabel value="Unidade"/>
-                    <p:selectOneMenu value="#{MBProduto.unidade.id}" id="listaUnidade">
-                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true" />
+                    <h:outputLabel value="Unidade" for="listaUnidade"/>
+                    <p:selectOneMenu value="#{MBProduto.entidade.unidade.id}" id="listaUnidade" required="true" style="width: 192px">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
                         <f:selectItems value="#{MBProduto.unidades}" />
                     </p:selectOneMenu>
 
                 </p:panelGrid>
-                <p:dataTable value="#{MBProduto.entidades}" emptyMessage="Nenhum Registro Encontrado" var="produto" rendered="#{MBProduto.busca == true}">
-                    <p:column>
+                <!-- Pesquisa -->
+                <p:dataTable value="#{MBProduto.entidades}" id="tabela" emptyMessage="Nenhum Registro Encontrado" var="produto" rendered="#{MBProduto.busca == true}">
+                    <p:column style="width: 190px">
                         <p:commandButton value="Editar" action="#{MBProduto.editar(produto)}" update="@form"></p:commandButton>
                         <p:commandButton value="Deletar" action="#{MBProduto.deletar(produto)}" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Id" sortBy="#{produto.id}">
+                    <p:column headerText="Código" sortBy="#{produto.id}" filterBy="#{produto.id}">
                         <h:outputText value="#{produto.id}"></h:outputText>
                     </p:column>
-                    <p:column headerText="Descrição" sortBy="#{produto.descricao}">
+                    <p:column headerText="Descrição" sortBy="#{produto.descricao}" filterBy="#{produto.descricao}">
                         <h:outputText value="#{produto.descricao}"></h:outputText>
                     </p:column>
-                    <p:column headerText="Preço R$" sortBy="#{produto.precoCompra}">
+                    <p:column headerText="Preço R$" sortBy="#{produto.precoCompra}" filterBy="#{produto.precoCompra}">
                         <h:outputText value="#{produto.precoCompra}"></h:outputText>
                     </p:column>
-                    <p:column headerText="Cadastro" sortBy="#{produto.dataCadastro}">
+                    <p:column headerText="Cadastro" sortBy="#{produto.dataCadastro}" filterBy="#{produto.dataCadastro}">
                         <h:outputText value="#{produto.dataCadastro}">
                             <f:convertDateTime pattern="dd/MM/yyyy hh:mm" /></h:outputText>
                     </p:column>
-                    <p:column headerText="Grupo" sortBy="#{produto.grupo.descricao}">
+                    <p:column headerText="Grupo" sortBy="#{produto.grupo.descricao}" filterBy="#{produto.grupo.descricao}">
                         <h:outputText value="#{produto.grupo.descricao}"></h:outputText>
                     </p:column>
-                    <p:column headerText="Marca" sortBy="#{produto.marca.descricao}">
+                    <p:column headerText="Marca" sortBy="#{produto.marca.descricao}" filterBy="#{produto.marca.descricao}">
                         <h:outputText value="#{produto.marca.descricao}"></h:outputText>
                     </p:column>
-                    <p:column headerText="UN" sortBy="#{produto.unidade.sigla}">
+                    <p:column headerText="UN" sortBy="#{produto.unidade.sigla}" filterBy="#{produto.unidade.sigla}" >
                         <h:outputText value="#{produto.unidade.sigla}"></h:outputText>
                     </p:column>
                 </p:dataTable>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:composition>
+        <p:dialog id="MarcaEditDlg" widgetVar="MarcaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Editar Marca">
+            <h:form id="MarcaEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="">
+                        <p:outputLabel value="" for="id" />
+                        <p:inputText id="id" value="" title="" required="true" requiredMessage="O campo ID deve ser preenchido"
+                    </p:panelGrid>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

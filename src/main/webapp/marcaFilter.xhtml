@@ -11,29 +11,33 @@
         <h:form>
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Marcas">
+                <!-- Botões -->
                 <p:toolbar>
-                    <p:toolbarGroup>
+                    <p:toolbarGroup align="right">
                         <p:commandButton value="Novo" action="#{MBMarca.novo()}" update="@form"></p:commandButton>
                         <p:commandButton value="Salvar" action="#{MBMarca.salvar()}" disabled="#{MBMarca.busca == true}" update="@form"></p:commandButton>
                         <p:commandButton value="Buscar" action="#{MBMarca.buscar()}" update="@form"></p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
+                <!-- Cadastro -->
                 <p:panelGrid columns="2" rendered="#{MBMarca.busca == false}">
-                    <h:outputLabel value="Id"></h:outputLabel>
-                    <p:inputText value="#{MBMarca.entidade.id}" disabled="true"></p:inputText>
+                    <h:outputLabel value="Código"></h:outputLabel>
+                    <p:inputText value="#{MBMarca.entidade.id}" disabled="false">
+
+                    </p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
                     <p:inputText value="#{MBMarca.entidade.descricao}"></p:inputText>
-
                 </p:panelGrid>
+                <!-- Pesquisa -->
                 <p:dataTable value="#{MBMarca.entidades}" emptyMessage="Nenhum Registro Encontrado" var="marca" rendered="#{MBMarca.busca == true}">
-                    <p:column>
+                    <p:column style="width: 190px">
                         <p:commandButton value="Editar" action="#{MBMarca.editar(marca)}" update="@form"></p:commandButton>
                         <p:commandButton value="Deletar" action="#{MBMarca.deletar(marca)}" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Id" sortBy="#{marca.id}">
+                    <p:column headerText="Código" sortBy="#{marca.id}" filterBy="#{marca.id}">
                         <h:outputText value="#{marca.id}"></h:outputText>
                     </p:column>
-                    <p:column headerText="Descrição" sortBy="#{marca.descricao}">
+                    <p:column headerText="Descrição" sortBy="#{marca.descricao}" filterBy="#{marca.descricao}">
                         <h:outputText value="#{marca.descricao}"></h:outputText>
                     </p:column>
 
