@@ -12,10 +12,11 @@ import javax.persistence.*;
 @Table(name = "marca")
 public class Marca implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Column(name = "descricao")
     private String descricao;
 
     public Long getId() {
@@ -57,6 +58,14 @@ public class Marca implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Marca() {
+    }
+
+    @Override
+    public String toString() {
+        return "Marca[ id=" + id + " ]";
     }
     
     

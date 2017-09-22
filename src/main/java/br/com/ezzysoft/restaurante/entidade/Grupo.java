@@ -4,6 +4,8 @@ package br.com.ezzysoft.restaurante.entidade;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -13,15 +15,19 @@ import javax.persistence.*;
 @Table(name = "grupo")
 public class Grupo implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "descricao")
     private String descricao;
     @Lob
     @Column(columnDefinition = "blob", length = 65000)
     private byte[] foto;
-    
 
     public Long getId() {
         return id;
@@ -41,7 +47,6 @@ public class Grupo implements Serializable {
 
 //    @OneToOne
 //    private Upload imagem;
-    
     public byte[] getFoto() {
         return foto;
     }
@@ -57,7 +62,6 @@ public class Grupo implements Serializable {
 //    public void setImagem(Upload imagem) {
 //        this.imagem = imagem;
 //    }
-
     @Override
     public int hashCode() {
         int hash = 5;
@@ -81,5 +85,13 @@ public class Grupo implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Grupo() {
+    }
+
+    @Override
+    public String toString() {
+        return "br.com.ezzysoft.restaurante.entidade.Grupo[ id=" + id + " ]";
     }
 }

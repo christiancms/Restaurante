@@ -21,6 +21,9 @@ public class Colaborador implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
+    @Column
+    private String nome;
+    
 
     public Long getId() {
         return id;
@@ -53,6 +56,14 @@ public class Colaborador implements Serializable{
             return false;
         }
         return true;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
     
 }

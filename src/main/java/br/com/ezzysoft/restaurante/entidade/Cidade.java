@@ -1,6 +1,8 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
 
@@ -20,9 +22,11 @@ public class Cidade implements Serializable {
     private String nome;
     @Column
     private Long codigoIBGE;
-    @ManyToOne
-    @JoinColumn(name = "ufid", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "uf_id", referencedColumnName = "id", nullable = false)
     private UnidadeFederacao uf;
+    @OneToMany(mappedBy = "cidade")
+    private List<Bairro> bairros = new ArrayList<>();
 
     public Cidade(String nome) {
         this.nome = nome;
@@ -85,5 +89,13 @@ public class Cidade implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public List<Bairro> getBairros() {
+        return bairros;
+    }
+
+    public void setBairros(List<Bairro> bairros) {
+        this.bairros = bairros;
     }
 }

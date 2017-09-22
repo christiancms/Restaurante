@@ -20,8 +20,8 @@ public class UnidadeFederacao implements Serializable{
     private String descricao;
     @Column
     private String sigla;
-    @ManyToOne
-    @JoinColumn(name = "PAISID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "pais_id", referencedColumnName = "id")
     private Pais pais;
     @OneToMany(mappedBy = "uf")
     private List<Cidade> cidades = new ArrayList<>();

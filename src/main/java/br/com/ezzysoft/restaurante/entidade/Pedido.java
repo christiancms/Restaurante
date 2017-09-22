@@ -1,6 +1,8 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
@@ -12,14 +14,25 @@ import javax.persistence.*;
 @Entity
 @Table(name = "pedido")
 public class Pedido implements Serializable {
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @Column
+    @Column(name = "data_pedido")
+    private Date dataPedido;
+    @Column(name = "hora_pedido")
+    private Time horaPedido;
+    @Column(name = "descricao")
+    private String descricao;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = true)
+    private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "colaborador_id", nullable = false)
+    private Colaborador colaborador;
+    @Column(name = "mesa")
     private Integer mesa;
-    @Column(name = "garcom")
-    private Integer numeroGarcom;
 //---------------- ItensPedido ----------------
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itensPedido;
@@ -38,14 +51,6 @@ public class Pedido implements Serializable {
 
     public void setMesa(Integer mesa) {
         this.mesa = mesa;
-    }
-
-    public Integer getNumeroGarcom() {
-        return numeroGarcom;
-    }
-
-    public void setNumeroGarcom(Integer numeroGarcom) {
-        this.numeroGarcom = numeroGarcom;
     }
 
     public List<ItemPedido> getItensPedido() {
@@ -80,7 +85,45 @@ public class Pedido implements Serializable {
         }
         return true;
     }
-    
-   
-    
+
+    public Date getDataPedido() {
+        return dataPedido;
+    }
+
+    public void setDataPedido(Date dataPedido) {
+        this.dataPedido = dataPedido;
+    }
+
+    public Time getHoraPedido() {
+        return horaPedido;
+    }
+
+    public void setHoraPedido(Time horaPedido) {
+        this.horaPedido = horaPedido;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Colaborador getColaborador() {
+        return colaborador;
+    }
+
+    public void setColaborador(Colaborador colaborador) {
+        this.colaborador = colaborador;
+    }
+
 }

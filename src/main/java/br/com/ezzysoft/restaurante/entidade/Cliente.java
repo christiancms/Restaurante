@@ -19,8 +19,10 @@ public class Cliente implements Serializable{
    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "ID")
     private Long id;
+    @Column(name = "NOME")
+    private String nome;
 
     public Long getId() {
         return id;
@@ -53,5 +55,13 @@ public class Cliente implements Serializable{
             return false;
         }
         return true;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

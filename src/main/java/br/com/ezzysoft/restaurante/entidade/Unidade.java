@@ -17,12 +17,13 @@ import javax.persistence.Table;
 @Table(name = "unidade")
 public class Unidade implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Column(name = "descricao")
     private String descricao;
-    @Column
+    @Column(name = "sigla")
     private String sigla;
 
     public Long getId() {
@@ -74,6 +75,22 @@ public class Unidade implements Serializable {
         return true;
     }
 
-    
+    public Unidade() {
+    }
+
+    public Unidade(Long id) {
+        this.id = id;
+    }
+
+    public Unidade(Long id, String descricao, String sigla) {
+        this.id = id;
+        this.descricao = descricao;
+        this.sigla = sigla;
+    }
+
+    @Override
+    public String toString() {
+        return "br.com.ezzysoft.restaurante.entidade.Unidade[ id=" + id + " ]";
+    }
 
 }

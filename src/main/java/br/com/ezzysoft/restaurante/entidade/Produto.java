@@ -1,7 +1,6 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
@@ -13,15 +12,20 @@ import javax.persistence.*;
 @Entity
 @Table(name = "produto")
 public class Produto implements Serializable {
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Basic(optional = false)
+    @Column(name = "descricao")
     private String descricao;
-    @Column
-    private double precoCompra;
-    @Column
+    @Basic(optional = false)
+    @Column(name = "preco_compra")
+    private Double precoCompra;
+    @Basic(optional = false)
+    @Column(name = "data_cadastro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
     /**
@@ -29,14 +33,14 @@ public class Produto implements Serializable {
      */
     @ManyToOne(optional = false)
     @JoinColumn(name ="grupo_id", referencedColumnName = "id")
-    private Grupo grupo;
-    @ManyToOne(optional = false)
-    @JoinColumn(name ="marca_id", referencedColumnName = "id")
-    private Marca marca;
+    private Grupo grupo = new Grupo();
+    @ManyToOne(optional = true)
+    @JoinColumn(name ="marca_id", nullable = true, referencedColumnName = "id")
+    private Marca marca = new Marca();
     @ManyToOne(optional = false)
     @JoinColumn(name ="unidade_id", referencedColumnName = "id")
-    private Unidade unidade;
-    
+    private Unidade unidade = new Unidade();
+
 
     public Long getId() {
         return id;
@@ -54,11 +58,11 @@ public class Produto implements Serializable {
         this.descricao = descricao;
     }
 
-    public double getPrecoCompra() {
+    public Double getPrecoCompra() {
         return precoCompra;
     }
 
-    public void setPrecoCompra(double precoCompra) {
+    public void setPrecoCompra(Double precoCompra) {
         this.precoCompra = precoCompra;
     }
 
@@ -117,6 +121,14 @@ public class Produto implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Produto() {
+    }
+
+    @Override
+    public String toString() {
+        return "Produto[ id=" + id + " ]";
     }
 
 }

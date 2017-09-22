@@ -1,6 +1,8 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
 
@@ -17,6 +19,12 @@ public class Logradouro implements Serializable{
     private Long id;
     @Column
     private String nome;
+    @Column
+    private Long cep;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "bairro_id", referencedColumnName = "id", nullable = false)
+    private Bairro bairro;
+    
 
     public Long getId() {
         return id;
