@@ -1,6 +1,6 @@
 package br.com.ezzysoft.restaurante.dao;
 
-import br.com.ezzysoft.restaurante.entidade.Marca;
+import br.com.ezzysoft.restaurante.entidade.Pedido;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -12,24 +12,24 @@ import javax.persistence.Query;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-public class MarcaDAO implements CrudDAO<Marca>{
+public class PedidoDAO implements CrudDAO<Pedido>{
     
     EntityManager em;
     
     @Override
-    public void salvar(Marca m) throws ErroSistema {
+    public void salvar(Pedido p) throws ErroSistema {
         em = getEM();
         try {
             em.getTransaction().begin();
-            if (m.getId() == null) {
-                em.persist(m); // insert    
+            if (p.getId() == null) {
+                em.persist(p); // insert    
             } else {
-                if (!em.contains(m)) {
-                    if (em.find(Marca.class, m.getId()) == null) {
+                if (!em.contains(p)) {
+                    if (em.find(Pedido.class, p.getId()) == null) {
                         throw new ErroSistema("Erro ao tentar salvar!");
                     }
                 }
-                m = em.merge(m); // update
+                p = em.merge(p); // update
             }
             em.getTransaction().commit();
         } finally {
@@ -38,20 +38,20 @@ public class MarcaDAO implements CrudDAO<Marca>{
     }
 
     @Override
-    public void deletar(Marca entidade) throws ErroSistema {
+    public void deletar(Pedido entidade) throws ErroSistema {
         try {
 
         } catch (Exception e) {
-            throw new ErroSistema("Erro ao deletar a marca", e);
+            throw new ErroSistema("Erro ao deletar o pedido", e);
         }
     }
 
     @Override
-    public List<Marca> buscar() throws ErroSistema {
+    public List<Pedido> buscar() throws ErroSistema {
         em = getEM();
         try {
             em.getTransaction().begin();
-            Query q = em.createQuery("SELECT m FROM Marca m ORDER BY m.descricao");
+            Query q = em.createQuery("SELECT p FROM Pedido p");
             return q.getResultList();
         } finally {
             em.close();
@@ -65,34 +65,34 @@ public class MarcaDAO implements CrudDAO<Marca>{
     }
 
     @Override
-    public Marca findById(Long id) {
+    public Pedido findById(Long id) {
         em = getEM();
-        Marca marca = null;
+        Pedido pedido = null;
         try {
-            marca = em.find(Marca.class, id); //select
+            pedido = em.find(Pedido.class, id); //select
         } finally {
             em.close();
         }
-        return marca;
+        return pedido;
     }
 
     public void remove(Long id) {
         em = getEM();
-        Marca marca = em.find(Marca.class, id);
+        Pedido pedido = em.find(Pedido.class, id);
         try {
             em.getTransaction().begin();
-            em.remove(marca); // delete
+            em.remove(pedido); // delete
             em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
 
-    public List<Marca> listAll() {
+    public List<Pedido> listAll() {
         em = getEM();
         try {
             em.getTransaction().begin();
-            Query q = em.createQuery("SELECT m FROM Marca m ORDER BY m.descricao");
+            Query q = em.createQuery("SELECT p FROM Pedido p");
             return q.getResultList();
         } finally {
             em.close();

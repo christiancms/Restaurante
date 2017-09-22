@@ -14,9 +14,11 @@ import javax.persistence.Query;
  */
 public class UnidadeDAO implements CrudDAO<Unidade> {
 
+    EntityManager em;
+    
     @Override
     public void salvar(Unidade u) throws ErroSistema {
-        EntityManager em = getEM();
+        em = getEM();
         try {
             em.getTransaction().begin();
             if (u.getId() == null) {
@@ -37,7 +39,7 @@ public class UnidadeDAO implements CrudDAO<Unidade> {
 
     
     public void deletar(Long id) throws ErroSistema {
-        EntityManager em = getEM();
+        em = getEM();
         Unidade unidade = em.find(Unidade.class, id);
         try {
             em.getTransaction().begin();
@@ -52,10 +54,10 @@ public class UnidadeDAO implements CrudDAO<Unidade> {
 
     @Override
     public List<Unidade> buscar() throws ErroSistema {
-        EntityManager em = getEM();
+        em = getEM();
         try {
             em.getTransaction().begin();
-            Query q = em.createQuery("SELECT u FROM Unidade u");
+            Query q = em.createQuery("SELECT u FROM Unidade u ORDER BY u.descricao");
             return q.getResultList();
         } catch (Exception e) {
             throw new ErroSistema("Erro ao buscar as unidades!", e);
@@ -72,7 +74,7 @@ public class UnidadeDAO implements CrudDAO<Unidade> {
 
     @Override
     public Unidade findById(Long id) {
-        EntityManager em = getEM();
+        em = getEM();
         Unidade unidade = null;
         try {
             unidade = em.find(Unidade.class, id); //select
@@ -82,16 +84,8 @@ public class UnidadeDAO implements CrudDAO<Unidade> {
         return unidade;
     }
 
-    @Override
-    public Unidade save(Unidade u) throws Exception {
-
-        
-        return null;
-    }
-
-    @Override
     public void remove(Long id) {
-        EntityManager em = getEM();
+        em = getEM();
         Unidade unidade = em.find(Unidade.class, id);
         try {
             em.getTransaction().begin();
@@ -102,9 +96,8 @@ public class UnidadeDAO implements CrudDAO<Unidade> {
         }
     }
 
-    @Override
     public List<Unidade> listAll() {
-        EntityManager em = getEM();
+        em = getEM();
         try {
             em.getTransaction().begin();
             Query q = em.createQuery("SELECT u FROM Unidade u ORDER BY u.descricao");

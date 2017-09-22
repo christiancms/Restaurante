@@ -17,7 +17,4 @@ public interface CrudDAO<E> {
     
     public EntityManager getEM();
     public E findById(Long id);
-    public E save(E e)throws Exception;
-    public void remove(Long id);
-    public List<E> listAll()throws ErroSistema;
 }

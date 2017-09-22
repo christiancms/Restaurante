@@ -12,14 +12,17 @@ import javax.persistence.Query;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-
 public class GrupoDAO implements CrudDAO<Grupo> {
+
+    EntityManager em;
+    
     @Override
     public void salvar(Grupo g) throws ErroSistema {
+        em = getEM();
         if (g.getFoto() == null) {
-            
+
         }
-        EntityManager em = getEM();
+
         try {
             em.getTransaction().begin();
             if (g.getId() == null) {
@@ -37,15 +40,10 @@ public class GrupoDAO implements CrudDAO<Grupo> {
             em.close();
         }
     }
-    
-    public byte[] loadImage(Integer id){
-        EntityManager em = getEM();
-        return em.find(Grupo.class, id).getFoto();
-    }
 
-    @Override
-    public Grupo save(Grupo g) throws ErroSistema {
-        return null;
+    public byte[] loadImage(Integer id) {
+        em = getEM();
+        return em.find(Grupo.class, id).getFoto();
     }
 
     public void deletar(Long id) throws ErroSistema {
@@ -58,10 +56,10 @@ public class GrupoDAO implements CrudDAO<Grupo> {
 
     @Override
     public List<Grupo> buscar() throws ErroSistema {
-        EntityManager em = getEM();
+        em = getEM();
         try {
             em.getTransaction().begin();
-            Query q = em.createQuery("SELECT g FROM Grupo g");
+            Query q = em.createQuery("SELECT g FROM Grupo g ORDER BY g.descricao ");
             return q.getResultList();
         } finally {
             em.close();
@@ -76,7 +74,7 @@ public class GrupoDAO implements CrudDAO<Grupo> {
 
     @Override
     public Grupo findById(Long id) {
-        EntityManager em = getEM();
+        em = getEM();
         Grupo grupo = null;
         try {
             grupo = em.find(Grupo.class, id); //select
@@ -86,44 +84,32 @@ public class GrupoDAO implements CrudDAO<Grupo> {
         return grupo;
     }
 
-    public byte[] findImageById(Long id) {
-        EntityManager em = getEM();
+    
+    public Grupo buscaById() {
+        Long id = 1l;
+        em = getEM();
         Grupo grupo = null;
         try {
             grupo = em.find(Grupo.class, id); //select
         } finally {
             em.close();
         }
-        return grupo.getFoto();
-    }
-    
-    @Override
-    public void remove(Long id) {
-        EntityManager em = getEM();
-        Grupo grupo = em.find(Grupo.class, id);
-        try {
-            em.getTransaction().begin();
-            em.remove(grupo); // delete
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        return grupo;
     }
 
-    @Override
-    public List<Grupo> listAll() {
-        EntityManager em = getEM();
+    
+    public byte[] findImageById(Long id) {
+        em = getEM();
+        Grupo grupo = null;
         try {
-            em.getTransaction().begin();
-            Query q = em.createQuery("SELECT g FROM Grupo g ORDER BY g.descricao");
-            return q.getResultList();
+            grupo = em.find(Grupo.class, id); //select
         } finally {
-            em.close();
         }
+        return grupo.getFoto();
     }
 
     @Override
     public void deletar(Grupo grupo) throws ErroSistema {
     }
-    
+
 }
