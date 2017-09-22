@@ -1,12 +1,12 @@
 package br.com.ezzysoft.restaurante.bean;
 
-import br.com.ezzysoft.restaurante.dao.CrudDAO;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import br.com.ezzysoft.restaurante.dao.CrudDAO;
 
 /**
  *
@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
  * @param <D> Classe DAO(Data Access Object) que extende a classe CrudDAO
  */
 public abstract class CrudBean<E, D extends CrudDAO> {
-    
+     
     private String estadoTela = "buscar";
     
     private E entidade;
@@ -23,9 +23,9 @@ public abstract class CrudBean<E, D extends CrudDAO> {
     
     public void novo(){
         entidade =  criarNovaEntidade();
-        if (entidade.getClass().getSimpleName().equalsIgnoreCase("Produto")){ 
-            
-        }
+//        if (entidade.getClass().getSimpleName().equalsIgnoreCase("Produto")){ 
+//            
+//        }
         mudarParaInsere();
     }
     public void salvar(){

@@ -2,6 +2,7 @@ package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.dao.UnidadeDAO;
 import br.com.ezzysoft.restaurante.entidade.Unidade;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -28,4 +29,11 @@ public class MBUnidade extends CrudBean<Unidade, UnidadeDAO> {
         return new Unidade();
     }
 
+    public UnidadeDAO getUnidadeDAO() {
+        return unidadeDAO;
+    }
+
+    public void setUnidadeDAO(UnidadeDAO unidadeDAO) {
+        this.unidadeDAO = unidadeDAO;
+    }
 }
