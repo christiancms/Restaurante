@@ -22,7 +22,7 @@
                 <!-- Cadastro -->
                 <p:panelGrid columns="2" rendered="#{MBMarca.busca == false}">
                     <h:outputLabel value="Código"></h:outputLabel>
-                    <p:inputText value="#{MBMarca.entidade.id}" disabled="false">
+                    <p:inputText value="#{MBMarca.entidade.id}" disabled="true">
 
                     </p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
@@ -30,11 +30,11 @@
                 </p:panelGrid>
                 <!-- Pesquisa -->
                 <p:dataTable value="#{MBMarca.entidades}" emptyMessage="Nenhum Registro Encontrado" var="marca" rendered="#{MBMarca.busca == true}">
-                    <p:column style="width: 190px">
-                        <p:commandButton value="Editar" action="#{MBMarca.editar(marca)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{MBMarca.deletar(marca)}" update="@form"></p:commandButton>
+                    <p:column headerText="Ações" style="width: 100px;text-align: center">
+                        <p:commandButton value="" alt="Editar" action="#{MBMarca.editar(marca)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" update="@form"></p:commandButton>
+                        <p:commandButton value="" alt="Deletar" action="#{MBMarca.deletar(marca)}" style="width: 38px; height:38px;" icon="ui-icon-trash" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Código" sortBy="#{marca.id}" filterBy="#{marca.id}">
+                    <p:column headerText="Código" style="width: 105px;" sortBy="#{marca.id}" filterBy="#{marca.id}">
                         <h:outputText value="#{marca.id}"></h:outputText>
                     </p:column>
                     <p:column headerText="Descrição" sortBy="#{marca.descricao}" filterBy="#{marca.descricao}">

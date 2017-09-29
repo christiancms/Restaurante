@@ -23,19 +23,19 @@
                 <!-- Cadastro -->
                 <p:panelGrid columns="2" rendered="#{MBGrupo.busca == false}">
                     <h:outputLabel value="Código"></h:outputLabel>
-                    <p:inputText value="#{MBGrupo.entidade.id}" disabled="false" onblur=""></p:inputText>
+                    <p:inputText value="#{MBGrupo.entidade.id}" disabled="true" onblur=""></p:inputText>
                     <h:outputLabel value="Descrição"></h:outputLabel>
                     <p:inputText value="#{MBGrupo.entidade.descricao}"/>
                     <h:outputLabel value="Foto"/>
-                    <p:graphicImage value="#{MBGrupo.picture}" id="foto" cache="true" 
+                    <p:graphicImage value="#{MBUploadFoto.image}" id="foto" cache="true" 
                                     style="width:120px;height:120px" alt="#{MBGrupo.entidade.descricao}" >
                         <f:param name="id" value="#{MBGrupo.entidade.id}"/>
                     </p:graphicImage>
                     <h:outputLabel/>
                     <p:fileUpload value="#{MBGrupo.arquivo}"
-                                  fileUploadListener="#{MBGrupo.doUpload}" mode="advanced" skinSimple="true"
+                                  fileUploadListener="#{MBUploadFoto.enterImage}" mode="advanced" skinSimple="true"
                                   dragDropSupport="false" cancelLabel="Cancelar" label="Escolha" uploadLabel="Enviar"
-                                  update="msg" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                  update="foto msg" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
                                   sizeLimit="65000"
                                   onstart="console.log('Iniciando envio da foto')"
                                   onerror="console.log('Erro na requisiçao do arquivo')"
@@ -45,17 +45,18 @@
                 </p:panelGrid>
                 <!-- Pesquisa -->
                 <p:dataTable value="#{MBGrupo.entidades}" emptyMessage="Nenhum Registro Encontrado" var="grupo" rendered="#{MBGrupo.busca == true}">
-                    <p:column style="width: 190px">
-                        <p:commandButton value="Editar" action="#{MBGrupo.editar(grupo)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{MBGrupo.deletar(grupo)}" update="@form"></p:commandButton>
+                    <p:column headerText="Ações" style="width: 100px;text-align: center">
+                        <p:commandButton value="" alt="Editar" action="#{MBGrupo.editar(grupo)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" update="@form"></p:commandButton>
+                        <p:commandButton value="" alt="Deletar" action="#{MBGrupo.deletar(grupo)}" style="width: 38px; height:38px;" icon="ui-icon-trash" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Código" sortBy="#{grupo.id}" filterBy="#{grupo.id}">
+                    <p:column headerText="Código" style="width: 105px;" sortBy="#{grupo.id}" filterBy="#{grupo.id}">
                         <h:outputText value="#{grupo.id}"></h:outputText>
                     </p:column>
                     <p:column headerText="Descrição" sortBy="#{grupo.descricao}" filterBy="#{grupo.descricao}" >
                         <h:outputText value="#{grupo.descricao}"></h:outputText>
                     </p:column>
                     <p:column headerText="Foto" style="text-align: center">
+                        <p:graphicImage id="foto" value="#{MBUploadFoto.image}"/>
                     </p:column>
                 </p:dataTable>
             </p:fieldset>

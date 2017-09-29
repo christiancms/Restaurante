@@ -8,7 +8,9 @@
               template="template.xhtml">
 
     <ui:define name="body">
-        
+        <f:metadata>    
+            <f:event type="preRenderView" listener="#{MBProduto.onLoad()}"/>    
+        </f:metadata>
         <h:form enctype="multipart/form-data">
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Produtos">
@@ -31,10 +33,10 @@
                     <p:inputText value="#{MBProduto.entidade.descricao}" required="true"/>
                     <h:outputLabel value="Preço"></h:outputLabel>
                     <p:inputText value="#{MBProduto.entidade.precoCompra}" type="" required="true">
-                    <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
                     </p:inputText>
                     <h:outputLabel value="Dt. Cadastro"/>
-                    <p:inputText value="" disabled="true"/>
+                    <p:inputText value="#{MBProduto.init()}" disabled="true"/>
 
                     <h:outputLabel value="Grupo" for="listaGrupo"/>
                     <p:selectOneMenu value="#{MBProduto.entidade.grupo.id}" id="listaGrupo" required="true" style="width: 192px">
@@ -57,18 +59,20 @@
                 </p:panelGrid>
                 <!-- Pesquisa -->
                 <p:dataTable value="#{MBProduto.entidades}" id="tabela" emptyMessage="Nenhum Registro Encontrado" var="produto" rendered="#{MBProduto.busca == true}">
-                    <p:column style="width: 190px">
-                        <p:commandButton value="Editar" action="#{MBProduto.editar(produto)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{MBProduto.deletar(produto)}" update="@form"></p:commandButton>
+                    <p:column  headerText="Ações" style="width: 100px;text-align: center">
+                        <p:commandButton value="" action="#{MBProduto.editar(produto)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" alt="Editar" update="@form"></p:commandButton>
+                        <p:commandButton value="" action="#{MBProduto.deletar(produto)}" style="width: 38px; height:38px;" icon="ui-icon-trash" alt="Deletar" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Código" sortBy="#{produto.id}" filterBy="#{produto.id}">
+                    <p:column headerText="Código" style="width: 105px;" sortBy="#{produto.id}" filterBy="#{produto.id}">
                         <h:outputText value="#{produto.id}"></h:outputText>
                     </p:column>
                     <p:column headerText="Descrição" sortBy="#{produto.descricao}" filterBy="#{produto.descricao}">
                         <h:outputText value="#{produto.descricao}"></h:outputText>
                     </p:column>
                     <p:column headerText="Preço R$" sortBy="#{produto.precoCompra}" filterBy="#{produto.precoCompra}">
-                        <h:outputText value="#{produto.precoCompra}"></h:outputText>
+                        <h:outputText value="#{produto.precoCompra}">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </h:outputText>
                     </p:column>
                     <p:column headerText="Cadastro" sortBy="#{produto.dataCadastro}" filterBy="#{produto.dataCadastro}">
                         <h:outputText value="#{produto.dataCadastro}">
@@ -80,7 +84,7 @@
                     <p:column headerText="Marca" sortBy="#{produto.marca.descricao}" filterBy="#{produto.marca.descricao}">
                         <h:outputText value="#{produto.marca.descricao}"></h:outputText>
                     </p:column>
-                    <p:column headerText="UN" sortBy="#{produto.unidade.sigla}" filterBy="#{produto.unidade.sigla}" >
+                    <p:column headerText="UN" style="width: 50px;text-align: center">
                         <h:outputText value="#{produto.unidade.sigla}"></h:outputText>
                     </p:column>
                 </p:dataTable>

@@ -21,7 +21,7 @@
                 <!-- Cadastro -->
                 <p:panelGrid columns="2" rendered="#{MBColaborador.busca == false}">
                     <h:outputLabel value="Código"></h:outputLabel>
-                    <p:inputText value="#{MBColaborador.entidade.id}" disabled="false">
+                    <p:inputText value="#{MBColaborador.entidade.id}" disabled="true">
 
                     </p:inputText>
                     <h:outputLabel value="Nome"></h:outputLabel>
@@ -29,11 +29,11 @@
                 </p:panelGrid>
                 <!-- Pesquisa -->
                 <p:dataTable value="#{MBColaborador.entidades}" emptyMessage="Nenhum Registro Encontrado" var="colaborador" rendered="#{MBColaborador.busca == true}">
-                    <p:column style="width: 190px">
-                        <p:commandButton value="Editar" action="#{MBColaborador.editar(colaborador)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{MBColaborador.deletar(colaborador)}" update="@form"></p:commandButton>
+                    <p:column headerText="Ações" style="width: 100px;text-align: center">
+                        <p:commandButton value="" alt="Editar" action="#{MBColaborador.editar(colaborador)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" update="@form"></p:commandButton>
+                        <p:commandButton value="" alt="Deletar" action="#{MBColaborador.deletar(colaborador)}" style="width: 38px; height:38px;" icon="ui-icon-trash" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Código" sortBy="#{colaborador.id}" filterBy="#{colaborador.id}">
+                    <p:column headerText="Código" style="width: 105px;" sortBy="#{colaborador.id}" filterBy="#{colaborador.id}">
                         <h:outputText value="#{colaborador.id}"></h:outputText>
                     </p:column>
                     <p:column headerText="Nome" sortBy="#{colaborador.nome}" filterBy="#{colaborador.nome}">

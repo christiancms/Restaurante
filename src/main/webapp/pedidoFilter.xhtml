@@ -5,10 +5,11 @@
               xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core"
-              template="template.xhtml">
+              template="template.xhtml"
+              xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="body">
-        <h:form>
+        <h:form id="formPedidos">
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Pedidos">
                 <!-- Botões -->
@@ -33,12 +34,14 @@
                     <p:inputText value="#{MBPedido.entidade.colaborador.nome}"></p:inputText>
                 </p:panelGrid>
                 <!-- Pesquisa -->
-                <p:dataTable value="#{MBPedido.entidades}" id="tabela" emptyMessage="Nenhum Registro Encontrado" var="pedido" rendered="#{MBPedido.busca == true}">
-                    <p:column style="width: 190px">
-                        <p:commandButton value="Editar" action="#{MBPedido.editar(pedido)}" update="@form"></p:commandButton>
-                        <p:commandButton value="Deletar" action="#{MBPedido.deletar(pedido)}" update="@form"></p:commandButton>
+                <p:dataTable value="#{MBPedido.entidades}" id="tabela" emptyMessage="Nenhum Registro Encontrado" var="pedido" 
+                             rendered="#{MBPedido.busca == true}">
+
+                    <p:column headerText="Ações" style="width: 100px;text-align: center">
+                        <p:commandButton value="" action="#{MBPedido.editar(pedido)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" update="@form"></p:commandButton>
+                        <p:commandButton value="" action="#{MBPedido.deletar(pedido)}" style="width: 38px; height:38px;" icon="ui-icon-trash" update="@form"></p:commandButton>
                     </p:column>
-                    <p:column headerText="Código" sortBy="#{pedido.id}" filterBy="#{pedido.id}">
+                    <p:column headerText="Código" style="width: 105px;" sortBy="#{pedido.id}" filterBy="#{pedido.id}">
                         <h:outputText value="#{pedido.id}"></h:outputText>
                     </p:column>
                     <p:column headerText="Mesa" sortBy="#{pedido.mesa}" filterBy="#{pedido.mesa}">
@@ -47,6 +50,29 @@
                     <p:column headerText="Garçom" sortBy="#{pedido.colaborador.nome}" filterBy="#{pedido.colaborador.nome}">
                         <h:outputText value="#{pedido.colaborador.nome}"></h:outputText>
                     </p:column>
+                    <p:column exportable="false" width="5%">
+                        <p:rowToggler />
+                    </p:column>
+                    <p:rowExpansion>
+                        <p:panelGrid  columns="2" columnClasses="label,value" style="text-align: right;">
+                            <ui:repeat var="elem" value="#{pedido.itensPedido}">
+                                
+                                <h:outputText value="Cod:" style="display:inline;"/>
+                                <p:inputText value="#{elem.id}" style="width: 195px"/><br />
+                                
+                                <h:outputText value="Produto:" style="display:inline"/>
+                                <p:inputText value="#{elem.produto.descricao}" style="width: 195px"/><br />
+                                
+                                <h:outputText value="Qtde:" style="display:inline"/>
+                                <p:inputText value="#{elem.quantidade}" style="width: 195px"/><br />
+                                
+                                <h:outputText value="Valor:" style="display:inline"/>
+                                <p:inputNumber value="#{elem.produto.precoCompra}" style="width: 195px" decimalSeparator="," 
+                                               thousandSeparator="."  /><br />
+                                
+                            </ui:repeat>
+                        </p:panelGrid>
+                    </p:rowExpansion>
 
                 </p:dataTable>
             </p:fieldset>
