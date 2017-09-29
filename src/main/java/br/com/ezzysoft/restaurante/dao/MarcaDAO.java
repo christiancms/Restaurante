@@ -98,4 +98,9 @@ public class MarcaDAO implements CrudDAO<Marca>{
             em.close();
         }
     }
+
+    @Override
+    public List<Marca> localizar(Marca entidade) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

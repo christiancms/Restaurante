@@ -14,7 +14,7 @@ public interface CrudDAO<E> {
     public void salvar(E entidade) throws ErroSistema;
     public void deletar(E entidade) throws ErroSistema;
     public List<E> buscar() throws ErroSistema;
-    
+    public List<E> localizar(E entidade) throws ErroSistema;
     public EntityManager getEM();
     public E findById(Long id);
 }

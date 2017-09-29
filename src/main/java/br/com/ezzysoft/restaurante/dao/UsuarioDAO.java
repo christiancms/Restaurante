@@ -53,5 +53,10 @@ public class UsuarioDAO implements CrudDAO<Usuario>{
             em.close();
         }
     }
+
+    @Override
+    public List<Usuario> localizar(Usuario entidade) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

@@ -72,4 +72,9 @@ public class ClienteDAO implements CrudDAO<Cliente> {
         return cliente;
     }
 
+    @Override
+    public List<Cliente> localizar(Cliente entidade) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

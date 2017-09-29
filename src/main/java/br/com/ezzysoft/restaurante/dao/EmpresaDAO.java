@@ -75,4 +75,9 @@ public class EmpresaDAO implements CrudDAO<Empresa> {
         return empresa;
     }
 
+    @Override
+    public List<Empresa> localizar(Empresa entidade) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

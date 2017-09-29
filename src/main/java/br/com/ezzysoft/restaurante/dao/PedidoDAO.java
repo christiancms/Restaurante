@@ -58,6 +58,18 @@ public class PedidoDAO implements CrudDAO<Pedido>{
         }
     }
 
+    public List<Pedido> localizarItens(Pedido pedido) throws ErroSistema {
+        em = getEM();
+        try {
+            em.getTransaction().begin();
+            Query q = em.createQuery("SELECT i FROM ItemPedido i WHERE i.pedido = :idPedido ");
+            q.setParameter("idPedido", pedido);
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public EntityManager getEM() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("EzzysoftPU");
@@ -97,5 +109,10 @@ public class PedidoDAO implements CrudDAO<Pedido>{
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public List<Pedido> localizar(Pedido entidade) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

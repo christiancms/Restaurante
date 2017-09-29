@@ -84,4 +84,9 @@ public class ProdutoDAO implements CrudDAO<Produto> {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("EzzysoftPU");
         return factory.createEntityManager();
     }
+
+    @Override
+    public List<Produto> localizar(Produto entidade) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

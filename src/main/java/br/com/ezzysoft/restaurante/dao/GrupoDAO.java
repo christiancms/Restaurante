@@ -112,4 +112,9 @@ public class GrupoDAO implements CrudDAO<Grupo> {
     public void deletar(Grupo grupo) throws ErroSistema {
     }
 
+    @Override
+    public List<Grupo> localizar(Grupo entidade) throws ErroSistema {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
