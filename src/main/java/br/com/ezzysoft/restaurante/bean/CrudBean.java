@@ -15,20 +15,21 @@ import br.com.ezzysoft.restaurante.dao.CrudDAO;
  * @param <D> Classe DAO(Data Access Object) que extende a classe CrudDAO
  */
 public abstract class CrudBean<E, D extends CrudDAO> {
-     
+
     private String estadoTela = "buscar";
-    
+
     private E entidade;
     private List<E> entidades;
-    
-    public void novo(){
-        entidade =  criarNovaEntidade();
+
+    public void novo() {
+        entidade = criarNovaEntidade();
 //        if (entidade.getClass().getSimpleName().equalsIgnoreCase("Produto")){ 
 //            
 //        }
         mudarParaInsere();
     }
-    public void salvar(){
+
+    public void salvar() {
         try {
             getDao().salvar(entidade);
             entidade = criarNovaEntidade();
@@ -40,12 +41,13 @@ public abstract class CrudBean<E, D extends CrudDAO> {
         }
         refresh();
     }
-    public void editar(E entidade){
+
+    public void editar(E entidade) {
         this.entidade = entidade;
         mudarParaEdita();
     }
-    
-    public void deletar(E entidade){
+
+    public void deletar(E entidade) {
         try {
             getDao().deletar(entidade);
             entidades.remove(entidade);
@@ -55,15 +57,15 @@ public abstract class CrudBean<E, D extends CrudDAO> {
             adicionarMensagem(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
-     
-    public void refresh(){
-        if(!isBusca()){
-           mudarParaBusca();
-           return;
+
+    public void refresh() {
+        if (!isBusca()) {
+            mudarParaBusca();
+            return;
         }
         try {
             entidades = getDao().buscar();
-            if(entidades == null || entidades.isEmpty()){
+            if (entidades == null || entidades.isEmpty()) {
                 adicionarMensagem("Não temos nada cadastrado!", FacesMessage.SEVERITY_WARN);
             }
         } catch (ErroSistema ex) {
@@ -71,14 +73,15 @@ public abstract class CrudBean<E, D extends CrudDAO> {
             adicionarMensagem(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
-    public void buscar(){
-        if(!isBusca()){
-           mudarParaBusca();
-           return;
+
+    public void buscar() {
+        if (!isBusca()) {
+            mudarParaBusca();
+            return;
         }
         try {
             entidades = getDao().buscar();
-            if(entidades == null || entidades.isEmpty()){
+            if (entidades == null || entidades.isEmpty()) {
                 adicionarMensagem("Não temos nada cadastrado!", FacesMessage.SEVERITY_WARN);
             }
         } catch (ErroSistema ex) {
@@ -86,12 +89,12 @@ public abstract class CrudBean<E, D extends CrudDAO> {
             adicionarMensagem(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
-    
-    public void adicionarMensagem(String mensagem, FacesMessage.Severity tipoErro){
+
+    public void adicionarMensagem(String mensagem, FacesMessage.Severity tipoErro) {
         FacesMessage fm = new FacesMessage(tipoErro.toString().replace("0", ""), mensagem);
         FacesContext.getCurrentInstance().addMessage(null, fm);
     }
-    
+
     //getters e setters
     public E getEntidade() {
         return entidade;
@@ -108,29 +111,35 @@ public abstract class CrudBean<E, D extends CrudDAO> {
     public void setEntidades(List<E> entidades) {
         this.entidades = entidades;
     }
-    
+
     //Responsável por criar os métodos nas classes bean
     public abstract D getDao();
+
     public abstract E criarNovaEntidade();
-    
+
     //Metodos para controle da tela
-    public boolean isInsere(){
+    public boolean isInsere() {
         return "inserir".equals(estadoTela);
     }
-    public boolean isEdita(){
+
+    public boolean isEdita() {
         return "editar".equals(estadoTela);
     }
-    public boolean isBusca(){
+
+    public boolean isBusca() {
         return "buscar".equals(estadoTela);
     }
-    public void mudarParaInsere(){
+
+    public void mudarParaInsere() {
         estadoTela = "inserir";
     }
-    public void mudarParaEdita(){
+
+    public void mudarParaEdita() {
         estadoTela = "editar";
     }
-    public void mudarParaBusca(){
+
+    public void mudarParaBusca() {
         estadoTela = "buscar";
     }
-    
+
 }

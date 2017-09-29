@@ -97,12 +97,11 @@ public class MBProduto extends CrudBean<Produto, ProdutoDAO> {
         this.grupo = g;
     }
 
-//    public void onLoad() {
-//        System.out.println("Teste de Produto");
-//    }
+    public void onLoad() {
+    }
 //    
-//    public String init(){
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-//        return sdf.format(new Date());
-//    }
+    public String init(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return sdf.format(new Date());
+    }
 }
