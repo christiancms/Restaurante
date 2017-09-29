@@ -1,9 +1,6 @@
 package br.com.ezzysoft.restaurante.entidade;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,11 +18,11 @@ public class Empresa extends Pessoa implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Column(name = "insc_munic")
     private String inscMunicipal;
-    @Column
+    @Column(name = "nome_fantasia")
     private String nomeFantasia;
 
     public Long getId() {

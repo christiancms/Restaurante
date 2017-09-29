@@ -2,11 +2,14 @@ package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -15,13 +18,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "colaborador")
+@NamedQueries({
+    @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c")
+    , @NamedQuery(name = "Colaborador.findById", query = "SELECT c FROM Colaborador c WHERE c.id = :id")})
 public class Colaborador implements Serializable{
     
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Basic(optional = false)
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Column(name = "nome")
     private String nome;
     
 

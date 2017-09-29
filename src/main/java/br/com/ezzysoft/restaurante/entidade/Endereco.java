@@ -3,6 +3,7 @@ package br.com.ezzysoft.restaurante.entidade;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -10,27 +11,50 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "endereco")
+@NamedQueries({
+    @NamedQuery(name = "Endereco.findAll", query = "SELECT e FROM Endereco e")
+    , @NamedQuery(name = "Endereco.findById", query = "SELECT e FROM Endereco e WHERE e.id = :id")
+    , @NamedQuery(name = "Endereco.findByBairro", query = "SELECT e FROM Endereco e WHERE e.bairro = :bairro")
+    , @NamedQuery(name = "Endereco.findByCep", query = "SELECT e FROM Endereco e WHERE e.cep = :cep")
+    , @NamedQuery(name = "Endereco.findByComplemento", query = "SELECT e FROM Endereco e WHERE e.complemento = :complemento")
+    , @NamedQuery(name = "Endereco.findByLogradouro", query = "SELECT e FROM Endereco e WHERE e.logradouro = :logradouro")
+    , @NamedQuery(name = "Endereco.findByMunicipio", query = "SELECT e FROM Endereco e WHERE e.municipio = :municipio")
+    , @NamedQuery(name = "Endereco.findByNumero", query = "SELECT e FROM Endereco e WHERE e.numero = :numero")
+    , @NamedQuery(name = "Endereco.findByPais", query = "SELECT e FROM Endereco e WHERE e.pais = :pais")
+    , @NamedQuery(name = "Endereco.findByUnidFed", query = "SELECT e FROM Endereco e WHERE e.unidFed = :unidFed")})
 public class Endereco implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    private static final long serialVersionUID = 1L;
+
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     private Long id;
-    @Column
-    private String cep;
-    @Column
-    private String logradouro;
-    @Column
-    private Integer numero;
-    @Column
-    private String complemento;
-    @Column
+    @Size(max = 255)
+    @Column(name = "bairro")
     private String bairro;
-    @Column
+    @Size(max = 255)
+    @Column(name = "cep")
+    private String cep;
+    @Size(max = 255)
+    @Column(name = "complemento")
+    private String complemento;
+    @Size(max = 255)
+    @Column(name = "logradouro")
+    private String logradouro;
+    @Size(max = 255)
+    @Column(name = "municipio")
     private String municipio;
+    @Column(name = "numero")
+    private String numero;
+    @Size(max = 255)
+    @Column(name = "pais")
+    private String pais;
+    @Size(max = 255)
     @Column(name = "unid_fed")
     private String unidFed;
-    @Column
-    private String pais;
+    
 //---------------- Endereço ----------------
     @ManyToOne
     @JoinColumn(name = "pessoa_id", referencedColumnName = "id", nullable = false)
@@ -60,11 +84,11 @@ public class Endereco implements Serializable {
         this.logradouro = logradouro;
     }
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

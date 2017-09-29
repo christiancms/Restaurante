@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -14,11 +16,18 @@ import javax.persistence.*;
 @Table(name = "cidade")
 public class Cidade implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "nome")
     private String nome;
     @Column
     private Long codigoIBGE;

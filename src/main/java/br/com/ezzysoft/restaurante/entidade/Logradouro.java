@@ -15,10 +15,10 @@ import javax.persistence.*;
 public class Logradouro implements Serializable{
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
-    @Column
-    private String nome;
+    @Column(name = "descricao")
+    private String descricao;
     @Column
     private Long cep;
     @ManyToOne(optional = false)
@@ -32,14 +32,6 @@ public class Logradouro implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     @Override
@@ -65,6 +57,14 @@ public class Logradouro implements Serializable{
             return false;
         }
         return true;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
     
 }

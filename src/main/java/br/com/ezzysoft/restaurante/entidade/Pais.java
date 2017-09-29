@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -20,14 +22,19 @@ import javax.persistence.Table;
 @Table(name = "pais")
 public class Pais implements Serializable{
     
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Size(max = 255)
+    @Column(name = "descricao")
     private String descricao;
-    @Column
+    @Size(max = 255)
+    @Column(name = "sigla")
     private String sigla;
-    @Column
+    @Column(name = "codigoPais")
     private Long codigoPais;
     @OneToMany(mappedBy = "pais")
     private List<UnidadeFederacao> ufs = new ArrayList<>();

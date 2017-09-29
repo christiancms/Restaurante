@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -14,12 +15,15 @@ import javax.persistence.*;
 @Table(name = "bairro")
 public class Bairro implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
+    @Basic(optional = false)
+    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
-    @Column
-    private String nome;
+    @Column(name = "descricao")
+    private String descricao;
     @ManyToOne(optional = false)
     @JoinColumn(name = "cidade_id", referencedColumnName = "id", nullable = false)
     private Cidade cidade;
@@ -34,12 +38,12 @@ public class Bairro implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Cidade getCidade() {

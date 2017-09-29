@@ -3,7 +3,20 @@ package br.com.ezzysoft.restaurante.entidade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -13,12 +26,23 @@ import javax.persistence.*;
 @Table(name = "unidadefederacao")
 public class UnidadeFederacao implements Serializable{
     
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    private static final long serialVersionUID = 1L;
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "descricao")
     private String descricao;
-    @Column
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "sigla")
     private String sigla;
     @ManyToOne(optional = false)
     @JoinColumn(name = "pais_id", referencedColumnName = "id")
