@@ -25,4 +25,16 @@ Any value defined here will override the pom.xml file value but is only applicab
         <org-netbeans-modules-web-clientproject-api.js_2e_libs_2e_folder>js/libs</org-netbeans-modules-web-clientproject-api.js_2e_libs_2e_folder>
         <org-netbeans-modules-javascript2-requirejs.enabled>true</org-netbeans-modules-javascript2-requirejs.enabled>
     </properties>
+    <spring-data xmlns="http://www.netbeans.org/ns/spring-data/1">
+        <config-files>
+            <config-file>src/main/webapp/WEB-INF/applicationContext.xml</config-file>
+            <config-file>src/main/webapp/WEB-INF/dispatcher-servlet.xml</config-file>
+        </config-files>
+        <config-file-groups>
+            <config-file-group name="Grupo Default">
+                <config-file>src/main/webapp/WEB-INF/applicationContext.xml</config-file>
+                <config-file>src/main/webapp/WEB-INF/dispatcher-servlet.xml</config-file>
+            </config-file-group>
+        </config-file-groups>
+    </spring-data>
 </project-shared-configuration>
