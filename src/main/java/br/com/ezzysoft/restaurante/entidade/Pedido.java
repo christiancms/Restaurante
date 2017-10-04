@@ -26,11 +26,11 @@ public class Pedido implements Serializable {
     @Column(name = "descricao")
     private String descricao;
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = true)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private Cliente cliente;
     @ManyToOne
-    @JoinColumn(name = "colaborador_id", nullable = false)
-    private Colaborador colaborador;
+    @JoinColumn(name = "colaborador_id", referencedColumnName = "id")
+    private Colaborador colaborador = new Colaborador();
     @Column(name = "mesa")
     private Integer mesa;
 //---------------- ItensPedido ----------------

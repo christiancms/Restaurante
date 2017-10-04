@@ -18,12 +18,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "colaborador")
-@NamedQueries({
-    @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c")
-    , @NamedQuery(name = "Colaborador.findById", query = "SELECT c FROM Colaborador c WHERE c.id = :id")})
+//@NamedQueries({
+//    @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c")
+//    , @NamedQuery(name = "Colaborador.findById", query = "SELECT c FROM Colaborador c WHERE c.id = :id")})
 public class Colaborador implements Serializable{
     
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -31,8 +30,15 @@ public class Colaborador implements Serializable{
     private Long id;
     @Column(name = "nome")
     private String nome;
-    
 
+    public Colaborador() {
+    }
+
+    public Colaborador(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -72,6 +78,11 @@ public class Colaborador implements Serializable{
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public String toString() {
+        return "Colaborador{" + "nome=" + nome + '}';
     }
     
 }

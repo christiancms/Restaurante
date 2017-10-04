@@ -13,6 +13,10 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "grupo")
+@NamedQueries({
+    @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g "),
+    @NamedQuery(name = "Grupo.findAllOrder", query = "SELECT g FROM Grupo g ORDER BY g.descricao"),
+    @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id")})
 public class Grupo implements Serializable {
 
     @Id

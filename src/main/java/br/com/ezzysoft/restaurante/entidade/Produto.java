@@ -29,16 +29,17 @@ public class Produto implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
     /**
-     * Se a associação é opcional. Se definido como falso, uma relação não nula sempre deve existir.
+     * Se a associação é opcional. 
+     * Se definido como falso, uma relação não nula sempre deve existir.
      */
-    @ManyToOne(optional = false)
-    @JoinColumn(name ="grupo_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name ="grupo_id", referencedColumnName = "id", updatable = true)
     private Grupo grupo = new Grupo();
-    @ManyToOne(optional = true)
-    @JoinColumn(name ="marca_id", nullable = true, referencedColumnName = "id")
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name ="marca_id", nullable = true, referencedColumnName = "id", updatable = true)
     private Marca marca = new Marca();
-    @ManyToOne(optional = false)
-    @JoinColumn(name ="unidade_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name ="unidade_id", referencedColumnName = "id", updatable = true)
     private Unidade unidade = new Unidade();
 
 

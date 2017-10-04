@@ -9,19 +9,22 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "itensPedido")
-public class ItemPedido implements Serializable{
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+public class ItemPedido implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column
-    private Integer codigoProduto;
-    @Column
-    private Integer quantidade;
-//---------------- Pedido ----------------
+    @Column(name = "quantidade")
+    private Double quantidade;
+    //---------------- Produto ----------------
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "produto_id", nullable = false)
+    private Produto produto;
+    //---------------- Pedido ----------------
     @ManyToOne
     @JoinColumn(name = "pedido_id")
-    private Pedido  pedido;
+    private Pedido pedido;
 
     public Long getId() {
         return id;
@@ -31,19 +34,19 @@ public class ItemPedido implements Serializable{
         this.id = id;
     }
 
-    public Integer getCodigoProduto() {
-        return codigoProduto;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setCodigoProduto(Integer codigoProduto) {
-        this.codigoProduto = codigoProduto;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
-    public Integer getQuantidade() {
+    public Double getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Integer quantidade) {
+    public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -54,6 +57,5 @@ public class ItemPedido implements Serializable{
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
- 
-    
+
 }
