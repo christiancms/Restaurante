@@ -22,12 +22,12 @@ import org.json.simple.parser.JSONParser;
  */
 @ManagedBean(name = "MBEmpresa")
 @SessionScoped
-public class MBEmpresa extends CrudBean<Empresa, EmpresaDAO> implements Serializable{
+public class MBEmpresa implements Serializable{
 
     private EmpresaDAO empresaDAO;
     public static final String URL_CNPJ = "https://www.receitaws.com.br/v1/cnpj/";
 
-    @Override
+//    @Override
     public EmpresaDAO getDao() {
         if (empresaDAO == null) {
             empresaDAO = new EmpresaDAO();
@@ -35,7 +35,7 @@ public class MBEmpresa extends CrudBean<Empresa, EmpresaDAO> implements Serializ
         return empresaDAO;
     }
 
-    @Override
+//    @Override
     public Empresa criarNovaEntidade() {
         return new Empresa();
     }
