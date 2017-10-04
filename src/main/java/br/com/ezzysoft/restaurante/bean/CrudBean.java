@@ -23,9 +23,6 @@ public abstract class CrudBean<E, D extends CrudDAO> {
 
     public void novo() {
         entidade = criarNovaEntidade();
-//        if (entidade.getClass().getSimpleName().equalsIgnoreCase("Produto")){ 
-//            
-//        }
         mudarParaInsere();
     }
 
