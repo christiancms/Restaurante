@@ -6,20 +6,21 @@
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core"
               template="template.xhtml">
-    <ui:define name="body">
-        <h:form>
-            <p:messages autoUpdate="true" showDetail="true"></p:messages>
-            <p:fieldset legend="Empresa">
+
+    <ui:composition>
+        <p:dialog id="EmpresaCadDlg" widgetVar="EmpresaCadDialog" modal="true" resizable="false" appendTo="@(body)" header="Cadastrar Nova Empresa">
+            <h:form enctype="multipart/form-data" id="EmpresaCadForm">
+                <p:growl id="growl" showDetail="true" sticky="true" /> 
+                <!-- Botões -->
                 <p:toolbar>
                     <p:toolbarGroup align="right">
-                        <p:commandButton value="Novo" action="#{MBEmpresa.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{MBEmpresa.salvar()}" disabled="#{MBEmpresa.busca == true}" update="@form"></p:commandButton>
-                        <p:commandButton value="Buscar" action="#{MBEmpresa.buscar()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Salvar" action="#{MBEmpresa.salvar()}" disabled="#{MBEmpresa.busca == true}" update="@form"/>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:panelGrid columns="2" rendered="#{MBEmpresa.busca == false}">
+                <!-- Cadastro -->
+                <p:panelGrid columns="2">
                     <h:outputLabel value="Código"/>
-                    <p:inputText value="#{MBEmpresa.entidade.id}" disabled="true"/>
+                    <p:inputText value="#{MBEmpresa.entidade.id}" disabled="true" onblur=""/>
                     <h:outputLabel value="CNPJ"/>
                     <p:inputText value="#{MBEmpresa.entidade.fisicaJuridica}">
                         <p:ajax event="blur" listener="#{MBEmpresa.getVerificaCNPJ('12709186000131')}" />
@@ -61,7 +62,7 @@
                     <h:outputLabel value="Fantasia"/>
                     <p:inputText value=""/>
                 </p:panelGrid>
-            </p:fieldset>
-        </h:form>
-    </ui:define>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
 </ui:decorate>

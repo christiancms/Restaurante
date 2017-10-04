@@ -5,8 +5,7 @@
               xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core"
-              template="template.xhtml"
-              xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+              template="template.xhtml">
 
     <ui:define name="body">
         <h:form id="formPedidos">
@@ -15,40 +14,29 @@
                 <!-- Botões -->
                 <p:toolbar>
                     <p:toolbarGroup align="right">
-                        <p:commandButton value="Novo" action="#{MBPedido.novo()}" update="@form"></p:commandButton>
-                        <p:commandButton value="Salvar" action="#{MBPedido.salvar()}" disabled="#{MBPedido.busca == true}" update="@form"></p:commandButton>
-                        <p:commandButton value="Buscar" action="#{MBPedido.buscar()}" update="@form"></p:commandButton>
+                        <p:commandButton value="Novo" action="#{MBPedido.novo()}" update="@form"/>
+                        <p:commandButton value="Buscar" action="#{MBPedido.buscar()}" update="@form"/>
                         <p:commandButton value="Imprimir" type="button" icon="ui-icon-print">
                             <p:printer target="tabela" />
                         </p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <!-- Cadastro -->
-                <p:panelGrid columns="2" rendered="#{MBPedido.busca == false}">
-                    <h:outputLabel value="Código"></h:outputLabel>
-                    <p:inputText value="#{MBPedido.entidade.id}" disabled="false">
-                    </p:inputText>
-                    <h:outputLabel value="Mesa"></h:outputLabel>
-                    <p:inputText value="#{MBPedido.entidade.mesa}"></p:inputText>
-                    <h:outputLabel value="Garçom"></h:outputLabel>
-                    <p:inputText value="#{MBPedido.entidade.colaborador.nome}"></p:inputText>
-                </p:panelGrid>
+                
                 <!-- Pesquisa -->
-                <p:dataTable value="#{MBPedido.entidades}" id="tabela" emptyMessage="Nenhum Registro Encontrado" var="pedido" 
-                             rendered="#{MBPedido.busca == true}">
+                <p:dataTable value="#{MBPedido.entidades}" id="tabela" emptyMessage="Nenhum Registro Encontrado" var="pedido" rendered="#{MBPedido.busca == true}">
 
                     <p:column headerText="Ações" style="width: 100px;text-align: center">
-                        <p:commandButton value="" action="#{MBPedido.editar(pedido)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" update="@form"></p:commandButton>
-                        <p:commandButton value="" action="#{MBPedido.deletar(pedido)}" style="width: 38px; height:38px;" icon="ui-icon-trash" update="@form"></p:commandButton>
+                        <p:commandButton value="" action="#{MBPedido.editar(pedido)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" update="@form"/>
+                        <p:commandButton value="" action="#{MBPedido.deletar(pedido)}" style="width: 38px; height:38px;" icon="ui-icon-trash" update="@form"/>
                     </p:column>
                     <p:column headerText="Código" style="width: 105px;" sortBy="#{pedido.id}" filterBy="#{pedido.id}">
-                        <h:outputText value="#{pedido.id}"></h:outputText>
+                        <h:outputText value="#{pedido.id}"/>
                     </p:column>
                     <p:column headerText="Mesa" sortBy="#{pedido.mesa}" filterBy="#{pedido.mesa}">
-                        <h:outputText value="#{pedido.mesa}"></h:outputText>
+                        <h:outputText value="#{pedido.mesa}"/>
                     </p:column>
                     <p:column headerText="Garçom" sortBy="#{pedido.colaborador.nome}" filterBy="#{pedido.colaborador.nome}">
-                        <h:outputText value="#{pedido.colaborador.nome}"></h:outputText>
+                        <h:outputText value="#{pedido.colaborador.nome}"/>
                     </p:column>
                     <p:column exportable="false" width="5%">
                         <p:rowToggler />
@@ -69,13 +57,12 @@
                                 <h:outputText value="Valor:" style="display:inline"/>
                                 <p:inputNumber value="#{elem.produto.precoCompra}" style="width: 195px" decimalSeparator="," 
                                                thousandSeparator="."  /><br />
-                                
                             </ui:repeat>
                         </p:panelGrid>
                     </p:rowExpansion>
-
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+        <ui:include src="pedidoCad.xhtml" />
     </ui:define>
 </ui:decorate>

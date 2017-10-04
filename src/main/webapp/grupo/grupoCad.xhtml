@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+
+    <ui:composition>
+        <p:dialog id="GrupoCadDlg" widgetVar="GrupoCadDialog" modal="true" resizable="false" appendTo="@(body)" header="Cadastrar Novo Grupo">
+            <h:form enctype="multipart/form-data" id="GrupoCadForm">
+                <p:growl id="growl" showDetail="true" sticky="true" /> 
+                <!-- Botões -->
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Salvar" action="#{MBGrupo.salvar()}" disabled="#{MBGrupo.busca == true}" update="@form"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <!-- Cadastro -->
+                <p:panelGrid columns="2">
+                    <h:outputLabel value="Código"/>
+                    <p:inputText value="#{MBGrupo.entidade.id}" disabled="true" onblur=""/>
+                    <h:outputLabel value="Descrição"/>
+                    <p:inputText value="#{MBGrupo.entidade.descricao}"/>
+                    <h:outputLabel value="Foto"/>
+                    <p:graphicImage value="#{MBUploadFoto.image}" id="foto" cache="true" 
+                                    style="width:120px;height:120px" alt="#{MBGrupo.entidade.descricao}" >
+                        <f:param name="id" value="#{MBGrupo.entidade.id}"/>
+                    </p:graphicImage>
+                    <h:outputLabel/>
+                    <p:fileUpload value="#{MBGrupo.arquivo}"
+                                  fileUploadListener="#{MBUploadFoto.enterImage}" mode="advanced" skinSimple="true"
+                                  dragDropSupport="false" cancelLabel="Cancelar" label="Escolha" uploadLabel="Enviar"
+                                  update="foto msg" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                  sizeLimit="65000"
+                                  onstart="console.log('Iniciando envio da foto')"
+                                  onerror="console.log('Erro na requisiçao do arquivo')"
+                                  oncomplete="console.log('Envio concluido')"
+                                  />
+                    <p:growl id="msg" showDetail="true" />
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</ui:decorate>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+    <ui:define name="body">
+        <h:form>
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <p:fieldset legend="Empresa">
+                <!-- Botões -->
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Novo" action="#{MBEmpresa.novo()}" actionListener="#{MBEmpresa.novo()}" update="@form" oncomplete="PF('EmpresaCadDialog').show()"/>
+                        <p:commandButton value="Buscar" action="#{MBEmpresa.buscar()}" update="@form"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <!-- Pesquisa -->
+                <p:dataTable value="#{MBEmpresa.entidades}" emptyMessage="Nenhum Registro Encontrado" var="empresa" rendered="#{MBEmpresa.busca == true}">
+                    <p:column headerText="Ações" style="width: 100px;text-align: center">
+                        <p:commandButton value="" alt="Editar" action="#{MBEmpresa.editar(empresa)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" update="@form"/>
+                        <p:commandButton value="" alt="Deletar" action="#{MBEmpresa.deletar(empresa)}" style="width: 38px; height:38px;" icon="ui-icon-trash" update="@form"/>
+                    </p:column>
+                    <p:column headerText="Código" style="width: 105px;" sortBy="#{empresa.id}" filterBy="#{empresa.id}">
+                        <h:outputText value="#{empresa.id}"/>
+                    </p:column>
+                    <p:column headerText="Descrição" sortBy="#{empresa.descricao}" filterBy="#{empresa.descricao}" >
+                        <h:outputText value="#{empresa.descricao}"/>
+                    </p:column>
+                    <p:column headerText="Logo" style="text-align: center">
+                        <p:graphicImage id="logo" value="#{MBUploadFoto.image}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+        <ui:include src="empresaCad.xhtml"/>
+    </ui:define>
+</ui:decorate>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProdutoEditDlg" widgetVar="ProdutoEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProdutoTitle}">
+            <h:form id="ProdutoEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{MBProduto.selected != null}">
+                        <p:outputLabel value="#{bundle.EditProdutoLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{MBProduto.selected.id}" title="#{bundle.EditProdutoTitle_id}" required="true" 
+                                     disabled="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditProdutoLabel_descricao}" for="descricao" />
+                        <p:inputText id="descricao" value="#{MBProduto.selected.descricao}" title="#{bundle.EditProdutoTitle_descricao}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_descricao}"/>
+                        <p:outputLabel value="#{bundle.EditProdutoLabel_precoCompra}" for="precoCompra" />
+                        <p:inputText id="precoCompra" value="#{MBProduto.selected.precoCompra}" title="#{bundle.EditProdutoTitle_precoCompra}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_precoCompra}"/>
+                        <p:outputLabel value="#{bundle.EditProdutoLabel_dataCadastro}" for="dataCadastro" />
+                        <p:calendar id="dataCadastro" pattern="MM/dd/yyyy HH:mm:ss" value="#{MBProduto.selected.dataCadastro}" title="#{bundle.EditProdutoTitle_dataCadastro}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_dataCadastro}" showOn="button"/>
+                        
+                        <p:outputLabel value="Grupo" for="grupoId" />
+                        <p:selectOneMenu id="grupoId" value="#{MBProduto.selected.grupo.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">
+                            <f:selectItems value="#{MBProduto.grupos}"
+                                           var="grupo"
+                                           itemValue="#{MBProduto.selectedGrupo}" />
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="Marca" for="marcaId" />
+                        <p:selectOneMenu id="marcaId" value="#{MBProduto.selected.marca.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_marcaId}">
+                            <f:selectItems value="#{MBProduto.marcas}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Unidade" for="unidadeId" />
+                        <p:selectOneMenu id="unidadeId" value="#{MBProduto.selected.unidade.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_unidadeId}">
+                            <f:selectItems value="#{MBProduto.unidades}" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{MBProduto.update}" value="Salvar" update="display,:ProdutoListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProdutoEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProdutoEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

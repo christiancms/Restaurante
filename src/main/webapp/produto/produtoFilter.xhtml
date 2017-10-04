@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+
+    <ui:define name="body">
+        <f:metadata>    
+            <f:event type="preRenderView" listener="#{MBProduto.onLoad()}"/>    
+        </f:metadata>
+        <h:form enctype="multipart/form-data">
+            <p:messages autoUpdate="true" showDetail="true"></p:messages>
+            <p:fieldset legend="Produtos">
+                <!-- Botões -->
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Novo" action="#{MBProduto.novo()}" actionListener="#{MBProduto.novo()}" update="@form" oncomplete="PF('ProdutoCadDialog').show()"/>
+                        <p:commandButton value="Buscar" action="#{MBProduto.buscar()}" update="@form"/>
+                        <p:commandButton value="Imprimir" type="button" icon="ui-icon-print">
+                            <p:printer target="tabela" />
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                <!-- Pesquisa -->
+                <p:dataTable value="#{MBProduto.entidades}" id="tabela" emptyMessage="Nenhum Registro Encontrado" var="produto" rendered="#{MBProduto.busca == true}">
+                    <p:column  headerText="Ações" style="width: 100px;text-align: center">
+                        <p:commandButton value="" action="#{MBProduto.editar(produto)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" alt="Editar" update="@form"/>
+                        <p:commandButton value="" action="#{MBProduto.deletar(produto)}" style="width: 38px; height:38px;" icon="ui-icon-trash" alt="Deletar" update="@form"/>
+                    </p:column>
+                    <p:column headerText="Código" style="width: 105px;" sortBy="#{produto.id}" filterBy="#{produto.id}">
+                        <h:outputText value="#{produto.id}"/>
+                    </p:column>
+                    <p:column headerText="Descrição" sortBy="#{produto.descricao}" filterBy="#{produto.descricao}">
+                        <h:outputText value="#{produto.descricao}"/>
+                    </p:column>
+                    <p:column headerText="Preço R$" sortBy="#{produto.precoCompra}" filterBy="#{produto.precoCompra}">
+                        <h:outputText value="#{produto.precoCompra}">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Cadastro" sortBy="#{produto.dataCadastro}" filterBy="#{produto.dataCadastro}">
+                        <h:outputText value="#{produto.dataCadastro}">
+                            <f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+                    </p:column>
+                    <p:column headerText="Grupo" sortBy="#{produto.grupo.descricao}" filterBy="#{produto.grupo.descricao}">
+                        <h:outputText value="#{produto.grupo.descricao}"/>
+                    </p:column>
+                    <p:column headerText="Marca" sortBy="#{produto.marca.descricao}" filterBy="#{produto.marca.descricao}">
+                        <h:outputText value="#{produto.marca.descricao}"/>
+                    </p:column>
+                    <p:column headerText="UN" style="width: 50px;text-align: center">
+                        <h:outputText value="#{produto.unidade.sigla}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+        <ui:include src="produtoCad.xhtml" />
+    </ui:define>
+</ui:decorate>

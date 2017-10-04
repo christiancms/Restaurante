@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+
+    <ui:define name="body">
+        <h:form>
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <p:fieldset legend="Marcas">
+                <!-- Botões -->
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Novo" action="#{MBMarca.novo()}" update="@form" actionListener="#{MBMarca.novo()}" oncomplete="PF('MarcaCadDialog').show()"/>
+                        <p:commandButton value="Buscar" action="#{MBMarca.buscar()}" update="@form"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <!-- Pesquisa -->
+                <p:dataTable value="#{MBMarca.entidades}" emptyMessage="Nenhum Registro Encontrado" var="marca" rendered="#{MBMarca.busca == true}">
+                    <p:column headerText="Ações" style="width: 100px;text-align: center">
+                        <p:commandButton value="" alt="Editar" action="#{MBMarca.editar(marca)}" style="width: 38px; height:38px;" icon="ui-icon-pencil" update="@form"/>
+                        <p:commandButton value="" alt="Deletar" action="#{MBMarca.deletar(marca)}" style="width: 38px; height:38px;" icon="ui-icon-trash" update="@form"/>
+                    </p:column>
+                    <p:column headerText="Código" style="width: 105px;" sortBy="#{marca.id}" filterBy="#{marca.id}">
+                        <h:outputText value="#{marca.id}"/>
+                    </p:column>
+                    <p:column headerText="Descrição" sortBy="#{marca.descricao}" filterBy="#{marca.descricao}">
+                        <h:outputText value="#{marca.descricao}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+        <ui:include src="marcaCad.xhtml" />
+    </ui:define>
+</ui:decorate>

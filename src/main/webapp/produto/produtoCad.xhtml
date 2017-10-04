@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              template="template.xhtml">
+
+    <ui:composition>
+        <p:dialog id="ProdutoCadDlg" widgetVar="ProdutoCadDialog" modal="true" resizable="false" appendTo="@(body)" header="Cadastar Nova Produto">
+            <h:form enctype="multipart/form-data" id="ProdutoCadForm">
+                <p:growl id="growl" showDetail="true" sticky="true" />
+                <!-- Botões -->
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Salvar" action="#{MBProduto.salvar()}" disabled="#{MBProduto.busca == true}" update="@form"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <!-- Cadastro -->
+                <p:panelGrid columns="2" >
+                    <h:outputLabel value="Código"/>
+                    <p:inputText value="#{MBProduto.entidade.id}" disabled="true"/>
+                    <h:outputLabel value="Descrição" />
+                    <p:inputText value="#{MBProduto.entidade.descricao}" required="true"/>
+                    <h:outputLabel value="Preço" />
+                    <p:inputText value="#{MBProduto.entidade.precoCompra}" type="" required="true">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </p:inputText>
+                    <h:outputLabel value="Dt. Cadastro"/>
+                    <p:inputText value="#{MBProduto.init()}"  disabled="true"/>
+                    <h:outputLabel value="Grupo" for="listaGrupo"/>
+                    <p:selectOneMenu value="#{MBProduto.entidade.grupo.id}" id="listaGrupo" required="true" style="width: 192px">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+                        <f:selectItems value="#{MBProduto.grupos}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Marca" for="listaMarca"/>
+                    <p:selectOneMenu value="#{MBProduto.entidade.marca.id}" id="listaMarca" style="width: 192px">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+                        <f:selectItems value="#{MBProduto.marcas}" />
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Unidade" for="listaUnidade"/>
+                    <p:selectOneMenu value="#{MBProduto.entidade.unidade.id}" id="listaUnidade" required="true" style="width: 192px">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+                        <f:selectItems value="#{MBProduto.unidades}" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</ui:decorate>

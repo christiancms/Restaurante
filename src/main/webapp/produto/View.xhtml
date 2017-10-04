@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProdutoViewDlg" widgetVar="ProdutoViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewProdutoTitle}">
+            <h:form id="ProdutoViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{MBProduto.selected != null}">
+                        <h:outputText value="#{bundle.ViewProdutoLabel_id}"/>
+                        <h:outputText value="#{MBProduto.selected.id}" title="Id"/>
+                        <h:outputText value="#{bundle.ViewProdutoLabel_descricao}"/>
+                        <h:outputText value="#{MBProduto.selected.descricao}" title="Descrição"/>
+                        <h:outputText value="#{bundle.ViewProdutoLabel_precoCompra}"/>
+                        <h:outputText value="#{MBProduto.selected.precoCompra}" title="Preço de Compra}"/>
+                        <h:outputText value="#{bundle.ViewProdutoLabel_dataCadastro}"/>
+                        <h:outputText value="#{MBProduto.selected.dataCadastro}" title="Data de Cadastro">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="Grupo"/>
+                        <h:outputText value="#{MBProduto.selected.grupo.descricao}" title="Grupo"/>
+                        <h:outputText value="Marca"/>
+                        <h:outputText value="#{MBProduto.selected.marca.descricao}" title="Marca"/>
+                        <h:outputText value="Unidade"/>
+                        <h:outputText value="#{MBProduto.selected.unidade.sigla}" title="Unidade"/>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
