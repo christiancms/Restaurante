@@ -1,9 +1,7 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import javax.persistence.*;
 
 /**
@@ -15,7 +13,7 @@ import javax.persistence.*;
 public class Pessoa implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
     @Column(name = "nome_razsoc")
     private String nomeRazsoc;
@@ -24,12 +22,10 @@ public class Pessoa implements Serializable {
     @Column(name = "aniver_abertura")
     @Temporal(TemporalType.DATE)
     private Date aniverAbertura;
-    @Column
-    private String telefone;
-    @Column
-    private String celular;
-    @Column
-    private String email;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Telefone> telefones = new HashSet<>();
+    @OneToMany(mappedBy= "pessoa")
+    private List<Email> emails = new ArrayList<>();
     @Column(name = "tipo_pessoa", length = 1)
     private String tipoPessoa; // Pessoa Física ou Pessoa Jurídica
     @Column(name = "fisica_juridica")
@@ -38,7 +34,7 @@ public class Pessoa implements Serializable {
     private String docrgInsest;
     @Column(length = 1)
     private String categoria; // Cliente, Fornecedor, Transportadora, Outros
-    @Column(length = 500)
+    @Column(name = "observacao", length = 500)
     private String observacao;
     //---------------- Endereço ----------------
     @OneToMany(mappedBy = "pessoa")
@@ -76,28 +72,20 @@ public class Pessoa implements Serializable {
         this.aniverAbertura = aniverAbertura;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public Set<Telefone> getTelefones() {
+        return telefones;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setTelefones(Set<Telefone> telefones) {
+        this.telefones = telefones;
     }
 
-    public String getCelular() {
-        return celular;
+    public List<Email> getEmails() {
+        return emails;
     }
 
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
     }
 
     public String getTipoPessoa() {

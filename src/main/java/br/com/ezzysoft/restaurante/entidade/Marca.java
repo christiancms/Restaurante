@@ -5,11 +5,14 @@ import java.util.Objects;
 import javax.persistence.*;
 
 /**
- *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
 @Entity
 @Table(name = "marca")
+@NamedQueries({
+        @NamedQuery(name = "Marca.findAll", query = "SELECT m FROM Marca m "),
+        @NamedQuery(name = "Marca.findAllOrder", query = "SELECT m FROM Marca m ORDER BY m.descricao"),
+        @NamedQuery(name = "Marca.findById", query = "SELECT m FROM Marca m WHERE  m.id = :id")})
 public class Marca implements Serializable {
 
     @Id
@@ -26,7 +29,7 @@ public class Marca implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getDescricao() {
         return descricao;
     }
@@ -63,10 +66,14 @@ public class Marca implements Serializable {
     public Marca() {
     }
 
+    public Marca(String descricao) {
+        this.descricao = descricao;
+    }
+
     @Override
     public String toString() {
         return "Marca[ id=" + id + " ]";
     }
-    
-    
+
+
 }

@@ -30,8 +30,10 @@ public class Grupo implements Serializable {
     @Column(name = "descricao")
     private String descricao;
     @Lob
-    @Column(columnDefinition = "blob", length = 65000)
+    @Column(name = "foto", columnDefinition = "blob", length = 65000)
     private byte[] foto;
+    @Column(name = "caminho_foto")
+    private String caminhoFoto;
 
     public Long getId() {
         return id;
@@ -49,7 +51,15 @@ public class Grupo implements Serializable {
         this.descricao = descricao;
     }
 
-//    @OneToOne
+    public String getCaminhoFoto() {
+        return caminhoFoto;
+    }
+
+    public void setCaminhoFoto(String caminhoFoto) {
+        this.caminhoFoto = caminhoFoto;
+    }
+
+    //    @OneToOne
 //    private Upload imagem;
     public byte[] getFoto() {
         return foto;
@@ -92,6 +102,10 @@ public class Grupo implements Serializable {
     }
 
     public Grupo() {
+    }
+
+    public Grupo(String descricao) {
+        this.descricao = descricao;
     }
 
     @Override

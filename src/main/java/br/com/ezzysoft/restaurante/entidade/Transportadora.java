@@ -4,10 +4,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- *
- * @author christian
+ * Created by christian on 22/10/17.
  */
-public class Configuracao  implements Serializable {
+@Entity
+@Table(name = "transportadora")
+public class Transportadora implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

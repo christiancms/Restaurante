@@ -10,25 +10,41 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "usuario")
+@NamedQueries({
+        @NamedQuery(name = "Usuario.auth", query = "SELECT u FROM Usuario  u WHERE u.username = :username AND u.password = :password"),
+        @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u "),
+        @NamedQuery(name = "Usuario.findAllOrder", query = "SELECT u FROM Usuario u ORDER BY u.username"),
+        @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id")})
 public class Usuario implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public static final String AUTH = "Usuario.auth";
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "usuario")
-    private String userName;
+    @Column(name = "usuario", unique = true)
+    private String username;
     @Column(name = "senha")
-    private String senha;
+    private String password;
+    @Column(name = "versao")
+    @Version
+    private Integer versao;
+
+    public Usuario() {
+    }
+
+    public Usuario(String username) {
+        this.username = username;
+    }
+
+    public Usuario(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -38,20 +54,28 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName.trim().toLowerCase();
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String senha) {
+        this.password = senha.trim();
+    }
+
+    public Integer getVersao() {
+        return versao;
+    }
+
+    public void setVersao(Integer versao) {
+        this.versao = versao;
     }
 
     @Override

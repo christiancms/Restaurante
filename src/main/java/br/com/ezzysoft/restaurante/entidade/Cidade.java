@@ -29,7 +29,7 @@ public class Cidade implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "nome")
     private String nome;
-    @Column
+    @Column(name = "codigo_ibge")
     private Long codigoIBGE;
     @ManyToOne(optional = false)
     @JoinColumn(name = "uf_id", referencedColumnName = "id", nullable = false)

@@ -4,22 +4,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- *
- * @author christian
+ * Created by christian on 22/10/17.
  */
-public class Configuracao  implements Serializable {
+public class SituacaoTributaria implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "codigo")
+    private String codigo;
+    @Column(name = "descricao")
+    private String descricao;
 }

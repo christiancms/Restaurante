@@ -2,12 +2,7 @@ package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -15,6 +10,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "unidade")
+@NamedQueries({
+        @NamedQuery(name = "Unidade.findAll", query = "SELECT u FROM Unidade u "),
+        @NamedQuery(name = "Unidade.findAllOrder", query = "SELECT u FROM Unidade u ORDER BY u.descricao"),
+        @NamedQuery(name = "Unidade.findById", query = "SELECT u FROM Unidade u WHERE u.id = :id")})
 public class Unidade implements Serializable {
 
     @Id
@@ -80,6 +79,11 @@ public class Unidade implements Serializable {
 
     public Unidade(Long id) {
         this.id = id;
+    }
+
+    public Unidade(String descricao, String sigla) {
+        this.descricao = descricao;
+        this.sigla = sigla;
     }
 
     public Unidade(Long id, String descricao, String sigla) {

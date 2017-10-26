@@ -13,11 +13,18 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "pedido")
+@NamedQueries({
+        @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p "),
+        @NamedQuery(name = "Pedido.findAllColaborador", query = "SELECT p FROM Pedido p INNER JOIN Colaborador c ON p.colaborador.id = c.id"),
+        @NamedQuery(name = "Pedido.findById", query = "SELECT p FROM Pedido p WHERE  p.id = :id"),
+        @NamedQuery(name = "Pedido.listItens", query = "SELECT  p FROM Pedido p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.id = :pedidoId")})
 public class Pedido implements Serializable {
+
+    public static final String LISTITENSPEDIDO = "Pedido.listItens";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
     @Column(name = "data_pedido")
     private Date dataPedido;
@@ -36,6 +43,9 @@ public class Pedido implements Serializable {
 //---------------- ItensPedido ----------------
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itensPedido;
+    @Column(name = "versao")
+    @Version
+    private Integer versao;
 
     public Long getId() {
         return id;
@@ -61,29 +71,12 @@ public class Pedido implements Serializable {
         this.itensPedido = itensPedido;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.id);
-        return hash;
+    public Integer getVersao() {
+        return versao;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Pedido other = (Pedido) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
+    public void setVersao(Integer versao) {
+        this.versao = versao;
     }
 
     public Date getDataPedido() {
@@ -124,6 +117,31 @@ public class Pedido implements Serializable {
 
     public void setColaborador(Colaborador colaborador) {
         this.colaborador = colaborador;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Pedido other = (Pedido) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

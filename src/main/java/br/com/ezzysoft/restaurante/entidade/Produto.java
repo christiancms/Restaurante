@@ -1,12 +1,16 @@
 package br.com.ezzysoft.restaurante.entidade;
 
+import org.eclipse.persistence.annotations.*;
+import org.eclipse.persistence.annotations.Cache;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
 
 /**
- *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
 @Entity
@@ -21,27 +25,93 @@ public class Produto implements Serializable {
     @Basic(optional = false)
     @Column(name = "descricao")
     private String descricao;
+    @Column(name = "descricaoAdc", length = 180)
+    private String descAdicional;
     @Basic(optional = false)
     @Column(name = "preco_compra")
     private Double precoCompra;
+    @Column(name = "preco_venda")
+    private Double precoVenda = 0d;
     @Basic(optional = false)
     @Column(name = "data_cadastro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
+    @Column(name = "codigo_barras", length = 20, unique = true)
+    private String codigoBarras;
+    @Column(name = "percentual_lucro")
+    private Double percLucro = 0d;
+    @Column(name = "status")
+    @Enumerated(EnumType.ORDINAL)
+    private Status status = Status.ATIVO;
+    @Column(name = "composto")
+    private boolean composto = false;
+    //---------------- ItensProduto ----------------
+    @OneToMany(mappedBy = "produto")
+    private List<ProdutoComposto> itensProdutoComposto;
+    @Column(name = "versao")
+    @Version
+    private Integer versao;
     /**
-     * Se a associação é opcional. 
+     * Se a associação é opcional.
      * Se definido como falso, uma relação não nula sempre deve existir.
      */
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name ="grupo_id", referencedColumnName = "id", updatable = true)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "grupo_id", referencedColumnName = "id", updatable = true)
     private Grupo grupo = new Grupo();
-    @ManyToOne(optional = true, fetch = FetchType.EAGER)
-    @JoinColumn(name ="marca_id", nullable = true, referencedColumnName = "id", updatable = true)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "marca_id", nullable = true, referencedColumnName = "id", updatable = true)
     private Marca marca = new Marca();
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name ="unidade_id", referencedColumnName = "id", updatable = true)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", updatable = true)
     private Unidade unidade = new Unidade();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="cominado_produto_",
+            joinColumns={@JoinColumn(name="combinado_id")},
+            inverseJoinColumns={@JoinColumn(name="produto_id")})
+    private List<Combinado> combinados = new ArrayList<>();
 
+    public Produto() {
+    }
+
+    public Produto(String descricao, String descAdicional, Double precoCompra, Double precoVenda, Date dataCadastro, String codigoBarras, Double percLucro, Status status, boolean composto, Grupo grupo, Marca marca, Unidade unidade) {
+        this.descricao = descricao;
+        this.descAdicional = descAdicional;
+        this.precoCompra = precoCompra;
+        this.precoVenda = precoVenda;
+        this.dataCadastro = dataCadastro;
+        this.codigoBarras = codigoBarras;
+        this.percLucro = percLucro;
+        this.status = status;
+        this.composto = composto;
+        this.grupo = grupo;
+        this.marca = marca;
+        this.unidade = unidade;
+    }
+
+    public enum Status {
+        ATIVO, INATIVO, EMFALTA, DEFASADO;
+
+        public static Status indice(int pos) {
+            Status st = null;
+            switch (pos) {
+                case 0:
+                    st = ATIVO;
+                    break;
+                case 1:
+                    st = INATIVO;
+                    break;
+                case 2:
+                    st = EMFALTA;
+                    break;
+                case 3:
+                    st = DEFASADO;
+                    break;
+                default:
+                    System.out.println("erro na posição");
+            }
+            return st;
+        }
+    }
 
     public Long getId() {
         return id;
@@ -74,7 +144,7 @@ public class Produto implements Serializable {
     public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
-    
+
     public Grupo getGrupo() {
         return grupo;
     }
@@ -97,6 +167,78 @@ public class Produto implements Serializable {
 
     public void setUnidade(Unidade unidade) {
         this.unidade = unidade;
+    }
+
+    public String getDescAdicional() {
+        return descAdicional;
+    }
+
+    public void setDescAdicional(String descAdicional) {
+        this.descAdicional = descAdicional;
+    }
+
+    public Double getPrecoVenda() {
+        return precoVenda;
+    }
+
+    public void setPrecoVenda(Double precoVenda) {
+        this.precoVenda = precoVenda;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
+
+    public Double getPercLucro() {
+        return percLucro;
+    }
+
+    public void setPercLucro(Double percLucro) {
+        this.percLucro = percLucro;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public List<Combinado> getCombinados() {
+        return combinados;
+    }
+
+    public void setCombinados(List<Combinado> combinados) {
+        this.combinados = combinados;
+    }
+
+    public boolean isComposto() {
+        return composto;
+    }
+
+    public void setComposto(boolean composto) {
+        this.composto = composto;
+    }
+
+    public List<ProdutoComposto> getItensProdutoComposto() {
+        return itensProdutoComposto;
+    }
+
+    public void setItensProdutoComposto(List<ProdutoComposto> itensProdutoComposto) {
+        this.itensProdutoComposto = itensProdutoComposto;
+    }
+
+    public Integer getVersao() {
+        return versao;
+    }
+
+    public void setVersao(Integer versao) {
+        this.versao = versao;
     }
 
     @Override
@@ -122,9 +264,6 @@ public class Produto implements Serializable {
             return false;
         }
         return true;
-    }
-
-    public Produto() {
     }
 
     @Override

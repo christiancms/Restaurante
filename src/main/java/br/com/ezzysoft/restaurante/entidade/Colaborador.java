@@ -2,27 +2,20 @@ package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
- *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
 @Entity
 @Table(name = "colaborador")
-//@NamedQueries({
-//    @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c")
-//    , @NamedQuery(name = "Colaborador.findById", query = "SELECT c FROM Colaborador c WHERE c.id = :id")})
-public class Colaborador implements Serializable{
-    
+@NamedQueries({
+    @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c"),
+    @NamedQuery(name = "Colaborador.findById", query = "SELECT c FROM Colaborador c WHERE c.id = :id")})
+public class Colaborador implements Serializable {
+
+    public static final String FINDBYID = "Colaborador.findById";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -30,6 +23,14 @@ public class Colaborador implements Serializable{
     private Long id;
     @Column(name = "nome")
     private String nome;
+    @Column(name = "appToken")
+    private String appToken;
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.EAGER)
+    private Usuario usuario = new Usuario();
+    @Column(name = "versao")
+    @Version
+    private Integer versao;
 
     public Colaborador() {
     }
@@ -38,13 +39,50 @@ public class Colaborador implements Serializable{
         this.id = id;
         this.nome = nome;
     }
-    
+
+    public Colaborador(String nome, Usuario usuario) {
+        this.nome = nome;
+        this.usuario = usuario;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getAppToken() {
+        return appToken;
+    }
+
+    public void setAppToken(String appToken) {
+        this.appToken = appToken;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Integer getVersao() {
+        return versao;
+    }
+
+    public void setVersao(Integer versao) {
+        this.versao = versao;
     }
 
     @Override
@@ -72,17 +110,9 @@ public class Colaborador implements Serializable{
         return true;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     @Override
     public String toString() {
         return "Colaborador{" + "nome=" + nome + '}';
     }
-    
+
 }

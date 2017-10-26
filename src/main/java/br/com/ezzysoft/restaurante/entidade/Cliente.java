@@ -3,16 +3,7 @@ package br.com.ezzysoft.restaurante.entidade;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -21,11 +12,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "cliente")
 @NamedQueries({
-    @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c")
-    , @NamedQuery(name = "Cliente.findById", query = "SELECT c FROM Cliente c WHERE c.id = :id")})
-public class Cliente implements Serializable {
+        @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c"),
+        @NamedQuery(name = "Cliente.findAllOrder", query = "SELECT c FROM Cliente c ORDER BY c.nome "),
+        @NamedQuery(name = "Cliente.findById", query = "SELECT c FROM Cliente c WHERE c.id = :id")})
+public class Cliente extends Pessoa implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -33,14 +24,21 @@ public class Cliente implements Serializable {
     private Long id;
     @Column(name = "nome")
     private String nome;
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
     private List<Pedido> pedidos;
+    @Column(name = "versao")
+    @Version
+    private Integer versao;
 
     public Cliente() {
     }
 
     public Cliente(Long id) {
         this.id = id;
+    }
+
+    public Cliente(String nome) {
+        this.nome = nome;
     }
 
     public Cliente(Long id, String nome) {
@@ -76,6 +74,14 @@ public class Cliente implements Serializable {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public Integer getVersao() {
+        return versao;
+    }
+
+    public void setVersao(Integer versao) {
+        this.versao = versao;
     }
 
     @Override

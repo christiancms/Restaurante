@@ -39,7 +39,8 @@ public class UserLoginView {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage message = null;
         boolean loggedIn = false;
-         
+
+
         if(username != null && username.equals("admin") && password != null && password.equals("admin")) {
             loggedIn = true;
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem Vindo", username);

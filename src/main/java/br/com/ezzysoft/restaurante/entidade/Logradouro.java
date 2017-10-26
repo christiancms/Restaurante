@@ -19,7 +19,7 @@ public class Logradouro implements Serializable{
     private Long id;
     @Column(name = "descricao")
     private String descricao;
-    @Column
+    @Column(name = "cep")
     private Long cep;
     @ManyToOne(optional = false)
     @JoinColumn(name = "bairro_id", referencedColumnName = "id", nullable = false)
@@ -32,6 +32,22 @@ public class Logradouro implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getCep() {
+        return cep;
+    }
+
+    public void setCep(Long cep) {
+        this.cep = cep;
+    }
+
+    public Bairro getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(Bairro bairro) {
+        this.bairro = bairro;
     }
 
     @Override

@@ -1,17 +1,15 @@
 package br.com.ezzysoft.restaurante.entidade;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
+ *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
 @Entity
-@Table(name = "itensPedido")
-@NamedQueries({
-        @NamedQuery(name = "ItemPedido.findAll", query = "SELECT o FROM ItemPedido o"),
-        @NamedQuery(name = "ItemPedido.findById", query = "SELECT o FROM ItemPedido o WHERE o.id = :id")})
-public class ItemPedido implements Serializable {
+@Table(name = "itensProduto")
+public class ItemProduto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
