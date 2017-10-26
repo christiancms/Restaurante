@@ -11,11 +11,9 @@
         <p:dialog id="ColaboradorViewDlg" widgetVar="ColaboradorViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewColaboradorTitle}">
             <h:form id="ColaboradorViewForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBColaborador.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{colaboradorController.selected != null}">
                         <h:outputText value="#{bundle.ViewColaboradorLabel_id}"/>
-                        <h:outputText value="#{MBColaborador.selected.id}" title="#{bundle.ViewColaboradorTitle_id}"/>
-                        <h:outputText value="Nome:"/>
-                        <h:outputText value="#{MBColaborador.selected.nome}" title="Nome"/>
+                        <h:outputText value="#{colaboradorController.selected.id}" title="#{bundle.ViewColaboradorTitle_id}"/>
                     </p:panelGrid>
                 </h:panelGroup>
             </h:form>

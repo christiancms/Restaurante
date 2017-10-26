@@ -11,41 +11,45 @@
         <ui:define name="title">
             <h:outputText value="Lista de Produtos"/>
         </ui:define>
-
+        
         <ui:define name="body">
-            
+            <!--<f:metadata>-->
+                <!--<f:event type="preRenderView" listener="" />-->
+            <!--</f:metadata>-->
             <h:form id="ProdutoListForm">
+
                 <p:panel header="Lista de Produtos">
-                    <p:dataTable id="datalist" value="#{MBProduto.items}" var="item"
+
+                    <p:dataTable id="datalist" value="#{MBProduto.getItems(false)}" var="item"
                                  selectionMode="single" selection="#{MBProduto.selected}"
-                                 paginator="true"
+                                 paginator="true" widgetVar="dtWidgetVar"
                                  rowKey="#{item.id}"
                                  rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
-                                 >
-
+                                 rowsPerPageTemplate="10,20,30,40,50">
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column style="width: 105px;" filterBy="#{item.id}">
+                        <p:column filterBy="#{item.id}" filterStyle="width: 30px">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListProdutoTitle_id}"/>
                             </f:facet>
-                            <h:outputText value="#{item.id}"/>
+                            <h:outputText value="#{item.id}" style="float:right"/>
                         </p:column>
-                        <p:column filterBy="#{item.descricao}" filterStyle="width:200px">
+                        <p:column filterBy="#{item.descricao}" filterStyle="width:200px" style="width: 205px">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListProdutoTitle_descricao}"/>
                             </f:facet>
                             <h:outputText value="#{item.descricao}"/>
                         </p:column>
-                        <p:column filterBy="#{item.precoCompra}">
+                        <p:column style="width: 105px;" filterBy="#{item.precoprecoVenda}" >
                             <f:facet name="header">
-                                <h:outputText value="Preço"/>
+                                <h:outputText value="Preço de Venda"/>
                             </f:facet>
-                            <h:outputText value="#{item.precoCompra}"/>
+                            <h:outputText value="#{item.precoVenda}" style="float:right">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
                         </p:column>
-                        <p:column filterBy="#{item.dataCadastro}">
+                        <p:column filterBy="#{item.dataCadastro}" style="width: 200px;">
                             <f:facet name="header">
                                 <h:outputText value="Dt.Cadastro"/>
                             </f:facet>
@@ -53,19 +57,19 @@
                                 <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                             </h:outputText>
                         </p:column>
-                        <p:column filterBy="#{item.grupo.descricao}">
+                        <p:column filterBy="#{item.grupo.descricao}" filterStyle="width: 50px">
                             <f:facet name="header">
                                 <h:outputText value="Grupo"/>
                             </f:facet>
                             <h:outputText value="#{item.grupo.descricao}"/>
                         </p:column>
-                        <p:column filterBy="#{item.marca.descricao}">
+                        <p:column filterBy="#{item.marca.descricao}" filterStyle="width: 50px">
                             <f:facet name="header">
                                 <h:outputText value="Marca"/>
                             </f:facet>
                             <h:outputText value="#{item.marca.descricao}"/>
                         </p:column>
-                        <p:column filterBy="#{item.unidade.sigla}">
+                        <p:column style="width: 85px;" filterBy="#{item.unidade.sigla}" filterStyle="width: 45px">
                             <f:facet name="header">
                                 <h:outputText value="Unidade"/>
                             </f:facet>
@@ -76,13 +80,14 @@
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ProdutoViewForm" oncomplete="PF('ProdutoViewDialog').show()" disabled="#{empty MBProduto.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ProdutoEditForm" oncomplete="PF('ProdutoEditDialog').show()" disabled="#{empty MBProduto.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{MBProduto.destroy}" update=":growl,datalist" disabled="#{empty MBProduto.selected}"/>
+                            <p:commandButton id="refreshButton" icon="ui-icon-refresh"  value="Atualizar" actionListener="#{MBProduto.getItems(true)}" update=":growl,datalist,ProdutoListForm" />
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
             </h:form>
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
+            <ui:include src="produtoCreate.xhtml"/>
+            <ui:include src="produtoEdit.xhtml"/>
+            <ui:include src="produtoView.xhtml"/>
         </ui:define>
     </ui:composition>
 </html>

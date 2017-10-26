@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">
+        <h:outputText value="Configurações"></h:outputText>
+    </ui:define>
+    <ui:define name="body">
+        <h:form>
+            <p:outputLabel value="Criar registros no banco?"/>
+            <h:panelGrid columns="2" cellpadding="5">
+                <h:outputLabel for="username" value="Usuário:"/>
+                <p:inputText id="username" value="#{MBConfig.username}" required="true" label="username"/>
+
+                <h:outputLabel for="password" value="Senha:"/>
+                <p:password id="password" value="#{MBConfig.password}" required="true" label="password"/>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Autenticar" update="growl" action="#{MBConfig.criarRegistros}"/>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

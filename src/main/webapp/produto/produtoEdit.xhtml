@@ -19,8 +19,12 @@
                         <p:inputText id="descricao" value="#{MBProduto.selected.descricao}" title="#{bundle.EditProdutoTitle_descricao}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_descricao}"/>
                         <p:outputLabel value="#{bundle.EditProdutoLabel_precoCompra}" for="precoCompra" />
                         <p:inputText id="precoCompra" value="#{MBProduto.selected.precoCompra}" title="#{bundle.EditProdutoTitle_precoCompra}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_precoCompra}"/>
+                        <p:outputLabel value="#{bundle.EditProdutoLabel_precoVenda}" for="precoVenda"/>
+                        <p:inputText id="precoVenda" value="#{MBProduto.selected.precoVenda}" title="#{bundle.CreateProdutoTitle_precoVenda}"/>
                         <p:outputLabel value="#{bundle.EditProdutoLabel_dataCadastro}" for="dataCadastro" />
-                        <p:calendar id="dataCadastro" pattern="MM/dd/yyyy HH:mm:ss" value="#{MBProduto.selected.dataCadastro}" title="#{bundle.EditProdutoTitle_dataCadastro}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_dataCadastro}" showOn="button"/>
+                        <p:calendar id="dataCadastro" pattern="dd/MM/yyyy" value="#{MBProduto.selected.dataCadastro}" title="#{bundle.EditProdutoTitle_dataCadastro}" required="true"
+                                    mindate="today"
+                                    requiredMessage="#{bundle.EditProdutoRequiredMessage_dataCadastro}" showOn="button"/>
                         
                         <p:outputLabel value="Grupo" for="grupoId" />
                         <p:selectOneMenu id="grupoId" value="#{MBProduto.selected.grupo.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">

@@ -1,16 +1,14 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
-              xmlns:h="http://xmlns.jcp.org/jsf/html"
-              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-              xmlns:p="http://primefaces.org/ui"
-              xmlns:f="http://xmlns.jcp.org/jsf/core"
-              template="template.xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:define name="body">
-        <f:metadata>    
-            <f:event type="preRenderView" listener="#{MBProduto.onLoad()}"/>    
-        </f:metadata>
+<ui:composition template="/teste.xhtml">
+
+<ui:define name="body">
+
         <h:form enctype="multipart/form-data">
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="Produtos">
@@ -43,8 +41,8 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Cadastro" sortBy="#{produto.dataCadastro}" filterBy="#{produto.dataCadastro}">
-                        <h:outputText value="#{produto.dataCadastro}">
-                            <f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+                        <h:outputText value="#{produto.dataCadastro}"/>
+
                     </p:column>
                     <p:column headerText="Grupo" sortBy="#{produto.grupo.descricao}" filterBy="#{produto.grupo.descricao}">
                         <h:outputText value="#{produto.grupo.descricao}"/>
@@ -60,4 +58,5 @@
         </h:form>
         <ui:include src="produtoCad.xhtml" />
     </ui:define>
-</ui:decorate>
+</ui:composition>
+</html>

@@ -13,10 +13,12 @@
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{MBColaborador.selected != null}">
                         <p:outputLabel value="#{bundle.EditColaboradorLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBColaborador.selected.id}" title="#{bundle.EditColaboradorTitle_id}" required="true" 
+                        <p:inputText id="id" value="#{MBColaborador.selected.id}" title="#{bundle.EditColaboradorTitle_id}" required="true"
                                      disabled="true" requiredMessage="#{bundle.EditColaboradorRequiredMessage_id}"/>
                         <p:outputLabel value="Nome:" for="nome" />
                         <p:inputText id="nome" value="#{MBColaborador.selected.nome}" title="Nome" required="true" requiredMessage="O campo Nome é requerido."/>
+                        <p:outputLabel value="AppToke:" for="AppToken" />
+                        <p:inputText id="AppToken" value="#{MBColaborador.selected.nome}" title="Nome" required="true" requiredMessage="O campo Nome é requerido."/>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{MBColaborador.update}" value="#{bundle.Save}" update="display,:ColaboradorListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ColaboradorEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ColaboradorEditDialog.hide()"/>

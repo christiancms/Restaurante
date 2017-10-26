@@ -1,56 +1,55 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<ui:decorate  xmlns="http://www.w3.org/1999/xhtml"
-              xmlns:h="http://xmlns.jcp.org/jsf/html"
-              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-              xmlns:p="http://primefaces.org/ui"
-              xmlns:f="http://xmlns.jcp.org/jsf/core"
-              template="template.xhtml">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml">
 
     <ui:define name="body">
         <h:form>
             <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <p:fieldset legend="PDV">
-                <p:clock  autoSync="true"/>
-                <p:focus context="codigoProduto" />
-                <p:panelGrid columns="2" >
-                    
+                <p:clock autoSync="true"/>
+                <p:focus context="codigoProduto"/>
+                <p:panelGrid columns="2">
+
                     <p:fieldset legend="COD" id="cod" style="width: 250px; height: 355px">
-                        <p:inputText value="#{MBProduto.entidade.id}" id="codigoProduto" >
-                            
-                        </p:inputText>
-                        <p:watermark for="codigoProduto" value="Código do Produto" id="codigoProduto" /><br />
-                        <p:inputText value="#{MBCaixa.init()}" id="quantidade" disabled="false"></p:inputText>
-                        <p:watermark for="quantidade" value="Quantidade" id="quantidade" /><br />
-                        <p:inputText value="" id="vlrUnitario" disabled="false"></p:inputText>
-                        <p:watermark for="vlrUnitario" value="Valor Unitário(R$)" id="vlrUnitario" /><br />
-                        <p:inputText value="" id="vlrItem" disabled="false"></p:inputText>
-                        <p:watermark for="vlrItem" value="Valor Total Item(R$)" id="vlrItem" /><br />
-                        <p:inputText value="" id="qtdeTotal" disabled="false"></p:inputText>
-                        <p:watermark for="qtdeTotal" value="Quantidade Total" id="qtdeTotal" /><br />
-                        <p:inputText value="" id="vlrTotal" disabled="false"></p:inputText>
-                        <p:watermark for="vlrTotal" value="Valor Total da Venda" id="vlrTotal"/><br />     
-                        <p:commandButton value="Fechar Venda" action="#{MBCaixa.fecharVenda()}" update="@form" style="width: 222px; color: white; background: green"></p:commandButton>
-                        <p:commandButton value="Cancelar Produto" action="#{MBCaixa.cancelarProduto()}" update="@form" style="width: 222px; color: white; background: orange"></p:commandButton>
-                        <p:commandButton value="Cancelar Venda" action="#{MBCaixa.cancelarVenda()}" update="@form" style="width: 222px; color: white; background: red"></p:commandButton>
-                        <p:commandButton value="Fechar Caixa" action="#{MBCaixa.fecharCaixa()}" update="@form" style="width: 222px; color: white; background: blue"></p:commandButton>
+                        <p:inputText value="#{MBProduto.selected.id}" id="codigoProduto"/>
+                        <p:watermark for="codigoProduto" value="Código do Produto" /><br/>
+                        <p:inputText value="#{MBCaixa.init()}" id="quantidade" disabled="false"/>
+                        <p:watermark for="quantidade" value="Quantidade" /><br/>
+                        <p:inputText value="" id="vlrUnitario" disabled="false"/>
+                        <p:watermark for="vlrUnitario" value="Valor Unitário(R$)" /><br/>
+                        <p:inputText value="" id="vlrItem" disabled="false"/>
+                        <p:watermark for="vlrItem" value="Valor Total Item(R$)" /><br/>
+                        <p:inputText value="" id="qtdeTotal" disabled="false"/>
+                        <p:watermark for="qtdeTotal" value="Quantidade Total" /><br/>
+                        <p:inputText value="" id="vlrTotal" disabled="false"/>
+                        <p:watermark for="vlrTotal" value="Valor Total da Venda" /><br/>
+                        <p:commandButton value="Fechar Venda" action="#{MBCaixa.fecharVenda()}" update="@form" style="width: 222px; color: white; background: green"/>
+                        <p:commandButton value="Cancelar Produto" action="#{MBCaixa.cancelarProduto()}" update="@form" style="width: 222px; color: white; background: orange"/>
+                        <p:commandButton value="Cancelar Venda" action="#{MBCaixa.cancelarVenda()}" update="@form" style="width: 222px; color: white; background: red"/>
+                        <p:commandButton value="Fechar Caixa" action="#{MBCaixa.fecharCaixa()}" update="@form" style="width: 222px; color: white; background: blue"/>
                     </p:fieldset>
 
-                    <p:fieldset legend="PRODUTO" id="prod" style="width: 600px; height: 355px" >
-                        <p:panelGrid columns="7" >
-                            <h:outputLabel value="ITEM" />
-                            <h:outputLabel value="CÓDIGO" />
-                            <h:outputLabel value="DESCRIÇÃO" />
-                            <h:outputLabel value="UN" />
-                            <h:outputLabel value="QTDE" />
-                            <h:outputLabel value="PREÇO" />
-                            <h:outputLabel value="TOTAL" />
+                    <p:fieldset legend="PRODUTO" id="prod" style="width: 600px; height: 355px">
+                        <p:panelGrid columns="7">
+                            <h:outputLabel value="ITEM"/>
+                            <h:outputLabel value="CÓDIGO"/>
+                            <h:outputLabel value="DESCRIÇÃO"/>
+                            <h:outputLabel value="UN"/>
+                            <h:outputLabel value="QTDE"/>
+                            <h:outputLabel value="PREÇO"/>
+                            <h:outputLabel value="TOTAL"/>
                         </p:panelGrid>
                     </p:fieldset>
-
                 </p:panelGrid>
-
             </p:fieldset>
         </h:form>
     </ui:define>
-</ui:decorate>
+</ui:composition>
+</html>

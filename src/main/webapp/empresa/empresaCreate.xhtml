@@ -11,14 +11,11 @@
         <p:dialog id="ColaboradorCreateDlg" widgetVar="ColaboradorCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateColaboradorTitle}">
             <h:form id="ColaboradorCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBColaborador.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{colaboradorController.selected != null}">
                         <p:outputLabel value="#{bundle.CreateColaboradorLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBColaborador.selected.id}" title="#{bundle.CreateColaboradorTitle_id}" required="true" 
-                                     disabled="true" requiredMessage="#{bundle.CreateColaboradorRequiredMessage_id}"/>
-                        <p:outputLabel value="Nome:" for="nome" />
-                        <p:inputText id="nome" value="#{MBColaborador.selected.id}" title="Nome" required="true" requiredMessage="O campo Nome é requerido."/>
+                        <p:inputText id="id" value="#{colaboradorController.selected.id}" title="#{bundle.CreateColaboradorTitle_id}" required="true" requiredMessage="#{bundle.CreateColaboradorRequiredMessage_id}"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{MBColaborador.create}" value="#{bundle.Save}" update="display,:ColaboradorListForm:datalist,:growl" oncomplete="handleSubmit(args,'ColaboradorCreateDialog');"/>
+                    <p:commandButton actionListener="#{colaboradorController.create}" value="#{bundle.Save}" update="display,:ColaboradorListForm:datalist,:growl" oncomplete="handleSubmit(args,'ColaboradorCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ColaboradorCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

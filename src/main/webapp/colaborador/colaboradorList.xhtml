@@ -39,6 +39,12 @@
                             </f:facet>
                             <h:outputText value="#{item.nome}"/>
                         </p:column>
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="AppToekn"/>
+                            </f:facet>
+                            <h:outputText value="#{item.appToken}"/>
+                        </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{MBColaborador.prepareCreate}" update=":ColaboradorCreateForm" oncomplete="PF('ColaboradorCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ColaboradorViewForm" oncomplete="PF('ColaboradorViewDialog').show()" disabled="#{empty MBColaborador.selected}"/>
@@ -49,9 +55,9 @@
                 </p:panel>
             </h:form>
 
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
+            <ui:include src="colaboradorCreate.xhtml"/>
+            <ui:include src="colaboradorEdit.xhtml"/>
+            <ui:include src="colaboradorView.xhtml"/>
         </ui:define>
     </ui:composition>
 

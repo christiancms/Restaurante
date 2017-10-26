@@ -12,6 +12,7 @@
             <h:form id="ProdutoCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{MBProduto.selected != null}">
+
                         <p:outputLabel value="#{bundle.CreateProdutoLabel_id}" for="id" />
                         <p:inputText id="id" value="#{MBProduto.selected.id}" title="#{bundle.CreateProdutoTitle_id}" required="false" 
                                      disabled="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_id}"/>
@@ -19,8 +20,12 @@
                         <p:inputText id="descricao" value="#{MBProduto.selected.descricao}" title="#{bundle.CreateProdutoTitle_descricao}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_descricao}"/>
                         <p:outputLabel value="#{bundle.CreateProdutoLabel_precoCompra}" for="precoCompra" />
                         <p:inputText id="precoCompra" value="#{MBProduto.selected.precoCompra}" title="#{bundle.CreateProdutoTitle_precoCompra}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_precoCompra}"/>
+                        <p:outputLabel value="#{bundle.CreateProdutoLabel_precoVenda}" for="precoVenda"/>
+                        <p:inputText id="precoVenda" value="#{MBProduto.selected.precoVenda}" title="#{bundle.CreateProdutoTitle_precoVenda}"/>
                         <p:outputLabel value="#{bundle.CreateProdutoLabel_dataCadastro}" for="dataCadastro" />
-                        <p:calendar id="dataCadastro" pattern="MM/dd/yyyy HH:mm:ss" value="#{MBProduto.selected.dataCadastro}" title="#{bundle.EditProdutoTitle_dataCadastro}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_dataCadastro}" showOn="button"/>
+                        <p:calendar id="dataCadastro" pattern="dd/MM/yyyy" value="#{MBProduto.selected.dataCadastro}" title="#{bundle.EditProdutoTitle_dataCadastro}"
+                                    mask="99/99/9999" mindate="today"
+                                    required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_dataCadastro}" showOn="button"/>
 
                         <p:outputLabel value="Grupo:" for="grupoId" />
                         <p:selectOneMenu id="grupoId" value="#{MBProduto.selected.grupo.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">
@@ -51,6 +56,7 @@
                     </p:panelGrid>
                     <p:commandButton actionListener="#{MBProduto.create}" value="#{bundle.Save}" update="display,:ProdutoListForm:datalist,:growl" oncomplete="handleSubmit(args,'ProdutoCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ProdutoCreateDialog.hide()"/>
+                    <p:inputText type="hidden" id="hdProduto" value="#{MBProduto.selected.versao}" />
                 </h:panelGroup>
             </h:form>
         </p:dialog>

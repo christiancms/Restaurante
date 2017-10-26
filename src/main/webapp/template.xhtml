@@ -1,66 +1,79 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <f:view contentType="text/html">
-        <h:head>
-            <link rel="icon" type="image/x-icon" href="/images/logo-web.png"/>
-            <f:facet name="first">
-                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>EzzySoft - Restaurante Sistema de Controle de Mesas 03/2017</title>
-                <!--<link rel="stylesheet" type="text/css" href="resources/jsfcrud.css" />-->
-            </f:facet>
-            <h:outputStylesheet library="css" name="jsfcrud.css"/>
+<f:view contentType="text/html">
+    <h:head>
+        <link rel="icon" type="image/x-icon" href="resources/images/logo-web.png"/>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>EzzySoft - Restaurante Sistema de Controle de Mesas 03/2017</title>
+            <!--<link rel="stylesheet" type="text/css" href="resources/jsfcrud.css" />-->
+        </f:facet>
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>
         <h:outputScript library="js" name="jsfcrud.js"/>
-        </h:head>
-        <h:body>
-            <p:growl id="growl" life="3000" />
-            <p:layout fullPage="true">
-                
-                <!-- <p:layoutUnit position="north" size="0" resizable="true" closable="true" collapsible="true">
-                 </p:layoutUnit>
- 
-                 <p:layoutUnit position="south" size="0" closable="true" collapsible="true">
-                 </p:layoutUnit>-->
+    </h:head>
+    <h:body>
+        <p:growl id="growl" life="3000"/>
+        <p:layout fullPage="true">
 
-                <p:layoutUnit position="west" size="175" header="Ocultar" collapsible="true">
-                    <p:menu>
-                        <p:menuitem value="EzzySoft" outcome="/index" icon="ui-icon-home"/>
-                        <p:submenu label="Cadastro">
-                            <p:menuitem value="Cliente" outcome="/cliente/List" icon="ui-icon-home"/>
-                            <p:menuitem value="Colaborador" outcome="/colaborador/List" icon="ui-icon-home"/>
-                            <p:menuitem value="Grupo" outcome="/grupo/List" icon="ui-icon-home"/>
-                            <p:menuitem value="Marca" outcome="/marca/List" icon="ui-icon-home"/>
-                            <p:menuitem value="Produto" outcome="/produto/List" icon="ui-icon-home"/>
-                            <p:menuitem value="Unidade" outcome="/unidade/List" icon="ui-icon-home"/>
-                        </p:submenu>
-                        <p:submenu label="Caixa">
-                            <p:menuitem value="PDV" outcome="/caixaFilter" icon="ui-icon-home"/>
-                        </p:submenu>
-                        <p:submenu label="Config">
-                            <p:menuitem value="Empresa" outcome="/empresa/List" icon="ui-icon-home"/>
-                        </p:submenu>
-                        <p:submenu label="Pedido">
-                            <p:menuitem value="Visualizar" outcome="/pedido/List" icon="ui-icon-home"/>
-                        </p:submenu>
+            <p:layoutUnit position="north" size="60" resizable="false" closable="false" collapsible="false">
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                            <h:outputText value="#{MBLogin.sessionUser.username}"/>
+                            <h:outputText value="   "/>
+                            <p:commandButton value="sair" actionListener="#{MBLogin.doLogout}"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </p:layoutUnit>
+            <!--
 
-                        <p:submenu label="Relatório">
-                            <p:menuitem value="Vendas" url="" icon="ui-icon-home"/>
-                        </p:submenu>
-                        <p:submenu label="Gráfico">
-                            <p:menuitem value="Produto" outcome="/grafico" icon="ui-icon-home"/>
-                        </p:submenu>
-                    </p:menu>
-                </p:layoutUnit>
+             <p:layoutUnit position="south" size="0" closable="true" collapsible="true">
+             </p:layoutUnit>-->
 
-                <p:layoutUnit position="center" id="centro">
-                    <ui:insert name="body"/>
-                </p:layoutUnit>
-            </p:layout>
-        </h:body>
-    </f:view>
+            <p:layoutUnit position="west" size="175" header="Ocultar" collapsible="true">
+                <p:menu>
+                    <p:menuitem value="EzzySoft" outcome="/index" icon="fa fa-home"/>
+                    <p:submenu label="Cadastro">
+                        <p:menuitem value=" Cliente" outcome="/cliente/clienteList" icon="fa fa-user"/>
+                        <p:menuitem value=" Colaborador" outcome="/colaborador/colaboradorList" icon="fa fa-user-plus"/>
+                        <p:menuitem value=" Grupo" outcome="/grupo/grupoList" icon="fa fa-group"/>
+                        <p:menuitem value=" Marca" outcome="/marca/marcaList" icon="fa fa-cutlery"/>
+                        <p:menuitem value=" Produto" outcome="/produto/produtoList" icon="fa fa-cutlery"/>
+                        <p:menuitem value=" Unidade" outcome="/unidade/unidadeList" icon="fa fa-cutlery"/>
+                        <p:menuitem value=" Usuário" outcome="/colaborador/colaboradorList" icon="fa fa-user"/>
+                    </p:submenu>
+                    <p:submenu label="Caixa">
+                        <p:menuitem value=" PDV" outcome="/caixaFilter" icon="fa fa-cutlery"/>
+                        <p:menuitem value=" Tele-entrega" outcome="/caixaFilter" icon="fa fa-motorcycle"/>
+                    </p:submenu>
+                    <p:submenu label="Config">
+                        <p:menuitem value=" Configuração" outcome="/config/configList" icon="fa fa-android"/>
+                        <p:menuitem value=" Empresa" outcome="/empresa/empresaList" icon="fa fa-institution"/>
+                    </p:submenu>
+                    <p:submenu label="Pedido">
+                        <p:menuitem value=" Visualizar" outcome="/pedido/pedidoList" icon="fa fa-shopping-cart"/>
+                    </p:submenu>
+
+                    <p:submenu label="Relatório">
+                        <p:menuitem value=" Vendas" url="" icon="fa fa-line-chart"/>
+                    </p:submenu>
+                    <p:submenu label="Gráfico">
+                        <p:menuitem value=" Produto" outcome="/grafico" icon="fa fa-pie-chart"/>
+                    </p:submenu>
+                </p:menu>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" id="centro">
+                <ui:insert name="body"/>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</f:view>
 </html>
 
