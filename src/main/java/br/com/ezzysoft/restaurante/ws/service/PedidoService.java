@@ -13,6 +13,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -113,6 +114,7 @@ public class PedidoService extends AbstractFacade<Pedido> {
     @Produces(MediaType.APPLICATION_JSON)
     public String getPedidos() {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dfh = new SimpleDateFormat("HH:mm:ss");
         List<Pedido> lista = super.findAll();
         ObjectMapper mapper = new ObjectMapper();
         List<ItemPedido> itens;
@@ -129,8 +131,8 @@ public class PedidoService extends AbstractFacade<Pedido> {
                 pt.setIdPedido(elem.getId());
                 pt.setClienteId(elem.getCliente().getId());
                 pt.setColaboradorId(elem.getColaborador().getId());
-                pt.setDataPedido("04/07/2017");//elem.getDataPedido().toString());
-                pt.setHoraPedido("19:42:23");//elem.getHoraPedido().toString());
+                pt.setDataPedido(df.format(new Date()));//elem.getDataPedido().toString());
+                pt.setHoraPedido(dfh.format(new Date()));//elem.getHoraPedido().toString());
                 pt.setMesa(elem.getMesa());
                 pt.setDescricao(elem.getDescricao());
 

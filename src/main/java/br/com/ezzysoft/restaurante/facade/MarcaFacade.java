@@ -4,6 +4,8 @@ import br.com.ezzysoft.restaurante.entidade.Marca;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  *
@@ -24,4 +26,9 @@ public class MarcaFacade extends AbstractFacade<Marca> {
         super(Marca.class);
     }
 
+    @Override
+    public List<Marca> findAll() {
+        Query q = em.createNamedQuery("Marca.findAllOrder");
+        return (List<Marca>)q.getResultList();
+    }
 }

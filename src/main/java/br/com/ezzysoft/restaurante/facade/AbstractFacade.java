@@ -1,7 +1,10 @@
 package br.com.ezzysoft.restaurante.facade;
 
+import br.com.ezzysoft.restaurante.util.exception.NegocioException;
+
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
@@ -27,7 +30,12 @@ public abstract class AbstractFacade<T> {
     }
 
     public void edit(T entity) {
-        getEntityManager().merge(entity);
+        try {
+            getEntityManager().merge(entity);
+        } catch (OptimisticLockException e){
+            throw new NegocioException("Erro de concorrência. Esse "+entity.toString()+" já foi alterado anteriormente.");
+        }
+
     }
 
     public void remove(T entity) {

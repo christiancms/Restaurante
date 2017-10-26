@@ -95,3 +95,11 @@ INSERT INTO produto VALUES
 ALTER TABLE grupo ADD COLUMN foto BLOB NULL;
 
 ALTER TABLE uf RENAME TO unidadefederacao;
+
+ALTER  TABLE colaborador ADD appToken VARCHAR(200);
+
+ALTER TABLE colaborador ADD usuario_id INT,
+	ADD FOREIGN KEY FK_colaborador_usuario_id(usuario_id) REFERENCES FK_colaborador_usuario_id(id)
+
+ALTER TABLE usuario ADD versao INT(20);
+ALTER TABLE colaborador ADD versao INT(20);
