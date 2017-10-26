@@ -1,23 +1,17 @@
 package br.com.ezzysoft.restaurante.bean;
 
-import br.com.ezzysoft.restaurante.facade.MarcaFacade;
-import br.com.ezzysoft.restaurante.facade.UnidadeFacade;
 import br.com.ezzysoft.restaurante.entidade.Grupo;
 import br.com.ezzysoft.restaurante.entidade.Marca;
 import br.com.ezzysoft.restaurante.entidade.Produto;
 import br.com.ezzysoft.restaurante.entidade.Unidade;
 import br.com.ezzysoft.restaurante.facade.GrupoFacade;
+import br.com.ezzysoft.restaurante.facade.MarcaFacade;
 import br.com.ezzysoft.restaurante.facade.ProdutoFacade;
+import br.com.ezzysoft.restaurante.facade.UnidadeFacade;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.JsfUtil.PersistAction;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -30,15 +24,19 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-
-import static com.sun.javafx.logging.PulseLogger.addMessage;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
 @ManagedBean(name = "MBProduto")
 @SessionScoped
-public class MBProduto implements Serializable {
+public class MBProdutoComposto implements Serializable {
 
     ////
 //    public String init(){
@@ -59,7 +57,7 @@ public class MBProduto implements Serializable {
     private Marca selectedMarca;
     private Unidade selectedUnidade;
 
-    public MBProduto() {
+    public MBProdutoComposto() {
     }
 
     public Produto getSelected() {
@@ -81,10 +79,9 @@ public class MBProduto implements Serializable {
         this.selected = selected;
     }
 
-    // Atribui chave incorporável
     protected void setEmbeddableKeys() {
     }
-    // Inicializa chave incorporável
+
     protected void initializeEmbeddableKey() {
     }
 
@@ -205,7 +202,7 @@ public class MBProduto implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            MBProduto controller = (MBProduto) facesContext.getApplication().getELResolver().
+            MBProdutoComposto controller = (MBProdutoComposto) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "MBProduto");
             return controller.getProduto(getKey(value));
         }

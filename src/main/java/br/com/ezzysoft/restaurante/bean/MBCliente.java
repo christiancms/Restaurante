@@ -32,6 +32,7 @@ public class MBCliente implements Serializable {
     private List<Cliente> items = null;
     private Cliente selected;
 
+
     public MBCliente() {
     }
 
@@ -163,6 +164,10 @@ public class MBCliente implements Serializable {
                 return null;
             }
         }
+
+    }
+
+    public void init(){
 
     }
     
