@@ -2,6 +2,7 @@ package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.entidade.*;
 import br.com.ezzysoft.restaurante.facade.*;
+import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.Util;
 
 import javax.ejb.EJB;
@@ -50,7 +51,7 @@ public class MBConfig implements Serializable {
             }
             Usuario usuario = facadeUsuario.find(1l);
             if (usuario == null) {
-                usuario = new Usuario("admin", "admin");
+                usuario = new Usuario("ezzyadm", "teste123");
                 facadeUsuario.create(usuario);
             }
             Colaborador colaborador = facadeColaborador.find(1l);
@@ -80,6 +81,7 @@ public class MBConfig implements Serializable {
                         "1234567890", 50.0d, Produto.Status.ATIVO, false, grupo, marca, unidade);
                 facadeProduto.create(produto);
             }
+            JsfUtil.addSuccessMessage("Registros criados com sucesso");
         }
     }
 

@@ -9,8 +9,8 @@
     <class>br.com.ezzysoft.restaurante.entidade.Bairro</class>
     <class>br.com.ezzysoft.restaurante.entidade.Cidade</class>
     <class>br.com.ezzysoft.restaurante.entidade.Cliente</class>
-    <class>br.com.ezzysoft.restaurante.entidade.Combinado</class>
     <class>br.com.ezzysoft.restaurante.entidade.Colaborador</class>
+    <class>br.com.ezzysoft.restaurante.entidade.Combinado</class>
     <class>br.com.ezzysoft.restaurante.entidade.Email</class>
     <class>br.com.ezzysoft.restaurante.entidade.Empresa</class>
     <class>br.com.ezzysoft.restaurante.entidade.Endereco</class>

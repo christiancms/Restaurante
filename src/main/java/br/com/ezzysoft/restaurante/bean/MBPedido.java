@@ -1,14 +1,13 @@
 package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.dao.ColaboradorDAO;
-import br.com.ezzysoft.restaurante.dao.PedidoDAO;
 import br.com.ezzysoft.restaurante.entidade.Colaborador;
+import br.com.ezzysoft.restaurante.entidade.ItemPedido;
 import br.com.ezzysoft.restaurante.entidade.Pedido;
 import br.com.ezzysoft.restaurante.facade.ColaboradorFacade;
 import br.com.ezzysoft.restaurante.facade.PedidoFacade;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
-import org.primefaces.component.inputtext.InputText;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -18,18 +17,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
 
 /**
  * @author christian
@@ -44,8 +41,11 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
     @EJB
     private ColaboradorFacade facadeColaborador;
     private Pedido selected;
+    private ItemPedido selectedItem;
     private List<Pedido> items = null;
+    private List<ItemPedido> itensPedido = null;
     private Colaborador selectedColaborador;
+    private Double totalPedido = 0d;
 
     public MBPedido() {
     }
@@ -147,7 +147,28 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
             items = null;
             items = getFacade().findAll();
         }
-        return items;
+        return calculaItensPedido(items);
+    }
+
+    public List<ItemPedido> getItensPedido(Long pedidoId) {
+        return getFacade().getItensPedido(pedidoId);
+    }
+
+    public List<Pedido> calculaItensPedido(List<Pedido> listaPedidos) {
+        Double accum = 0d;
+        int i = 0;
+        if (!listaPedidos.isEmpty()) {
+            for (Pedido ped : listaPedidos) {
+                itensPedido = getFacade().getItensPedido(ped.getId());
+                for (ItemPedido ipedido : itensPedido) {
+                    accum += ipedido.getProduto().getPrecoVenda() * ipedido.getQuantidade();
+                }
+                listaPedidos.get(i).setTotalPedido(accum);
+                accum = 0d;
+                i++;
+            }
+        }
+        return listaPedidos;
     }
 
     public List<SelectItem> getColaboradores() throws ErroSistema {
@@ -214,9 +235,21 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
         }
     }
 
-    public String init() {
+    @PostConstruct
+    public void init() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(new Date());
+        SimpleDateFormat shf = new SimpleDateFormat("HH:mm");
+        items = getFacade().getPedidoAtual(new Date());
+        if (!FacesContext.getCurrentInstance().isPostback()) {
+            System.out.println("Postback: "+shf.format(new Date()));
+        }
+    }
 
+    public Double getTotalPedido() {
+        return totalPedido;
+    }
+
+    public void setTotalPedido(Double totalPedido) {
+        this.totalPedido = totalPedido;
     }
 }

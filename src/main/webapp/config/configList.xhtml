@@ -21,7 +21,7 @@
                 <p:password id="password" value="#{MBConfig.password}" required="true" label="password"/>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Autenticar" update="growl" action="#{MBConfig.criarRegistros}"/>
+                    <p:commandButton value="Autenticar" update=":growl" action="#{MBConfig.criarRegistros}"/>
                 </f:facet>
             </h:panelGrid>
         </h:form>

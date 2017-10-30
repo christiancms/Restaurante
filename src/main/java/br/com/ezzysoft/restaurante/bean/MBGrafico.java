@@ -2,6 +2,7 @@ package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.dao.ProdutoDAO;
 import br.com.ezzysoft.restaurante.entidade.Produto;
+import br.com.ezzysoft.restaurante.facade.ProdutoFacade;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.primefaces.model.chart.PieChartModel;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -24,9 +26,14 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class MBGrafico implements Serializable {
 
+    @EJB
+    private ProdutoFacade ejbFacade;
     private PieChartModel pieModel;
-    ProdutoDAO facadeProduto = new ProdutoDAO();
     List<Produto> produtosList = new ArrayList<>();
+
+    public ProdutoFacade getFacade() {
+        return ejbFacade;
+    }
 
     @PostConstruct
     public void init() {
@@ -39,7 +46,7 @@ public class MBGrafico implements Serializable {
 
     private void createPieModel() {
         try {
-            produtosList = facadeProduto.buscarGrafico();
+            produtosList = getFacade().buscarGrafico();
             Map graf = new HashMap();
             Integer count = 0;
 

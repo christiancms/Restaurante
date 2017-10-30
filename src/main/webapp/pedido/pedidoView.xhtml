@@ -13,32 +13,58 @@
               header="#{bundle.ViewPedidoTitle}">
         <h:form id="PedidoViewForm">
             <h:panelGroup id="display">
-                <p:panelGrid columns="2" rendered="#{MBPedido.selected != null}">
+                <p:panelGrid columns="4" rendered="#{MBPedido.selected != null}">
                     <h:outputText value="#{bundle.ViewPedidoLabel_id}"/>
-                    <h:outputText value="#{MBPedido.selected.id}" title="#{bundle.ViewPedidoTitle_id}"/>
+                    <p:inputText value="#{MBPedido.selected.id}" title="#{bundle.ViewPedidoTitle_id}" readonly="true"/>
                     <h:outputText value="#{bundle.ViewPedidoLabel_mesa}"/>
-                    <h:outputText value="#{MBPedido.selected.mesa}" title="#{bundle.ViewPedidoTitle_mesa}"/>
+                    <p:inputText value="#{MBPedido.selected.mesa}" title="#{bundle.ViewPedidoTitle_mesa}" readonly="true"/>
                     <h:outputText value="#{bundle.ViewPedidoLabel_garcom}"/>
-                    <h:outputText value="#{MBPedido.selected.colaborador.nome}"
-                                  title="#{bundle.ViewPedidoTitle_garcom}"/>
+                    <p:inputText value="#{MBPedido.selected.colaborador.nome}" title="#{bundle.ViewPedidoTitle_garcom}" readonly="true"/>
+                    <h:outputText value="Total (R$)" />
+                    <p:inputText value="#{MBPedido.selected.totalPedido}" title="Total (R$)" readonly="true">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </p:inputText>
                 </p:panelGrid>
             </h:panelGroup>
-        </h:form>
+
         <p:panel header="Lista de Pedidos">
-            <p:dataTable id="datalist" value="#{MBPedido.getItems(false)}" var="item"
+            <p:dataTable id="datalist" value="#{MBPedido.getItensPedido(MBPedido.selected.id)}" var="itempedido"
                          selectionMode="single" selection="#{MBPedido.selected}"
                          paginator="true"
-                         rowKey="#{item.id}"
+                         rowKey="#{itempedido.id}"
                          rows="10"
                          rowsPerPageTemplate="10,20,30,40,50">
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="#{bundle.ListPedidoTitle_id}"/>
                     </f:facet>
-                    <h:outputText value="#{item.id}"/>
+                    <h:outputText value="#{itempedido.id}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Quantidade" />
+                    </f:facet>
+                    <h:outputText value="#{itempedido.quantidade}">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Produto" />
+                    </f:facet>
+                    <h:outputText value="#{itempedido.produto.descricao}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Valor (R$)" />
+                    </f:facet>
+                    <h:outputText value="#{itempedido.produto.precoVenda}">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
                 </p:column>
             </p:dataTable>
         </p:panel>
+    </h:form>
     </p:dialog>
 </ui:composition>
 </html>

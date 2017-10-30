@@ -6,7 +6,7 @@ import br.com.ezzysoft.restaurante.entidade.Pedido;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -27,9 +27,12 @@ public class PedidoFacade extends AbstractFacade<Pedido> {
         super(Pedido.class);
     }
 
-    public List<ItemPedido> getItensPedido(Long pedidoId){
+    public List<Pedido> getPedidoAtual(Date dataAtual){
+     return getEntityManager().createNamedQuery(Pedido.LISTPEDIDOSATUAL).setParameter("dataAtual", dataAtual).getResultList();
+    }
 
-return null;
+    public List<ItemPedido> getItensPedido(Long pedidoId){
+        return getEntityManager().createNamedQuery(ItemPedido.ITENSPORPEDIDO).setParameter("pedidoId", pedidoId).getResultList();
     }
     
 }
