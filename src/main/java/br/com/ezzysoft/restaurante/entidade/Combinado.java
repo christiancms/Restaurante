@@ -19,7 +19,7 @@ public class Combinado implements Serializable {
     private Long id;
     @Column(name = "nome")
     private String nome;
-    @ManyToMany(mappedBy= "combinados", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Produto> produtos = new ArrayList<>();
 
     public Long getId() {

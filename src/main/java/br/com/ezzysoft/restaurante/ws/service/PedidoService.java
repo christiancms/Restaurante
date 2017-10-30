@@ -9,6 +9,8 @@ import br.com.ezzysoft.restaurante.ws.ItemTransporter;
 import br.com.ezzysoft.restaurante.ws.PedidoTransporter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -223,7 +225,8 @@ public class PedidoService extends AbstractFacade<Pedido> {
     }
 
     private Pedido fillPedidoWeb(PedidoTransporter pedT) throws ParseException {
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat shf = new SimpleDateFormat("HH:mm");
         Pedido ped = new Pedido();
         Cliente cli;
         Colaborador colab;
@@ -236,7 +239,8 @@ public class PedidoService extends AbstractFacade<Pedido> {
             cli = clienteFacade.find(pedT.getClienteId());
             ped.setCliente(cli);
         } else {
-            ped.setCliente(new Cliente(1l, "Diversos"));
+
+            ped.setCliente(new Cliente("Diversos"));
         }
         if (pedT.getColaboradorId() > 0) {
             colab = colaboradorFacade.find(pedT.getColaboradorId());
@@ -247,8 +251,10 @@ public class PedidoService extends AbstractFacade<Pedido> {
         ped.setDescricao(pedT.getDescricao().trim().equalsIgnoreCase("") ? "AppMobile" : pedT.getDescricao());
         ped.setMesa(pedT.getMesa());
         try {
-            ped.setDataPedido(new java.sql.Date(0));
-            ped.setHoraPedido(new java.sql.Time(0));
+            String dataAtual = sdf.format(new Date());
+            String horaAtual = shf.format(new Date());
+            ped.setDataPedido(sdf.parse(dataAtual));
+            ped.setHoraPedido(shf.parse(horaAtual));
         } catch (Exception e) {
         }
 

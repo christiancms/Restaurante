@@ -14,8 +14,13 @@ import javax.persistence.*;
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
 @Entity
-@Table(name = "produto")
+@Table(name = "produto")@NamedQueries({
+        @NamedQuery(name = "Produto.findAll", query = "SELECT p FROM Produto p"),
+        @NamedQuery(name = "Produto.Grafico", query = "SELECT p FROM Produto p INNER JOIN Marca m ON p.marca.id=m.id")
+})
 public class Produto implements Serializable {
+
+    public static final String GRAFPROXMARCA = "Produto.Grafico";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,7 +70,7 @@ public class Produto implements Serializable {
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", updatable = true)
     private Unidade unidade = new Unidade();
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="cominado_produto_",
+    @JoinTable(name="combinado_produto",
             joinColumns={@JoinColumn(name="combinado_id")},
             inverseJoinColumns={@JoinColumn(name="produto_id")})
     private List<Combinado> combinados = new ArrayList<>();

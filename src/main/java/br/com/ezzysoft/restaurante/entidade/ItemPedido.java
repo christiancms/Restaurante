@@ -10,8 +10,12 @@ import javax.persistence.*;
 @Table(name = "itensPedido")
 @NamedQueries({
         @NamedQuery(name = "ItemPedido.findAll", query = "SELECT o FROM ItemPedido o"),
-        @NamedQuery(name = "ItemPedido.findById", query = "SELECT o FROM ItemPedido o WHERE o.id = :id")})
+        @NamedQuery(name = "ItemPedido.findById", query = "SELECT o FROM ItemPedido o WHERE o.id = :id"),
+        @NamedQuery(name = "ItemPedido.findByPedido", query = "SELECT o FROM ItemPedido o WHERE o.pedido.id = :pedidoId")
+})
 public class ItemPedido implements Serializable {
+
+    public static final String ITENSPORPEDIDO = "ItemPedido.findByPedido";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

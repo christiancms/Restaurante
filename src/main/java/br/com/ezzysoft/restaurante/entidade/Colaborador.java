@@ -25,9 +25,9 @@ public class Colaborador implements Serializable {
     private String nome;
     @Column(name = "appToken")
     private String appToken;
+    @OneToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.EAGER)
-    private Usuario usuario = new Usuario();
+    private Usuario usuario;
     @Column(name = "versao")
     @Version
     private Integer versao;

@@ -1,10 +1,7 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import javax.persistence.*;
 
 /**
@@ -17,22 +14,28 @@ import javax.persistence.*;
         @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p "),
         @NamedQuery(name = "Pedido.findAllColaborador", query = "SELECT p FROM Pedido p INNER JOIN Colaborador c ON p.colaborador.id = c.id"),
         @NamedQuery(name = "Pedido.findById", query = "SELECT p FROM Pedido p WHERE  p.id = :id"),
-        @NamedQuery(name = "Pedido.listItens", query = "SELECT  p FROM Pedido p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.id = :pedidoId")})
+        @NamedQuery(name = "Pedido.listItens", query = "SELECT  p FROM Pedido p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id"),
+        @NamedQuery(name = "Pedido.listItensByPedido", query = "SELECT  p FROM Pedido p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.id = :pedidoId"),
+        @NamedQuery(name = "Pedido.findByDate", query = "SELECT p FROM Pedido  p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.dataPedido = :dataAtual")
+        })
 public class Pedido implements Serializable {
 
     public static final String LISTITENSPEDIDO = "Pedido.listItens";
+    public static final String LISTPEDIDOSATUAL = "Pedido.findByDate";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "data_pedido")
+    @Temporal(TemporalType.DATE)
     private Date dataPedido;
     @Column(name = "hora_pedido")
-    private Time horaPedido;
+    @Temporal(TemporalType.TIME)
+    private Date horaPedido;
     @Column(name = "descricao")
     private String descricao;
-    @ManyToOne
+    @ManyToOne(cascade= CascadeType.PERSIST)
     @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private Cliente cliente;
     @ManyToOne
@@ -46,6 +49,11 @@ public class Pedido implements Serializable {
     @Column(name = "versao")
     @Version
     private Integer versao;
+    @Column(name = "status")
+    @Enumerated(EnumType.ORDINAL)
+    private Status status = Status.PENDENTE;
+    @Transient
+    private Double totalPedido = 0d;
 
     public Long getId() {
         return id;
@@ -87,11 +95,11 @@ public class Pedido implements Serializable {
         this.dataPedido = dataPedido;
     }
 
-    public Time getHoraPedido() {
+    public Date getHoraPedido() {
         return horaPedido;
     }
 
-    public void setHoraPedido(Time horaPedido) {
+    public void setHoraPedido(Date horaPedido) {
         this.horaPedido = horaPedido;
     }
 
@@ -117,6 +125,59 @@ public class Pedido implements Serializable {
 
     public void setColaborador(Colaborador colaborador) {
         this.colaborador = colaborador;
+    }
+
+    public Double getTotalPedido() {
+        return totalPedido;
+    }
+
+    public void setTotalPedido(Double totalPedido) {
+        this.totalPedido = totalPedido;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public enum Status {
+        APROVADO,
+        CANCELADO,
+        ENTREGUE,
+        FATURADO,
+        PENDENTE,
+        PRONTO;
+
+
+        public static Pedido.Status indice(int pos) {
+            Pedido.Status st = null;
+            switch (pos) {
+                case 0:
+                    st = APROVADO;
+                    break;
+                case 1:
+                    st = CANCELADO;
+                    break;
+                case 2:
+                    st = ENTREGUE;
+                    break;
+                case 3:
+                    st = FATURADO;
+                    break;
+                case 4:
+                    st = PENDENTE;
+                    break;
+                case 5:
+                    st = PRONTO;
+                    break;
+                default:
+                    System.out.println("erro na posição");
+            }
+            return st;
+        }
     }
 
     @Override

@@ -24,8 +24,6 @@ public class Cliente extends Pessoa implements Serializable {
     private Long id;
     @Column(name = "nome")
     private String nome;
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
-    private List<Pedido> pedidos;
     @Column(name = "versao")
     @Version
     private Integer versao;
@@ -46,12 +44,6 @@ public class Cliente extends Pessoa implements Serializable {
         this.nome = nome;
     }
 
-    public Cliente(Long id, String nome, List<Pedido> pedidos) {
-        this.id = id;
-        this.nome = nome;
-        this.pedidos = pedidos;
-    }
-
     public Long getId() {
         return id;
     }
@@ -66,14 +58,6 @@ public class Cliente extends Pessoa implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public List<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public void setPedidos(List<Pedido> pedidos) {
-        this.pedidos = pedidos;
     }
 
     public Integer getVersao() {

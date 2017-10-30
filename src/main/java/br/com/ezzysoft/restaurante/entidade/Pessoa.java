@@ -10,6 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "pessoa")
+@Inheritance ( strategy = InheritanceType. JOINED )
 public class Pessoa implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
