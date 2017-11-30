@@ -1,7 +1,13 @@
 package br.com.ezzysoft.restaurante.ws.service;
 
 import br.com.ezzysoft.restaurante.entidade.Cliente;
+import br.com.ezzysoft.restaurante.ws.ClienteTransporter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,64 +37,34 @@ public class ClienteService extends AbstractFacade<Cliente> {
     }
 
     @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Cliente entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Cliente entity) {
-        super.edit(entity);
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Cliente find(@PathParam("id") Integer id) {
-        return super.find(id);
-    }
-
-    @POST
-    @Override
     @Path("/lista")
-    @Produces(MediaType.APPLICATION_XML)
-    public List<Cliente> findAll() {
-        return super.findAll();
-    }
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getClientes() {
+        List<Cliente> lista = super.findAll();
+        ObjectMapper mapper = new ObjectMapper();
+        ClienteTransporter ct;
+        String dados = "{\"clientes\":[";
+        if (!lista.isEmpty()) {
+            for (Cliente elem : lista) {
+                ct = new ClienteTransporter();
+                ct.setId(elem.getId());
+                ct.setNome(elem.getNome());
 
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Cliente> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
+                try {
+                    dados += mapper.writeValueAsString(ct);
+                    dados += ", ";
+                } catch (JsonProcessingException ex) {
+                    Logger.getLogger(ClienteService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            dados = dados.substring(0, dados.length() - 2);
+        }
+        return dados + "]}";
     }
 
     @Override
     protected EntityManager getEntityManager() {
         return em;
-    }
-
-    @GET
-    @Path("/teste")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String teste() {
-        return "ok!";
     }
 
 }

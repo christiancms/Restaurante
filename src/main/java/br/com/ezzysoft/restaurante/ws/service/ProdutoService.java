@@ -84,7 +84,7 @@ public class ProdutoService extends AbstractFacade<Produto> {
                 pt.setIdProduto(elem.getId());
                 pt.setDescricao(elem.getDescricao());
                 pt.setDataCadastro(elem.getDataCadastro());
-                pt.setPreco(elem.getPrecoCompra());
+                pt.setPreco(elem.getPrecoVenda());
                 pt.setGrupoId(elem.getGrupo().getId().longValue());
                 pt.setMarcaId(elem.getMarca().getId().longValue());
                 pt.setUnidadeId(elem.getUnidade().getId());

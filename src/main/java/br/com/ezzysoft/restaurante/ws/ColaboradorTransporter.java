@@ -10,6 +10,7 @@ public class ColaboradorTransporter implements Serializable {
  
     private Long idColaborador;
     private String nome;
+    private Long usuarioId;
 
     public ColaboradorTransporter() {
     }
@@ -17,6 +18,12 @@ public class ColaboradorTransporter implements Serializable {
     public ColaboradorTransporter(Long idColaborador, String nome) {
         this.idColaborador = idColaborador;
         this.nome = nome;
+    }
+
+    public ColaboradorTransporter(Long idColaborador, String nome, Long usuarioId) {
+        this.idColaborador = idColaborador;
+        this.nome = nome;
+        this.usuarioId = usuarioId;
     }
 
     public Long getIdColaborador() {
@@ -35,5 +42,11 @@ public class ColaboradorTransporter implements Serializable {
         this.nome = nome;
     }
 
-    
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
+    }
 }

@@ -32,7 +32,10 @@ public class ApplicationConfig extends Application {
         resources.add(br.com.ezzysoft.restaurante.ws.service.MarcaService.class);
         resources.add(br.com.ezzysoft.restaurante.ws.service.PedidoService.class);
         resources.add(br.com.ezzysoft.restaurante.ws.service.ProdutoService.class);
+        resources.add(br.com.ezzysoft.restaurante.ws.service.TesteService.class);
         resources.add(br.com.ezzysoft.restaurante.ws.service.UnidadeService.class);
+        resources.add(br.com.ezzysoft.restaurante.ws.service.UsuarioService.class);
+        resources.add(br.com.ezzysoft.restaurante.ws.service.StatusService.class);
     }
     
 }

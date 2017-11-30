@@ -32,21 +32,6 @@ private EntityManager em;
         super(Colaborador.class);
     }
     
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Colaborador find(@PathParam("id") Integer id) {
-        return super.find(id);
-    }
-
-    @POST
-    @Override
-    @Path("/list")
-    @Produces(MediaType.APPLICATION_XML)
-    public List<Colaborador> findAll() {
-        return super.findAll();
-    }
-
     @POST
     @Path("/lista")
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,6 +45,7 @@ private EntityManager em;
                 ct = new ColaboradorTransporter();
                 ct.setIdColaborador(elem.getId());
                 ct.setNome(elem.getNome());
+                ct.setUsuarioId(elem.getId());
 
                 try {
                     dados += mapper.writeValueAsString(ct);

@@ -1,10 +1,6 @@
 package br.com.ezzysoft.restaurante.ws.service;
 
-import br.com.ezzysoft.restaurante.entidade.Cliente;
-import br.com.ezzysoft.restaurante.entidade.Colaborador;
-import br.com.ezzysoft.restaurante.entidade.ItemPedido;
-import br.com.ezzysoft.restaurante.entidade.Pedido;
-import br.com.ezzysoft.restaurante.entidade.Produto;
+import br.com.ezzysoft.restaurante.entidade.*;
 import br.com.ezzysoft.restaurante.ws.ItemTransporter;
 import br.com.ezzysoft.restaurante.ws.PedidoTransporter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,6 +46,8 @@ public class PedidoService extends AbstractFacade<Pedido> {
     private ProdutoService produtoFacade;
     @EJB
     private ItenspedidoService itemFacade;
+    @EJB
+    private StatusService statusFacade;
 
     @PersistenceContext(unitName = "EzzysoftPU")
     private EntityManager em;
@@ -141,7 +139,7 @@ public class PedidoService extends AbstractFacade<Pedido> {
                 itens = elem.getItensPedido();
                 itenspedido = new ArrayList<>();
                 for (ItemPedido elemento : itens) {
-                    if (Objects.equals(elem.getId(), elemento.getPedido())) {
+                    if (Objects.equals(elem.getId(), elemento.getPedido().getId())) {
                         it = new ItemTransporter();
                         it.setIdItem(elemento.getId());
                         it.setPedidoId(elemento.getPedido().getId());
@@ -250,6 +248,8 @@ public class PedidoService extends AbstractFacade<Pedido> {
         }
         ped.setDescricao(pedT.getDescricao().trim().equalsIgnoreCase("") ? "AppMobile" : pedT.getDescricao());
         ped.setMesa(pedT.getMesa());
+        Status status = statusFacade.find(9l);
+        ped.setStatus(status);
         try {
             String dataAtual = sdf.format(new Date());
             String horaAtual = shf.format(new Date());

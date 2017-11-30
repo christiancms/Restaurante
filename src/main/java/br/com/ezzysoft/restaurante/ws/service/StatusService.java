@@ -1,12 +1,10 @@
 package br.com.ezzysoft.restaurante.ws.service;
 
-import br.com.ezzysoft.restaurante.entidade.Grupo;
-import br.com.ezzysoft.restaurante.facade.GrupoFacade;
-import br.com.ezzysoft.restaurante.ws.GrupoTransporter;
+import br.com.ezzysoft.restaurante.entidade.Status;
+import br.com.ezzysoft.restaurante.ws.StatusTransporter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,42 +17,41 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author christian
+ * Created by christian on 03/11/17.
  */
 @Stateless
-@Path("/grupo")
-public class GrupoService extends AbstractFacade<Grupo> {
+@Path("/status")
+public class StatusService extends AbstractFacade<Status> {
+
 
     @PersistenceContext(unitName = "EzzysoftPU")
     private EntityManager em;
 
-    public GrupoService() {
-        super(Grupo.class);
+    public StatusService() {
+        super(Status.class);
     }
-
-    @EJB
-    GrupoFacade facade;
 
     @POST
     @Path("/lista")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getGrupos() {
-        List<Grupo> lista = facade.findCardapio();
+    public String getStatus() {
+        List<Status> lista = super.findAll();
         ObjectMapper mapper = new ObjectMapper();
-        GrupoTransporter gt;
-        String dados = "{\"grupos\":[";
+        StatusTransporter st;
+        String dados = "{\"status\":[";
         if (!lista.isEmpty()) {
-            for (Grupo elem:lista) {
-                gt = new GrupoTransporter();
-                gt.setId(elem.getId());
-                gt.setDescricao(elem.getDescricao());
+            for (Status elem : lista) {
+                st = new StatusTransporter();
+                st.setId(elem.getId());
+                st.setIndice(elem.getIndice());
+                st.setClasse(elem.getClasse());
+                st.setOpcao(elem.getOpcao());
 
                 try {
-                    dados += mapper.writeValueAsString(gt);
+                    dados += mapper.writeValueAsString(st);
                     dados += ", ";
                 } catch (JsonProcessingException ex) {
-                    Logger.getLogger(GrupoService.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(StatusService.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             dados = dados.substring(0, dados.length() - 2);
