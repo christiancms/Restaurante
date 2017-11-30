@@ -3,6 +3,7 @@ package br.com.ezzysoft.restaurante.bean;
 import br.com.ezzysoft.restaurante.dao.GrupoDAO;
 import br.com.ezzysoft.restaurante.entidade.Grupo;
 import br.com.ezzysoft.restaurante.facade.GrupoFacade;
+import br.com.ezzysoft.restaurante.facade.UsuarioFacade;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.JsfUtil.PersistAction;
 import br.com.ezzysoft.restaurante.util.Util;
@@ -15,10 +16,12 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,13 +36,18 @@ import org.primefaces.model.UploadedFile;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean(name = "MBGrupo")
+@ManagedBean(name = "mbGrupo")
 @SessionScoped
 //@ApplicationScoped
 public class MBGrupo implements Serializable {
 
+    @ManagedProperty(value = "#{mbUsuario}")
+    private MBUsuario mbUsuario = new MBUsuario();
+
     @EJB
     private GrupoFacade ejbFacade;
+    @EJB
+    private UsuarioFacade facadeUsuario;
     private List<Grupo> items = null;
     private Grupo selected;
 
@@ -64,6 +72,13 @@ public class MBGrupo implements Serializable {
         return ejbFacade;
     }
 
+    public MBUsuario getMbUsuario() {
+        return mbUsuario;
+    }
+
+    public void setMbUsuario(MBUsuario mbUsuario) {
+        this.mbUsuario = mbUsuario;
+    }
     public Grupo prepareCreate() {
         selected = new Grupo();
         initializeEmbeddableKey();
@@ -145,7 +160,7 @@ public class MBGrupo implements Serializable {
                 return null;
             }
             MBGrupo controller = (MBGrupo) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "grupoController");
+                    getValue(facesContext.getELContext(), null, "mbGrupo");
             return controller.getGrupo(getKey(value));
         }
 
@@ -248,4 +263,10 @@ public class MBGrupo implements Serializable {
 //        this.grupoDAO = grupoDAO;
 //    }
 //
+
+    @PostConstruct
+    public void init() {
+        String userid = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
+    }
 }

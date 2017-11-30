@@ -1,7 +1,9 @@
 package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.dao.ProdutoDAO;
+import br.com.ezzysoft.restaurante.entidade.Pedido;
 import br.com.ezzysoft.restaurante.entidade.Produto;
+import br.com.ezzysoft.restaurante.facade.PedidoFacade;
 import br.com.ezzysoft.restaurante.facade.ProdutoFacade;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 import javax.annotation.PostConstruct;
@@ -22,26 +24,40 @@ import javax.faces.bean.RequestScoped;
  *
  * @author christian
  */
-@ManagedBean(name = "MBGrafico")
+@ManagedBean(name = "mbGrafico")
 @RequestScoped
 public class MBGrafico implements Serializable {
 
     @EJB
     private ProdutoFacade ejbFacade;
+    @EJB
+    private PedidoFacade facadePedido;
+
     private PieChartModel pieModel;
+    private PieChartModel pieModel2;
     List<Produto> produtosList = new ArrayList<>();
+    List<Pedido> pedidosList = new ArrayList<>();
 
     public ProdutoFacade getFacade() {
         return ejbFacade;
     }
 
+    public PedidoFacade getFacadePedido() {
+        return facadePedido;
+    }
+
     @PostConstruct
     public void init() {
         createPieModel();
+        createPieModel2();
     }
 
     public PieChartModel getPieModel() {
         return pieModel;
+    }
+
+    public PieChartModel getPieModel2() {
+        return pieModel2;
     }
 
     private void createPieModel() {
@@ -74,4 +90,33 @@ public class MBGrafico implements Serializable {
         }
     }
 
+    private void createPieModel2() {
+        try {
+            pedidosList = getFacadePedido().buscarGrafico();
+            Map graf = new HashMap();
+            Integer count = 0;
+
+            if (!pedidosList.isEmpty()) {
+                pieModel2 = new PieChartModel();
+                for (Pedido elem : pedidosList) {
+                    if (graf.containsKey(elem.getStatus().getOpcao())) {
+                        count = (Integer) graf.get(elem.getStatus().getOpcao());
+                        graf.put(elem.getStatus().getOpcao(), count+1);
+
+                    } else {
+                        graf.put(elem.getStatus().getOpcao(), 1);
+                    }
+
+                }
+                pieModel2.setData(graf);
+                pieModel2.setTitle("Vendas/Pedidos por Status");
+                pieModel2.setLegendPosition("e");
+                pieModel2.setFill(false);
+                pieModel2.setShowDataLabels(true);
+                pieModel2.setDiameter(250);
+            }
+        } catch (ErroSistema ex) {
+            Logger.getLogger(MBGrafico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

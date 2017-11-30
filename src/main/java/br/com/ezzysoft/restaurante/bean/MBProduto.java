@@ -1,19 +1,21 @@
 package br.com.ezzysoft.restaurante.bean;
 
-import br.com.ezzysoft.restaurante.facade.MarcaFacade;
-import br.com.ezzysoft.restaurante.facade.UnidadeFacade;
-import br.com.ezzysoft.restaurante.entidade.Grupo;
-import br.com.ezzysoft.restaurante.entidade.Marca;
-import br.com.ezzysoft.restaurante.entidade.Produto;
-import br.com.ezzysoft.restaurante.entidade.Unidade;
-import br.com.ezzysoft.restaurante.facade.GrupoFacade;
-import br.com.ezzysoft.restaurante.facade.ProdutoFacade;
+import br.com.ezzysoft.restaurante.entidade.*;
+import br.com.ezzysoft.restaurante.facade.*;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.JsfUtil.PersistAction;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
+import br.com.ezzysoft.restaurante.util.export.PDFOptions;
+import com.lowagie.text.*;
+import org.primefaces.component.export.ExcelOptions;
+import org.primefaces.context.RequestContext;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -23,6 +25,7 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -30,15 +33,17 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-
-import static com.sun.javafx.logging.PulseLogger.addMessage;
+import javax.servlet.ServletContext;
 
 /**
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean(name = "MBProduto")
+@ManagedBean(name = "mbProduto")
 @SessionScoped
 public class MBProduto implements Serializable {
+
+    @ManagedProperty(value = "#{mbUsuario}")
+    private MBUsuario mbUsuario = new MBUsuario();
 
     ////
 //    public String init(){
@@ -46,18 +51,26 @@ public class MBProduto implements Serializable {
 //        return sdf.format(new Date());
 //    }
     @EJB
-    private ProdutoFacade ejbFacade;
+    private ProdutoFacade facadeProduto;
     @EJB
     private GrupoFacade facadeGrupo;
     @EJB
     private MarcaFacade facadeMarca;
     @EJB
     private UnidadeFacade facadeUnidade;
+    @EJB
+    private StatusFacade facadeStatus;
+    @EJB
+    private UsuarioFacade facadeUsuario;
+
     private List<Produto> items = null;
     private Produto selected;
     private Grupo selectedGrupo;
     private Marca selectedMarca;
     private Unidade selectedUnidade;
+    private Status selectedStatus;
+    private ExcelOptions excelOpt;
+    private PDFOptions pdfOpt;
 
     public MBProduto() {
     }
@@ -73,6 +86,9 @@ public class MBProduto implements Serializable {
             if (selected.getUnidade().getId() != null) {
                 selected.setUnidade(facadeUnidade.find(selected.getUnidade().getId()));
             }
+            if (selected.getStatus().getId() != null) {
+                selected.setStatus(facadeStatus.findEnumProduto(selected.getStatus().getId()));
+            }
         }
         return selected;
     }
@@ -84,18 +100,27 @@ public class MBProduto implements Serializable {
     // Atribui chave incorporável
     protected void setEmbeddableKeys() {
     }
+
     // Inicializa chave incorporável
     protected void initializeEmbeddableKey() {
     }
 
     private ProdutoFacade getFacade() {
-        return ejbFacade;
+        return facadeProduto;
     }
 
     public Produto prepareCreate() {
         selected = new Produto();
         initializeEmbeddableKey();
         return selected;
+    }
+
+    public MBUsuario getMbUsuario() {
+        return mbUsuario;
+    }
+
+    public void setMbUsuario(MBUsuario mbUsuario) {
+        this.mbUsuario = mbUsuario;
     }
 
     public void create() {
@@ -117,25 +142,59 @@ public class MBProduto implements Serializable {
         }
     }
 
-    public List<Produto> getItems(boolean refresh) {
-        if (!refresh) {
-            if (items == null) {
-                items = getFacade().findAll();
-            }
-        } else {
-            items = null;
+    public List<Produto> getItems() {
+        if (items == null) {
             items = getFacade().findAll();
         }
         return items;
     }
 
+    public List<Produto> getMobi() {
+        if (items == null) {
+            items = getFacade().getCardapio();
+        }
+        return items;
+    }
+
+    public Produto onBlur() {
+        return selected = facadeProduto.find(selected.getId());
+    }
+
+    public Produto calcMargem(Produto produto) {
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        context.addCallbackParam("saved", true);    //basic parameter
+//        context.addCallbackParam("user", selected);     //pojo as json
+//
+//        String myid = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("txtPrecoCompra");
+//        System.out.println("myid : " + myid);
+//
+//        myid = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("txtMargemLuc");
+//        System.out.println("myid 2: " + myid);
+
+        if (produto.getPrecoCompra() > 0d && produto.getPercLucro() > 0d) {
+            double vlrVenda = produto.getPrecoCompra() * (1 + (produto.getPercLucro() / 100));
+            produto.setPrecoVenda(vlrVenda);
+        }
+        return produto;
+    }
+
+    public List<Produto> getItensGrupo(long grupoId) {
+        return getFacade().produtoPorGrupo(grupoId);
+    }
+
     private void persist(PersistAction persistAction, String successMessage) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         if (selected != null) {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
 //                    getFacade().edit(selected);
+                    if (persistAction.equals(PersistAction.CREATE)) {
+                        selected.setDataCadastro(sdf.parse(sdf.format(new Date())));
+                    }
+                    selected = calcMargem(selected);
                     getFacade().salvar(selected);
+
                 } else {
                     getFacade().remove(selected);
                 }
@@ -197,6 +256,14 @@ public class MBProduto implements Serializable {
         this.selectedUnidade = selectedUnidade;
     }
 
+    public Status getSelectedStatus() {
+        return selectedStatus;
+    }
+
+    public void setSelectedStatus(Status selectedStatus) {
+        this.selectedStatus = selectedStatus;
+    }
+
     @FacesConverter(forClass = Produto.class)
     public static class MBProdutoConverter implements Converter {
 
@@ -206,7 +273,7 @@ public class MBProduto implements Serializable {
                 return null;
             }
             MBProduto controller = (MBProduto) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "MBProduto");
+                    getValue(facesContext.getELContext(), null, "mbProduto");
             return controller.getProduto(getKey(value));
         }
 
@@ -261,6 +328,15 @@ public class MBProduto implements Serializable {
         return itens;
     }
 
+    public List<SelectItem> getGruposc() throws ErroSistema {
+        List<Grupo> grupos = getGrupoFacade().findCardapio();
+        List<SelectItem> itens = new ArrayList<>(grupos.size());
+        for (Grupo g : grupos) {
+            itens.add(new SelectItem(g.getId(), g.getDescricao()));
+        }
+        return itens;
+    }
+
     private GrupoFacade getGrupoFacade() {
         return facadeGrupo;
     }
@@ -278,10 +354,17 @@ public class MBProduto implements Serializable {
         return facadeMarca;
     }
 
-    @PostConstruct
-    public void init() {
-//        this.selected = new Produto();
-//        getItems();
+    public List<SelectItem> getStatus() throws ErroSistema {
+        List<Status> status = getStatusFacade().getEnumProduto();
+        List<SelectItem> itens = new ArrayList<>(status.size());
+        for (Status s : status) {
+            itens.add(new SelectItem(s.getId(), s.getOpcao()));
+        }
+        return itens;
+    }
+
+    public StatusFacade getStatusFacade() {
+        return facadeStatus;
     }
 
     public void buttonAction(ActionEvent actionEvent) {
@@ -293,4 +376,71 @@ public class MBProduto implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public List<Produto> atualiza() {
+        items = getFacade().findAll();
+        return items;
+    }
+
+    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+        Document pdf = (Document) document;
+        pdf.setPageSize(PageSize.A4.rotate());
+//        pdf.setMargins(2, 2, 2, 2);
+
+        ServletContext servletContext = (ServletContext)
+                FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String logo = servletContext.getRealPath("") + File.separator + "resources" +
+                File.separator + "images" +
+                File.separator + "logo-web.png";
+        Image logotipo = Image.getInstance(logo);
+        logotipo.scalePercent(25);
+
+        HeaderFooter header = new HeaderFooter(new Phrase("Tabela de produtos"), false);
+        pdf.setHeader(header);
+        if (!pdf.isOpen()) {
+            pdf.open();
+            pdf.add(logotipo);
+        }
+    }
+
+    public ExcelOptions getExcelOpt() {
+        return excelOpt;
+    }
+
+    public void setExcelOpt(ExcelOptions excelOpt) {
+        this.excelOpt = excelOpt;
+    }
+
+    public PDFOptions getPdfOpt() {
+        return pdfOpt;
+    }
+
+    public void setPdfOpt(PDFOptions pdfOpt) {
+        this.pdfOpt = pdfOpt;
+    }
+
+    public void customizationOptions() {
+//        excelOpt = new ExcelOptions();
+//        excelOpt.setFacetBgColor("#F88017");
+//        excelOpt.setFacetFontSize("10");
+//        excelOpt.setFacetFontColor("#0000ff");
+//        excelOpt.setFacetFontStyle("BOLD");
+//        excelOpt.setCellFontColor("#00ff00");
+//        excelOpt.setCellFontSize("8");
+
+        pdfOpt = new PDFOptions();
+        pdfOpt.setFacetBgColor("#F88017");
+        pdfOpt.setFacetFontColor("#0000ff");
+        pdfOpt.setFacetFontStyle("BOLD");
+        pdfOpt.setCellFontSize("12");
+        float[] columnWidths = new float[]{0.1f,0.3f,0.1f,0.1f,0.1f,0.1f,0.1f};
+        pdfOpt.setColumnWidths(columnWidths);
+    }
+
+    @PostConstruct
+    public void init() {
+//        this.selected = new Produto();
+//        getItems();
+        String userid = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
+    }
 }

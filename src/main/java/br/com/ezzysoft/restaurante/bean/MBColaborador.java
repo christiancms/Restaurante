@@ -3,6 +3,7 @@ package br.com.ezzysoft.restaurante.bean;
 import br.com.ezzysoft.restaurante.dao.ColaboradorDAO;
 import br.com.ezzysoft.restaurante.entidade.Colaborador;
 import br.com.ezzysoft.restaurante.facade.ColaboradorFacade;
+import br.com.ezzysoft.restaurante.facade.UsuarioFacade;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -10,29 +11,46 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import static org.primefaces.component.focus.Focus.PropertyKeys.context;
+
 /**
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean(name = "MBColaborador")
+@ManagedBean(name = "mbColaborador")
 @SessionScoped
 public class MBColaborador implements Serializable {
 
+    @ManagedProperty(value = "#{mbUsuario}")
+    private MBUsuario mbUsuario = new MBUsuario();
+
     @EJB
     private ColaboradorFacade ejbFacade;
+    @EJB
+    private UsuarioFacade facadeUsuario;
     private List<Colaborador> items = null;
     private Colaborador selected;
 
     public MBColaborador() {
+    }
+
+    public MBUsuario getMbUsuario() {
+        return mbUsuario;
+    }
+
+    public void setMbUsuario(MBUsuario mbUsuario) {
+        this.mbUsuario = mbUsuario;
     }
 
     public Colaborador getSelected() {
@@ -57,6 +75,14 @@ public class MBColaborador implements Serializable {
         selected = new Colaborador();
         initializeEmbeddableKey();
         return selected;
+    }
+
+    public UsuarioFacade getFacadeUsuario() {
+        return facadeUsuario;
+    }
+
+    public void setFacadeUsuario(UsuarioFacade facadeUsuario) {
+        this.facadeUsuario = facadeUsuario;
     }
 
     public void create() {
@@ -90,6 +116,7 @@ public class MBColaborador implements Serializable {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
+
                     getFacade().edit(selected);
                 } else {
                     getFacade().remove(selected);
@@ -113,7 +140,7 @@ public class MBColaborador implements Serializable {
         }
     }
 
-    public Colaborador getColaborador(java.lang.Long id) {
+    public Colaborador getColaborador(Long id) {
         return getFacade().find(id);
     }
 
@@ -134,7 +161,7 @@ public class MBColaborador implements Serializable {
                 return null;
             }
             MBColaborador controller = (MBColaborador) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "colaboradorController");
+                    getValue(facesContext.getELContext(), null, "mbColaborador");
             return controller.getColaborador(getKey(value));
         }
 
@@ -166,6 +193,10 @@ public class MBColaborador implements Serializable {
 
     }
 
-
+    @PostConstruct
+    public void init() {
+        String userid = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
+    }
     
 }

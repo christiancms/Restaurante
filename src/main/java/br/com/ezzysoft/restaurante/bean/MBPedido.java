@@ -4,17 +4,21 @@ import br.com.ezzysoft.restaurante.dao.ColaboradorDAO;
 import br.com.ezzysoft.restaurante.entidade.Colaborador;
 import br.com.ezzysoft.restaurante.entidade.ItemPedido;
 import br.com.ezzysoft.restaurante.entidade.Pedido;
+import br.com.ezzysoft.restaurante.entidade.Status;
 import br.com.ezzysoft.restaurante.facade.ColaboradorFacade;
 import br.com.ezzysoft.restaurante.facade.PedidoFacade;
+import br.com.ezzysoft.restaurante.facade.StatusFacade;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
+import com.lowagie.text.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -27,11 +31,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
+import javax.persistence.PreUpdate;
+import javax.servlet.ServletContext;
 
 /**
  * @author christian
  */
-@ManagedBean(name = "MBPedido")
+@ManagedBean(name = "mbPedido")
 @SessionScoped
 public class MBPedido implements InterfaceCad<Pedido>, Serializable {
 
@@ -40,19 +46,27 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
     private PedidoFacade ejbFacade;
     @EJB
     private ColaboradorFacade facadeColaborador;
+    @EJB
+    private StatusFacade facadeStatus;
+
     private Pedido selected;
     private ItemPedido selectedItem;
     private List<Pedido> items = null;
     private List<ItemPedido> itensPedido = null;
     private Colaborador selectedColaborador;
     private Double totalPedido = 0d;
+    private Status selectedStatus;
 
     public MBPedido() {
     }
 
     public Pedido getSelected() {
         if (selected != null) {
-            selected.setColaborador(facadeColaborador.find(selected.getColaborador().getId()));
+//            selected.setColaborador(facadeColaborador.find(selected.getColaborador().getId()));
+
+            if (selected.getStatus().getId() != null) {
+                selected.setStatus(facadeStatus.findEnumPedido(selected.getStatus().getId()));
+            }
         }
         return selected;
     }
@@ -139,15 +153,17 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
     }
 
     public List<Pedido> getItems(boolean refresh) {
-        if (!refresh) {
+        if (!refresh) {  //onLoad
             if (items == null) {
-                items = getFacade().findAll();
+                items = new ArrayList<>();
+                items = getFacade().getPedidoAtual(new Date());
+//                items = calculaItensPedido(items);
             }
-        } else {
-            items = null;
+        } else {  // onUpdate
+            items = new ArrayList<>();
             items = getFacade().findAll();
         }
-        return calculaItensPedido(items);
+        return items;
     }
 
     public List<ItemPedido> getItensPedido(Long pedidoId) {
@@ -193,6 +209,14 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
         return getFacade().find(id);
     }
 
+    public Status getSelectedStatus() {
+        return selectedStatus;
+    }
+
+    public void setSelectedStatus(Status selectedStatus) {
+        this.selectedStatus = selectedStatus;
+    }
+
     @FacesConverter(forClass = Pedido.class)
     public static class MBPedidoConverter implements Converter {
 
@@ -202,7 +226,7 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
                 return null;
             }
             MBPedido controller = (MBPedido) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "MBPedido");
+                    getValue(facesContext.getELContext(), null, "mbPedido");
             return controller.getPedido(getKey(value));
         }
 
@@ -235,13 +259,15 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
         }
     }
 
-    @PostConstruct
+
     public void init() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat shf = new SimpleDateFormat("HH:mm");
-        items = getFacade().getPedidoAtual(new Date());
+//        if (items != null) {
+//            items = getFacade().getPedidoAtual(new Date());
+//        }
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            System.out.println("Postback: "+shf.format(new Date()));
+            System.out.println("Postback: " + shf.format(new Date()));
         }
     }
 
@@ -251,5 +277,66 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
 
     public void setTotalPedido(Double totalPedido) {
         this.totalPedido = totalPedido;
+    }
+
+    public List<SelectItem> getStatus() throws ErroSistema {
+        List<Status> status = getStatusFacade().getEnumPedido();
+        List<SelectItem> itens = new ArrayList<>(status.size());
+        for (Status s : status) {
+            itens.add(new SelectItem(s.getId(), s.getOpcao()));
+        }
+        return itens;
+    }
+
+    public StatusFacade getStatusFacade() {
+        return facadeStatus;
+    }
+
+    public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+        Document pdf = (Document) document;
+        pdf.setPageSize(PageSize.A4.rotate());
+//        pdf.setMargins(2, 2, 2, 2);
+
+        ServletContext servletContext = (ServletContext)
+                FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String logo = servletContext.getRealPath("") + File.separator + "resources" +
+                File.separator + "images" +
+                File.separator + "logo-web.png";
+        Image logotipo = Image.getInstance(logo);
+        logotipo.scalePercent(25);
+
+        HeaderFooter header = new HeaderFooter(new Phrase("Tabela de vendas"), false);
+        pdf.setHeader(header);
+        if (!pdf.isOpen()) {
+            pdf.open();
+            pdf.add(logotipo);
+        }
+    }
+
+    public List<String> getGarcons(){
+        List<Colaborador> listagem = facadeColaborador.findAll();
+        List<String> temp = new ArrayList<>();
+        for (Colaborador elem: listagem) {
+            temp.add(elem.getNome());
+        }
+        return temp;
+    }
+
+    public List<String> getStatusPedido(){
+        List<Status> listagem = facadeStatus.getEnumPedido();
+        List<String> temp = new ArrayList<>();
+        for (Status elem: listagem) {
+            temp.add(elem.getOpcao());
+        }
+        return temp;
+    }
+    public String getTotal() {
+        int total = 0;
+
+        for(Pedido ped : getItems(true)) {
+            total += ped.getTotalPedido();
+        }
+
+        return new DecimalFormat("###,###.###").format(total);
     }
 }

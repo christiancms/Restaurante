@@ -14,7 +14,7 @@ import org.primefaces.model.UploadedFile;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean(name="MBUploadFoto")
+@ManagedBean(name="mbUploadFoto")
 @ApplicationScoped
 public class MBUpload {
 

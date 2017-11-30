@@ -3,16 +3,24 @@ package br.com.ezzysoft.restaurante.bean;
 import br.com.ezzysoft.restaurante.dao.ClienteDAO;
 import br.com.ezzysoft.restaurante.entidade.Cliente;
 import br.com.ezzysoft.restaurante.facade.ClienteFacade;
+import br.com.ezzysoft.restaurante.facade.UsuarioFacade;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.JsfUtil.PersistAction;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -23,12 +31,20 @@ import javax.faces.convert.FacesConverter;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean(name = "MBCliente")
+@ManagedBean(name = "mbCliente")
 @SessionScoped
 public class MBCliente implements Serializable {
 
+    @ManagedProperty(value = "#{mbUsuario}")
+    private MBUsuario mbUsuario = new MBUsuario();
+
+    @ManagedProperty(value = "#{mbClienteSelect}")
+    private MBClienteSelect mbClienteSelect = new MBClienteSelect();
+
     @EJB
     private ClienteFacade ejbFacade;
+    @EJB
+    private UsuarioFacade facadeUsuario;
     private List<Cliente> items = null;
     private Cliente selected;
 
@@ -48,6 +64,22 @@ public class MBCliente implements Serializable {
     }
 
     protected void initializeEmbeddableKey() {
+    }
+
+    public MBUsuario getMbUsuario() {
+        return mbUsuario;
+    }
+
+    public void setMbUsuario(MBUsuario mbUsuario) {
+        this.mbUsuario = mbUsuario;
+    }
+
+    public MBClienteSelect getMbClienteSelect() {
+        return mbClienteSelect;
+    }
+
+    public void setMbClienteSelect(MBClienteSelect mbClienteSelect) {
+        this.mbClienteSelect = mbClienteSelect;
     }
 
     private ClienteFacade getFacade() {
@@ -135,7 +167,7 @@ public class MBCliente implements Serializable {
                 return null;
             }
             MBCliente controller = (MBCliente) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "clienteController");
+                    getValue(facesContext.getELContext(), null, "mbCliente");
             return controller.getCliente(getKey(value));
         }
 
@@ -167,8 +199,16 @@ public class MBCliente implements Serializable {
 
     }
 
-    public void init(){
+    public void clienteSelecionado(SelectEvent event) {
+        Cliente cliente = (Cliente) event.getObject();
+        setSelected(cliente);
+    }
 
+
+    @PostConstruct
+    public void init(){
+        String userid = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
     }
     
 }

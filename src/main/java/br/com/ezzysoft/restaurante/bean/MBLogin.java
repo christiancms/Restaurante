@@ -22,7 +22,7 @@ import java.util.Calendar;
 /**
  * Created by christian on 14/10/17.
  */
-@ManagedBean(name = "MBLogin")
+@ManagedBean(name = "mbLogin")
 @SessionScoped
 public class MBLogin implements Serializable {
 
@@ -83,13 +83,14 @@ public class MBLogin implements Serializable {
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                 session.setAttribute("usrLogado", true);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", getSessionUser().getUsername());
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userid", getSessionUser().getId().toString());
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem Vindo", getUsername());
                 FacesContext.getCurrentInstance().getExternalContext().redirect("index.jsf");
             } else {
                 loggedIn = false;
                 message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Erro de autenticação", "Credenciais");
                 RequestContext.getCurrentInstance().reset(":loginIndex");
-                FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
+//                FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
             }
         }
 
@@ -122,7 +123,7 @@ public class MBLogin implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         loggedIn = false;
         setSessionUser(null);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("../login.jsf");
     }
 
     public boolean validaLogin(String username, String password) {

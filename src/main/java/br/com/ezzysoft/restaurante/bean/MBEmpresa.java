@@ -20,7 +20,7 @@ import org.json.simple.parser.JSONParser;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean(name = "MBEmpresa")
+@ManagedBean(name = "mbEmpresa")
 @SessionScoped
 public class MBEmpresa implements Serializable{
 

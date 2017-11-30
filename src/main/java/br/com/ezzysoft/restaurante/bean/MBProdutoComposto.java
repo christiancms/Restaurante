@@ -1,22 +1,19 @@
 package br.com.ezzysoft.restaurante.bean;
 
-import br.com.ezzysoft.restaurante.entidade.Grupo;
-import br.com.ezzysoft.restaurante.entidade.Marca;
-import br.com.ezzysoft.restaurante.entidade.Produto;
-import br.com.ezzysoft.restaurante.entidade.Unidade;
-import br.com.ezzysoft.restaurante.facade.GrupoFacade;
-import br.com.ezzysoft.restaurante.facade.MarcaFacade;
-import br.com.ezzysoft.restaurante.facade.ProdutoFacade;
-import br.com.ezzysoft.restaurante.facade.UnidadeFacade;
+import br.com.ezzysoft.restaurante.entidade.*;
+import br.com.ezzysoft.restaurante.facade.*;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.JsfUtil.PersistAction;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,15 +31,15 @@ import java.util.logging.Logger;
 /**
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean(name = "MBProduto")
+@ManagedBean(name = "mbProdutoComposto")
 @SessionScoped
 public class MBProdutoComposto implements Serializable {
 
-    ////
-//    public String init(){
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-//        return sdf.format(new Date());
-//    }
+    @ManagedProperty(value = "#{mbUsuario}")
+    private MBUsuario mbUsuario = new MBUsuario();
+//    @ManagedProperty(value = "#{mbProdutoSelect}")
+//    private MBProdutoSelect mbProdutoSelect = new MBProdutoSelect();
+
     @EJB
     private ProdutoFacade ejbFacade;
     @EJB
@@ -51,11 +48,19 @@ public class MBProdutoComposto implements Serializable {
     private MarcaFacade facadeMarca;
     @EJB
     private UnidadeFacade facadeUnidade;
+    @EJB
+    private StatusFacade facadeStatus;
+    @EJB
+    private UsuarioFacade facadeUsuario;
+
     private List<Produto> items = null;
+    private List<Produto> selectedItems;
     private Produto selected;
+    private ItemProduto selectedIProd;
     private Grupo selectedGrupo;
     private Marca selectedMarca;
     private Unidade selectedUnidade;
+    private Status selectedStatus;
 
     public MBProdutoComposto() {
     }
@@ -71,8 +76,19 @@ public class MBProdutoComposto implements Serializable {
             if (selected.getUnidade().getId() != null) {
                 selected.setUnidade(facadeUnidade.find(selected.getUnidade().getId()));
             }
+            if (selected.getStatus().getId() != null) {
+                selected.setStatus(facadeStatus.findEnumProduto(selected.getStatus().getId()));
+            }
         }
         return selected;
+    }
+
+    public ItemProduto getSelectedIProd() {
+        return selectedIProd;
+    }
+
+    public void setSelectedIProd(ItemProduto selectedIProd) {
+        this.selectedIProd = selectedIProd;
     }
 
     public void setSelected(Produto selected) {
@@ -95,6 +111,14 @@ public class MBProdutoComposto implements Serializable {
         return selected;
     }
 
+    public MBUsuario getMbUsuario() {
+        return mbUsuario;
+    }
+
+    public void setMbUsuario(MBUsuario mbUsuario) {
+        this.mbUsuario = mbUsuario;
+    }
+
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("resources/Bundle").getString("ProdutoCreated"));
         if (!JsfUtil.isValidationFailed()) {
@@ -114,16 +138,19 @@ public class MBProdutoComposto implements Serializable {
         }
     }
 
-    public List<Produto> getItems(boolean refresh) {
-        if (!refresh) {
-            if (items == null) {
-                items = getFacade().findAll();
-            }
-        } else {
-            items = null;
-            items = getFacade().findAll();
+    public List<Produto> getItems() {
+        if (items == null) {
+            items = getFacade().getProdutosComposto();
         }
         return items;
+    }
+
+    public List<Produto> getItensCompoeProduto() {
+        return getFacade().getItensCompoeCardapio();
+    }
+
+    public List<Produto> getItensProduto(Long produtoId) {
+        return getFacade().getItensProduto(produtoId);
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -194,6 +221,22 @@ public class MBProdutoComposto implements Serializable {
         this.selectedUnidade = selectedUnidade;
     }
 
+    public Status getSelectedStatus() {
+        return selectedStatus;
+    }
+
+    public void setSelectedStatus(Status selectedStatus) {
+        this.selectedStatus = selectedStatus;
+    }
+
+    public List<Produto> getSelectedItems() {
+        return selectedItems;
+    }
+
+    public void setSelectedItems(List<Produto> selectedItems) {
+        this.selectedItems = selectedItems;
+    }
+
     @FacesConverter(forClass = Produto.class)
     public static class MBProdutoConverter implements Converter {
 
@@ -203,7 +246,7 @@ public class MBProdutoComposto implements Serializable {
                 return null;
             }
             MBProdutoComposto controller = (MBProdutoComposto) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "MBProduto");
+                    getValue(facesContext.getELContext(), null, "mbProduto");
             return controller.getProduto(getKey(value));
         }
 
@@ -275,10 +318,17 @@ public class MBProdutoComposto implements Serializable {
         return facadeMarca;
     }
 
-    @PostConstruct
-    public void init() {
-//        this.selected = new Produto();
-//        getItems();
+    public List<SelectItem> getStatus() throws ErroSistema {
+        List<Status> status = getStatusFacade().getEnumProduto();
+        List<SelectItem> itens = new ArrayList<>(status.size());
+        for (Status s : status) {
+            itens.add(new SelectItem(s.getId(), s.getOpcao()));
+        }
+        return itens;
+    }
+
+    public StatusFacade getStatusFacade() {
+        return facadeStatus;
     }
 
     public void buttonAction(ActionEvent actionEvent) {
@@ -290,4 +340,24 @@ public class MBProdutoComposto implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public List<Produto> atualiza() {
+        items = getFacade().findAll();
+        return items;
+    }
+
+    public void produtoSelecionado(SelectEvent event) {
+        Produto produto = (Produto) event.getObject();
+        ItemProduto itemLista = new ItemProduto();
+        itemLista.setProduto(produto);
+    }
+
+    @PostConstruct
+    public void init(){
+//        this.selected = new Produto();
+//        getItems();
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//        return sdf.format(new Date());
+        String userid = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
+    }
 }

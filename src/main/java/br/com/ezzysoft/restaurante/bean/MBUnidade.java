@@ -3,6 +3,7 @@ package br.com.ezzysoft.restaurante.bean;
 import br.com.ezzysoft.restaurante.dao.UnidadeDAO;
 import br.com.ezzysoft.restaurante.facade.UnidadeFacade;
 import br.com.ezzysoft.restaurante.entidade.Unidade;
+import br.com.ezzysoft.restaurante.facade.UsuarioFacade;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.JsfUtil.PersistAction;
 import java.io.Serializable;
@@ -10,9 +11,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -23,12 +26,17 @@ import javax.faces.convert.FacesConverter;
  *
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
-@ManagedBean(name = "MBUnidade")
+@ManagedBean(name = "mbUnidade")
 @SessionScoped
 public class MBUnidade implements Serializable {
 
+    @ManagedProperty(value = "#{mbUsuario}")
+    private MBUsuario mbUsuario = new MBUsuario();
+
     @EJB
     private UnidadeFacade ejbFacade;
+    @EJB
+    private UsuarioFacade facadeUsuario;
     private List<Unidade> items = null;
     private Unidade selected;
     
@@ -80,6 +88,14 @@ public class MBUnidade implements Serializable {
         selected = new Unidade();
         initializeEmbeddableKey();
         return selected;
+    }
+
+    public MBUsuario getMbUsuario() {
+        return mbUsuario;
+    }
+
+    public void setMbUsuario(MBUsuario mbUsuario) {
+        this.mbUsuario = mbUsuario;
     }
 
     public void create() {
@@ -157,7 +173,7 @@ public class MBUnidade implements Serializable {
                 return null;
             }
             MBUnidade controller = (MBUnidade) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "MBUnidade");
+                    getValue(facesContext.getELContext(), null, "mbUnidade");
             return controller.getUnidade(getKey(value));
         }
 
@@ -189,5 +205,11 @@ public class MBUnidade implements Serializable {
 
     }
 
+
+    @PostConstruct
+    public void init() {
+        String userid = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
+    }
     
     }

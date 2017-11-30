@@ -2,6 +2,8 @@ package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.dao.ProdutoDAO;
 import br.com.ezzysoft.restaurante.entidade.Produto;
+
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -12,9 +14,9 @@ import javax.faces.bean.SessionScoped;
  *
  * @author christian
  */
-@ManagedBean(name = "MBCaixa")
+@ManagedBean(name = "mbCaixa")
 @SessionScoped
-public class MBCaixa {
+public class MBCaixa implements Serializable {
     
     private ProdutoDAO produtoDAO;
     private Date dataAtual = new Date();
