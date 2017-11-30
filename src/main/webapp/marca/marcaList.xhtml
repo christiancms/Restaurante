@@ -11,12 +11,12 @@
         <ui:define name="title">
             <h:outputText value="Lista de Marcas"/>
         </ui:define>
-
+        <f:ajax event="load" listener="#{mbMarca.init}" />
         <ui:define name="body">
             <h:form id="MarcaListForm">
                 <p:panel header="Lista de Marcas">
-                    <p:dataTable id="datalist" value="#{MBMarca.items}" var="item"
-                                 selectionMode="single" selection="#{MBMarca.selected}"
+                    <p:dataTable id="datalist" value="#{mbMarca.items}" var="item"
+                                 selectionMode="single" selection="#{mbMarca.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"
                                  rows="10"
@@ -26,23 +26,29 @@
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column style="width: 105px;" filterBy="#{item.id}">
+                        <p:column style="width: 105px;" filterBy="#{item.id}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListMarcaTitle_id}"/>
                             </f:facet>
-                            <h:outputText value="#{item.id}"/>
+                            <h:outputText value="#{item.id}" style="float:right"/>
                         </p:column>
-                        <p:column filterBy="#{item.descricao}" filterStyle="width:200px">
+                        <p:column filterBy="#{item.descricao}" filterStyle="width:200px" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListMarcaTitle_descricao}"/>
                             </f:facet>
                             <h:outputText value="#{item.descricao}"/>
                         </p:column>
                         <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{MBMarca.prepareCreate}" update=":MarcaCreateForm" oncomplete="PF('MarcaCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":MarcaViewForm" oncomplete="PF('MarcaViewDialog').show()" disabled="#{empty MBMarca.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":MarcaEditForm" oncomplete="PF('MarcaEditDialog').show()" disabled="#{empty MBMarca.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{MBMarca.destroy}" update=":growl,datalist" disabled="#{empty MBMarca.selected}"/>
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}"
+                                             rendered="#{mbUsuario.selected.gerente || mbUsuario.selected.adm}"
+                                             actionListener="#{mbMarca.prepareCreate}" update=":MarcaCreateForm" oncomplete="PF('MarcaCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":MarcaViewForm" oncomplete="PF('MarcaViewDialog').show()" disabled="#{empty mbMarca.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}"
+                                             rendered="#{mbUsuario.selected.gerente || mbUsuario.selected.adm}"
+                                             update=":MarcaEditForm" oncomplete="PF('MarcaEditDialog').show()" disabled="#{empty mbMarca.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}"
+                                             rendered="#{mbUsuario.selected.adm}"
+                                             actionListener="#{mbMarca.destroy}" update=":growl,datalist" disabled="#{empty mbMarca.selected}"/>
                         </f:facet>
                     </p:dataTable>
                 </p:panel>

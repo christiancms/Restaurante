@@ -8,8 +8,8 @@
 
     <ui:composition>
 
-        <p:dialog id="ProdutoEditDlg" widgetVar="ProdutoEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProdutoTitle}">
-            <h:form id="ProdutoEditForm">
+        <p:dialog id="ProdutoCEditDlg" widgetVar="ProdutoCEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProdutoTitle}">
+            <h:form id="ProdutoCEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{mbProduto.selected != null}">
                         <p:outputLabel value="#{bundle.EditProdutoLabel_id}" for="id" />
@@ -21,20 +21,12 @@
                         <p:inputText id="codbarras" value="#{mbProduto.selected.codigoBarras}" title="Cód. Barras" required="true" requiredMessage="Cód. Barras Campo obrigatório" />
                         <p:outputLabel value="#{bundle.EditProdutoLabel_precoCompra}" for="precoCompra" />
                         <p:inputText id="precoCompra" value="#{mbProduto.selected.precoCompra}"
-                                     onblur="this.value = this.value.replace(',','.')" title="#{bundle.EditProdutoTitle_precoCompra}"
-                                     required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_precoCompra}">
-                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
-                        </p:inputText>
-                        <h:outputText value="Margem de lucro" for="txtMargemLuc"/>
-                        <p:inputText id="txtMargemLuc" value="#{mbProduto.selected.percLucro}" title="Margem Lucro" name="txtMargemLuc">
-                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
-                        </p:inputText>
+                                     onblur="this.value = this.value.replace(',','.')"
+                                     title="#{bundle.EditProdutoTitle_precoCompra}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_precoCompra}"/>
                         <p:outputLabel value="#{bundle.EditProdutoLabel_precoVenda}" for="precoVenda"/>
                         <p:inputText id="precoVenda" value="#{mbProduto.selected.precoVenda}"
                                      onblur="this.value = this.value.replace(',','.')"
-                                     title="#{bundle.CreateProdutoTitle_precoVenda}">
-                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
-                        </p:inputText>
+                                     title="#{bundle.CreateProdutoTitle_precoVenda}"/>
                         
                         <p:outputLabel value="Grupo" for="grupoId" />
                         <p:selectOneMenu id="grupoId" value="#{mbProduto.selected.grupo.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">
@@ -53,7 +45,7 @@
                             <f:selectItems value="#{mbProduto.unidades}" />
                         </p:selectOneMenu>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{mbProduto.update}" value="Salvar" update="display,:ProdutoListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProdutoEditDialog');"/>
+                    <p:commandButton actionListener="#{mbProduto.update}" value="Salvar" update="display,:ProdutoCListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProdutoCEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ProdutoEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

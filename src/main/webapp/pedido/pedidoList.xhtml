@@ -11,16 +11,16 @@
 
 
     <ui:define name="title">
-        <h:outputText value="Lista de Pedidos"></h:outputText>
+        <h:outputText value="Lista de Pedidos"/>
     </ui:define>
-    <f:ajax event="load" listener="#{MBPedido.init}" />
+
 
     <ui:define name="body">
         <h:form id="PedidoListForm">
             <p:panel header="Lista de Pedidos">
-                <p:dataTable id="datalist" value="#{MBPedido.getItems(false)}" var="item"
-                             selectionMode="single" selection="#{MBPedido.selected}"
-                             paginator="true"
+                <p:dataTable id="datalist" value="#{mbPedido.getItems(false)}" var="item"
+                             selectionMode="single" selection="#{mbPedido.selected}"
+                             paginator="true" style=""
                              rowKey="#{item.id}"
                              rows="10"
                              rowsPerPageTemplate="10,20,30,40,50">
@@ -28,25 +28,25 @@
                     <p:ajax event="rowSelect" update="createButton viewButton editButton deleteButton"/>
                     <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                    <p:column>
+                    <p:column style="width: 105px;" filterBy="#{item.id}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="#{bundle.ListPedidoTitle_id}"/>
                         </f:facet>
-                        <h:outputText value="#{item.id}"/>
+                        <h:outputText value="#{item.id}" style="float:right"/>
                     </p:column>
-                    <p:column>
+                    <p:column style="width: 105px;" filterBy="#{item.mesa}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="#{bundle.ListPedidoTitle_mesa}"/>
                         </f:facet>
-                        <h:outputText value="#{item.mesa}"/>
+                        <h:outputText value="#{item.mesa}" style="float:right"/>
                     </p:column>
-                    <p:column>
+                    <p:column style="width: 105px;" filterBy="#{item.colaborador.id} #{item.colaborador.nome}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="#{bundle.ListPedidoTitle_garcom}"/>
                         </f:facet>
                         <h:outputText value="#{item.colaborador.id} #{item.colaborador.nome}"/>
                     </p:column>
-                    <p:column filterBy="#{item.dataPedido}" filterValue="#{MBPedido.init()}">
+                    <p:column style="width: 105px;" filterBy="#{item.dataPedido}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="Data"/>
                         </f:facet>
@@ -54,38 +54,41 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputText>
                     </p:column>
-                    <p:column>
+                    <p:column style="width: 105px;" filterBy="#{item.horaPedido}" filterMatchMode="contains">
                         <f:facet name="header">
-                            <h:outputText value="Observação"/>
+                            <h:outputText value="Hora"/>
                         </f:facet>
-                        <h:outputText value="#{item.descricao}"/>
+                        <h:outputText value="#{item.horaPedido}">
+                            <f:convertDateTime pattern="HH:mm"/>
+                        </h:outputText>
                     </p:column>
-                    <p:column>
+                    <p:column filterBy="#{item.cliente.nome}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="Cliente"/>
                         </f:facet>
                         <h:outputText value="#{item.cliente.nome}"/>
                     </p:column>
-                    <p:column>
+                    <p:column style="width: 105px;" filterBy="#{item.status.opcao}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="Status"/>
                         </f:facet>
-                        <h:outputText value="#{item.status}"/>
+                        <h:outputText value="#{item.status.opcao}"/>
                     </p:column>
+
                     <f:facet name="footer">
-                        <p:commandButton id="createButton" icon="ui-icon-plus" value="#{bundle.Create}" actionListener="#{MBPedido.prepareCreate}"
+                        <p:commandButton id="createButton" icon="ui-icon-plus" value="#{bundle.Create}" actionListener="#{mbPedido.prepareCreate}"
                                          update=":PedidoCreateForm" oncomplete="PF('PedidoCreateDialog').show()"/>
 
                         <p:commandButton id="viewButton" icon="ui-icon-search" value="#{bundle.View}" update=":PedidoViewForm"
-                                         oncomplete="PF('PedidoViewDialog').show()" disabled="#{empty MBPedido.selected}"/>
+                                         oncomplete="PF('PedidoViewDialog').show()" disabled="#{empty mbPedido.selected}"/>
 
                         <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update=":PedidoEditForm"
-                                         oncomplete="PF('PedidoEditDialog').show()" disabled="#{empty MBPedido.selected}"/>
+                                         oncomplete="PF('PedidoEditDialog').show()" disabled="#{empty mbPedido.selected}"/>
                         <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{bundle.Delete}"
-                                         actionListener="#{MBPedido.destroy}" update=":growl,datalist"
-                                         disabled="#{empty MBPedido.selected}"/>
+                                         actionListener="#{mbPedido.destroy}" update=":growl,datalist"
+                                         disabled="#{empty mbPedido.selected}"/>
                         <p:commandButton id="refreshButton" icon="ui-icon-refresh" value="Atualizar"
-                                         actionListener="#{MBPedido.getItems(true)}" update=":growl,datalist,PedidoListForm"/>
+                                         actionListener="#{mbPedido.getItems(true)}" update=":growl,datalist,PedidoListForm"/>
                     </f:facet>
                 </p:dataTable>
             </p:panel>

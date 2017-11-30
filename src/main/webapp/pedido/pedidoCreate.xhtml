@@ -1,29 +1,120 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
+<ui:composition>
 
-        <p:dialog id="PedidoCreateDlg" widgetVar="PedidoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreatePedidoTitle}">
-            <h:form id="PedidoCreateForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{pedidoController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreatePedidoLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{pedidoController.selected.id}" title="#{bundle.CreatePedidoTitle_id}" required="true" requiredMessage="#{bundle.CreatePedidoRequiredMessage_id}"/>
-                        <p:outputLabel value="#{bundle.CreatePedidoLabel_mesa}" for="mesa" />
-                        <p:inputText id="mesa" value="#{pedidoController.selected.mesa}" title="#{bundle.CreatePedidoTitle_mesa}" />
-                        <p:outputLabel value="#{bundle.CreatePedidoLabel_garcom}" for="garcom" />
-                        <p:inputText id="garcom" value="#{pedidoController.selected.garcom}" title="#{bundle.CreatePedidoTitle_garcom}" />
-                    </p:panelGrid>
-                    <p:commandButton actionListener="#{pedidoController.create}" value="#{bundle.Save}" update="display,:PedidoListForm:datalist,:growl" oncomplete="handleSubmit(args,'PedidoCreateDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="PedidoCreateDialog.hide()"/>
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
+    <p:dialog id="PedidoCreateDlg" widgetVar="PedidoCreateDialog" modal="true" resizable="false" appendTo="@(body)"
+              header="#{bundle.CreatePedidoTitle}" >
+        <h:form id="PedidoCreateForm">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton id="btnNovo" icon="ui-icon-plus" value="Novo"/>
+                    <p:commandButton id="btnSalvar" icon="ui-icon-disk" value="Salvar"/>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:commandButton id="btnEmitir" icon="ui-icon-transferthick-e-w" value="Emitir"/>
+                    <p:commandButton id="btnCancelar" icon="ui-icon-cancel" value="Cancelar"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <p:tabView style="margin-top: 20px">
 
-    </ui:composition>
+                    <h:panelGroup id="display">
+                        <p:panelGrid columns="2" rendered="#{mbPedido.selected != null}">
+
+                            <p:outputLabel value="Data:" for="data"/>
+                            <p:outputLabel value="#{now}" id="data">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:outputLabel>
+
+                            <p:outputLabel value="#{bundle.CreatePedidoLabel_id}" for="id"/>
+                            <p:inputText id="id" value="#{mbPedido.selected.id}" title="#{bundle.CreatePedidoTitle_id}"
+                                         required="true" requiredMessage="#{bundle.CreatePedidoRequiredMessage_id}"/>
+
+                            <p:outputLabel value="Status" for="status"/>
+                            <p:outputLabel value="Pendente" id="status"/>
+
+                            <p:outputLabel value="#{bundle.CreatePedidoLabel_mesa}" for="mesa"/>
+                            <p:inputText id="mesa" value="#{mbPedido.selected.mesa}"
+                                         title="#{bundle.CreatePedidoTitle_mesa}"/>
+
+                            <p:outputLabel value="#{bundle.CreatePedidoLabel_garcom}" for="garcom"/>
+                            <p:selectOneMenu id="garcom">
+                                <f:selectItem itemLabel="Selecione" />
+                                <f:selectItem itemLabel="Christian" />
+                            </p:selectOneMenu>
+                            <!--<p:inputText id="garcom" value="#{mbPedido.selected.colaborador.nome}" title="#{bundle.CreatePedidoTitle_garcom}"/>-->
+
+                            <p:outputLabel value="SubTotal: " for="subtotal" style="font-weight: bold"/>
+                            <p:outputLabel value="R$0,00" id="subtotal" style="font-weight: bold"/>
+                            <p:outputLabel value="Desconto: " for="desconto" style="font-weight: bold"/>
+                            <p:inputText value="Desconto: " id="desconto" style="font-weight: bold"/>
+                            <p:outputLabel value="Total: " for="total" style="font-weight: bold"/>
+                            <p:outputLabel value="R$0,00" id="total" style="font-weight: bold"/>
+
+                        </p:panelGrid>
+                        <p:commandButton actionListener="#{mbPedido.create}" value="#{bundle.Save}"
+                                         update="display,:PedidoListForm:datalist,:growl"
+                                         oncomplete="handleSubmit(args,'PedidoCreateDialog');"/>
+                        <p:commandButton value="#{bundle.Cancel}" onclick="PedidoCreateDialog.hide()"/>
+                    </h:panelGroup>
+
+                <p:tab title="Itens">
+                    <p:dataTable value="#{mbPedido.selected.itensPedido}" var="item" id="tabelaItens" >
+                        <p:column headerText="SKU" style="text-align: center; width: 100px">
+                            <h:outputText value="#{item.produto.id}" rendered="#{item.produtoAssociado}"/>
+
+                            <p:inputText size="8" value="#{cadastroPedidoBean.sku}" label="SKU"
+                                         rendered="#{not item.produtoAssociado}">
+                                <p:ajax event="change" process="@this"
+                                        update="tabelaItens :frmCadastro:totalPedido :frmCadastro:subtotal"
+                                        listener="#{cadastroPedidoBean.carregarProdutoPorSku}"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column headerText="Produto">
+                            <h:outputText value="#{item.produto.descricao}" />
+                            <p:inputText value="#{item.produto.descricao}"/>
+                        </p:column>
+                        <p:column headerText="Valor unitário" style="text-align: right; width: 120px">
+                            <h:outputText value="#{item.valorUnitario}">
+                                <f:convertNumber type="currency"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Quantidade" style="text-align: center; width: 100px">
+                            <p:inputText size="8" value="#{item.quantidade}"/>
+                        </p:column>
+                        <p:column headerText="Estoque" style="text-align: center; width: 100px">
+                            <h:outputText value="#{item.produto.quantidadeEstoque}"/>
+                        </p:column>
+                        <p:column headerText="Valor total" style="text-align: right; width: 100px">
+                            <h:outputText value="#{item.valorTotal}">
+                                <f:convertNumber type="currency"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" footerText="Subtotal" style="text-align: right"/>
+                                <p:column style="text-align: right">
+                                    <f:facet name="footer">
+                                        <h:outputText value="#{cadastroPedidoBean.pedido.valorSubtotal}">
+                                            <f:convertNumber type="currency"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+
+        </h:form>
+    </p:dialog>
+
+</ui:composition>
 </html>

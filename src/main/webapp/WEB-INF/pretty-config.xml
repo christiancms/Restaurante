@@ -1,1 +1,30 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-intance"
+               xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+    <url-mapping id="cliente-list">
+        <pattern value="/"/>
+        <view-id value="cliente/clienteList.jsf"/>
+    </url-mapping>
+    <url-mapping id="colaborador-list">
+        <pattern value="/"/>
+        <view-id value="colaborador/colaboradorList.jsf"/>
+    </url-mapping>
+    <url-mapping id="grupo-list">
+        <pattern value="/"/>
+        <view-id value="grupo/grupoList.jsf"/>
+    </url-mapping>
+    <url-mapping id="marca-list">
+        <pattern value="/"/>
+        <view-id value="marca/marcaList.jsf"/>
+    </url-mapping>
+    <url-mapping id="produto-list">
+        <pattern value="/"/>
+        <view-id value="produto/produtoList.jsf"/>
+    </url-mapping>
+    <url-mapping id="unidade-list">
+        <pattern value="/"/>
+        <view-id value="unidade/unidadeList.jsf"/>
+    </url-mapping>
+</pretty-config>

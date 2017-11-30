@@ -11,14 +11,14 @@
         <p:dialog id="MarcaEditDlg" widgetVar="MarcaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditMarcaTitle}">
             <h:form id="MarcaEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBMarca.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbMarca.selected != null}">
                         <p:outputLabel value="#{bundle.EditMarcaLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBMarca.selected.id}" title="#{bundle.EditMarcaTitle_id}" required="true" 
+                        <p:inputText id="id" value="#{mbMarca.selected.id}" title="#{bundle.EditMarcaTitle_id}" required="true"
                                      disabled="true" requiredMessage="#{bundle.EditMarcaRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditMarcaLabel_descricao}" for="descricao" />
-                        <p:inputText id="descricao" value="#{MBMarca.selected.descricao}" title="#{bundle.EditMarcaTitle_descricao}" required="true" requiredMessage="#{bundle.EditMarcaRequiredMessage_descricao}"/>
+                        <p:inputText id="descricao" value="#{mbMarca.selected.descricao}" title="#{bundle.EditMarcaTitle_descricao}" required="true" requiredMessage="#{bundle.EditMarcaRequiredMessage_descricao}"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{MBMarca.update}" value="#{bundle.Save}" update="display,:MarcaListForm:datalist,:growl" oncomplete="handleSubmit(args, 'MarcaEditDialog');"/>
+                    <p:commandButton actionListener="#{mbMarca.update}" value="#{bundle.Save}" update="display,:MarcaListForm:datalist,:growl" oncomplete="handleSubmit(args, 'MarcaEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="MarcaEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

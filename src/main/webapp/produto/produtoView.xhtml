@@ -11,23 +11,35 @@
         <p:dialog id="ProdutoViewDlg" widgetVar="ProdutoViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewProdutoTitle}">
             <h:form id="ProdutoViewForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBProduto.selected != null}">
-                        <h:outputText value="#{bundle.ViewProdutoLabel_id}"/>
-                        <h:outputText value="#{MBProduto.selected.id}" title="Id"/>
-                        <h:outputText value="#{bundle.ViewProdutoLabel_descricao}"/>
-                        <h:outputText value="#{MBProduto.selected.descricao}" title="Descrição"/>
-                        <h:outputText value="#{bundle.ViewProdutoLabel_precoCompra}"/>
-                        <h:outputText value="#{MBProduto.selected.precoCompra}" title="Preço de Compra}"/>
-                        <h:outputText value="#{bundle.ViewProdutoLabel_dataCadastro}"/>
-                        <h:outputText value="#{MBProduto.selected.dataCadastro}" title="Data de Cadastro">
-                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    <p:panelGrid columns="2" rendered="#{mbProduto.selected != null}">
+                        <h:outputText value="#{bundle.ViewProdutoLabel_id}" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.id}" title="Id"/>
+                        <h:outputText value="#{bundle.ViewProdutoLabel_descricao}" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.descricao}" title="Descrição"/>
+                        <h:outputText value="Código de Barras" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.codigoBarras}" title="Cód. Barras"/>
+                        <h:outputText value="#{bundle.ViewProdutoLabel_precoCompra}" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.precoCompra}" title="Preço Compra">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
                         </h:outputText>
-                        <h:outputText value="Grupo"/>
-                        <h:outputText value="#{MBProduto.selected.grupo.descricao}" title="Grupo"/>
-                        <h:outputText value="Marca"/>
-                        <h:outputText value="#{MBProduto.selected.marca.descricao}" title="Marca"/>
-                        <h:outputText value="Unidade"/>
-                        <h:outputText value="#{MBProduto.selected.unidade.sigla}" title="Unidade"/>
+                        <h:outputText value="#{bundle.ViewProdutoLabel_precoVenda}" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.precoVenda}" title="Preço Venda">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </h:outputText>
+                        <h:outputText value="Margem de lucro" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.percLucro}" title="Margem Lucro">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewProdutoLabel_dataCadastro}" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.dataCadastro}" title="Dt.Cadastro">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="Grupo" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.grupo.descricao}" title="Grupo"/>
+                        <h:outputText value="Marca" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.marca.descricao}" title="Marca"/>
+                        <h:outputText value="Unidade" style="font-weight: bold"/>
+                        <h:outputText value="#{mbProduto.selected.unidade.sigla}" title="Unidade"/>
                     </p:panelGrid>
                 </h:panelGroup>
             </h:form>

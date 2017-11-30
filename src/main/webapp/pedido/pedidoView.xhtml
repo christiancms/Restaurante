@@ -9,27 +9,28 @@
 
 <ui:composition>
 
-    <p:dialog id="PedidoViewDlg" widgetVar="PedidoViewDialog" modal="true" resizable="false" appendTo="@(body)"
+    <p:dialog id="PedidoViewDlg" widgetVar="PedidoViewDialog" modal="true" resizable="false"
+              width="50%" appendTo="@(body)"
               header="#{bundle.ViewPedidoTitle}">
         <h:form id="PedidoViewForm">
             <h:panelGroup id="display">
-                <p:panelGrid columns="4" rendered="#{MBPedido.selected != null}">
+                <p:panelGrid columns="4" rendered="#{mbPedido.selected != null}">
                     <h:outputText value="#{bundle.ViewPedidoLabel_id}"/>
-                    <p:inputText value="#{MBPedido.selected.id}" title="#{bundle.ViewPedidoTitle_id}" readonly="true"/>
+                    <p:inputText value="#{mbPedido.selected.id}" title="#{bundle.ViewPedidoTitle_id}" readonly="true"/>
                     <h:outputText value="#{bundle.ViewPedidoLabel_mesa}"/>
-                    <p:inputText value="#{MBPedido.selected.mesa}" title="#{bundle.ViewPedidoTitle_mesa}" readonly="true"/>
+                    <p:inputText value="#{mbPedido.selected.mesa}" title="#{bundle.ViewPedidoTitle_mesa}" readonly="true"/>
                     <h:outputText value="#{bundle.ViewPedidoLabel_garcom}"/>
-                    <p:inputText value="#{MBPedido.selected.colaborador.nome}" title="#{bundle.ViewPedidoTitle_garcom}" readonly="true"/>
+                    <p:inputText value="#{mbPedido.selected.colaborador.nome}" title="#{bundle.ViewPedidoTitle_garcom}" readonly="true"/>
                     <h:outputText value="Total (R$)" />
-                    <p:inputText value="#{MBPedido.selected.totalPedido}" title="Total (R$)" readonly="true">
+                    <p:inputText value="#{mbPedido.selected.totalPedido}" title="Total (R$)" readonly="true">
                         <f:convertNumber pattern="#0.00" locale="pt_BR"/>
                     </p:inputText>
                 </p:panelGrid>
             </h:panelGroup>
 
         <p:panel header="Lista de Pedidos">
-            <p:dataTable id="datalist" value="#{MBPedido.getItensPedido(MBPedido.selected.id)}" var="itempedido"
-                         selectionMode="single" selection="#{MBPedido.selected}"
+            <p:dataTable id="datalist" value="#{mbPedido.getItensPedido(mbPedido.selected.id)}" var="itempedido"
+                         selectionMode="single" selection="#{mbPedido.selected}"
                          paginator="true"
                          rowKey="#{itempedido.id}"
                          rows="10"

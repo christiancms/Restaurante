@@ -11,13 +11,15 @@
         <p:dialog id="GrupoViewDlg" widgetVar="GrupoViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewGrupoTitle}">
             <h:form id="GrupoViewForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBGrupo.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbGrupo.selected != null}">
                         <h:outputText value="#{bundle.ViewGrupoLabel_id}"/>
-                        <h:outputText value="#{MBGrupo.selected.id}" title="#{bundle.ViewGrupoTitle_id}"/>
+                        <h:outputText value="#{mbGrupo.selected.id}" title="#{bundle.ViewGrupoTitle_id}"/>
                         <h:outputText value="#{bundle.ViewGrupoLabel_descricao}"/>
-                        <h:outputText value="#{MBGrupo.selected.descricao}" title="#{bundle.ViewGrupoTitle_descricao}"/>
+                        <h:outputText value="#{mbGrupo.selected.descricao}" title="#{bundle.ViewGrupoTitle_descricao}"/>
+                        <p:outputLabel value="Cardápio:" for="ckCardapio" />
+                        <p:selectBooleanCheckbox value="#{mbGrupo.selected.cardapio}" id="ckCardapio"/>
                         <h:outputText value="#{bundle.ViewGrupoLabel_foto}"/>
-                        <h:outputText value="#{MBGrupo.selected.foto}" title="#{bundle.ViewGrupoTitle_foto}"/>
+                        <h:outputText value="#{mbGrupo.selected.foto}" title="#{bundle.ViewGrupoTitle_foto}"/>
                     </p:panelGrid>
                 </h:panelGroup>
             </h:form>

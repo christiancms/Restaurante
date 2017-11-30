@@ -11,16 +11,18 @@
         <p:dialog id="GrupoCreateDlg" widgetVar="GrupoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateGrupoTitle}">
             <h:form id="GrupoCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBGrupo.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbGrupo.selected != null}">
                         <p:outputLabel value="#{bundle.CreateGrupoLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBGrupo.selected.id}" title="#{bundle.CreateGrupoTitle_id}" required="true" 
+                        <p:inputText id="id" value="#{mbGrupo.selected.id}" title="#{bundle.CreateGrupoTitle_id}" required="true"
                                      disabled="true" requiredMessage="#{bundle.CreateGrupoRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.CreateGrupoLabel_descricao}" for="descricao" />
-                        <p:inputText id="descricao" value="#{MBGrupo.selected.descricao}" title="#{bundle.CreateGrupoTitle_descricao}" required="true" requiredMessage="#{bundle.CreateGrupoRequiredMessage_descricao}"/>
+                        <p:inputText id="descricao" value="#{mbGrupo.selected.descricao}" title="#{bundle.CreateGrupoTitle_descricao}" required="true" requiredMessage="#{bundle.CreateGrupoRequiredMessage_descricao}"/>
+                        <p:outputLabel value="Cardápio:" for="ckCardapio" />
+                        <p:selectBooleanCheckbox value="#{mbGrupo.selected.cardapio}" id="ckCardapio"/>
                         <p:outputLabel value="#{bundle.CreateGrupoLabel_foto}" for="foto" />
-                        <p:inputTextarea rows="4" cols="30" id="foto" value="#{MBGrupo.selected.foto}" title="#{bundle.CreateGrupoTitle_foto}" />
+                        <p:inputTextarea rows="4" cols="30" id="foto" value="#{mbGrupo.selected.foto}" title="#{bundle.CreateGrupoTitle_foto}" />
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{MBGrupo.create}" value="#{bundle.Save}" update="display,:GrupoListForm:datalist,:growl" oncomplete="handleSubmit(args,'GrupoCreateDialog');"/>
+                    <p:commandButton actionListener="#{mbGrupo.create}" value="#{bundle.Save}" update="display,:GrupoListForm:datalist,:growl" oncomplete="handleSubmit(args,'GrupoCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="GrupoCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

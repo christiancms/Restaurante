@@ -8,20 +8,11 @@
 
 <ui:composition template="/template.xhtml">
     <ui:define name="body">
-    <h1> Bem vindo ao sistema</h1>
-    <span> Sistema para controle de pedidos para restaurante</span>
-    <h:form>
-        <p:notificationBar widgetVar="notifBar" effect="slide">
-            <h:outputText value="Hello World" style="font-size: 40px;"/>
-        </p:notificationBar>
-
-        <h:panelGrid>
-            <p:commandButton value="Ver" onclick="PF('notifBar').show();"/>
-            <p:commandButton value="Ocultar" onclick="PF('notifBar').hide();"/>
-            <p:commandButton value="Ocultar" action="#{MBNotificacao.avisar}"/>
-        </h:panelGrid>
-    </h:form>
-
+        <h:panelGroup >
+            <h1> Bem vindo ao EzzySoft</h1>
+            <h:outputText value="#{mbLogin.sessionUser.username}" style="text-transform: capitalize"/>
+        </h:panelGroup><br/>
+        <h:outputText value="Browser: #{mbConfig.browserName}" />
     </ui:define>
 </ui:composition>
 </html>

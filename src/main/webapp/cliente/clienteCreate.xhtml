@@ -1,63 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
-        <f:metadata>
-            <f:event type="preRenderView" listener="#{MBCliente.init}"/>
-        </f:metadata>
-        <p:dialog id="ClienteCreateDlg" widgetVar="ClienteCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateClienteTitle}">
-            <h:form id="ClienteCreateForm" >
-                <h:panelGroup id="display">
-                    <p:tabView>
-                        <p:tab title="Geral">
-                            <p:panelGrid columns="2" rendered="#{MBCliente.selected != null}">
-                                <p:outputLabel value="#{bundle.CreateClienteLabel_id}" for="id" />
-                                <p:inputText id="id" value="#{MBCliente.selected.id}" title="#{bundle.CreateClienteTitle_id}" required="true"
-                                             disabled="true" requiredMessage="#{bundle.CreateClienteRequiredMessage_id}"/>
-                                <p:outputLabel value="#{bundle.CreateClienteLabel_nome}" for="nome" />
-                                <p:inputText id="nome" value="#{MBCliente.selected.nome}" title="#{bundle.CreateClienteTitle_nome}" required="true"
-                                             requiredMessage="#{bundle.CreateClienteRequiredMessage_nome}"/>
-                            </p:panelGrid>
-                            <p:commandButton actionListener="#{MBCliente.create}" value="#{bundle.Save}" update=":ClienteListForm:datalist,:growl" oncomplete="handleSubmit(args,'ClienteCreateDialog');"/>
-                            <p:commandButton value="#{bundle.Cancel}" onclick="ClienteCreateDialog.hide()"/>
-                        </p:tab>
-                        <p:tab title="Endereços">
-                            <h:panelGrid columns="2" cellpadding="10">
-                                <h:outputText value="Código" for="codEndereco"/>
-                                <h:inputText id="codEndereco" value="#{MBCliente.selected.id}" />
-                                <h:outputText value="Logradouro" for="txtLogradouro"/>
-                                <h:inputText id="txtLogradouro" value="#{MBCliente.selected.id}" />
-                                <h:outputText value="Número" for="txtNumEndereco"/>
-                                <h:inputText id="txtNumEndereco" value="#{MBCliente.selected.id}" />
-                                <h:outputText value="Bairro" for="txtBairro"/>
-                                <h:inputText id="txtBairro" value="#{MBCliente.selected.id}" />
-                                <h:outputText value="Complemento" for="txtComplemento"/>
-                                <h:inputText id="txtComplemento" value="#{MBCliente.selected.id}" />
-                                <h:outputText value="Município" for="txtMunicipio"/>
-                                <h:inputText id="txtMunicipio" value="#{MBCliente.selected.id}" />
-                                <h:outputText value="CEP" for="txtCep"/>
-                                <h:inputText id="txtCep" value="#{MBCliente.selected.id}" />
-                            </h:panelGrid>
-                        </p:tab>
-                        <p:tab title="Telefones">
-                            <h:panelGrid columns="2" cellpadding="10">
-                                <p:outputLabel for="codTelefone" value="Código"/>
-                                <p:inputText id="codTelefone" value="#{MBCliente.selected.id}"/>
-                                <p:outputLabel for="txtDdd" value="DDD"/>
-                                <p:inputText id="txtDdd" value="#{MBCliente.selected.id}"/>
-                                <p:outputLabel for="txtNumTelefone" value="Número"/>
-                                <p:inputText id="txtNumTelefone" value="#{MBCliente.selected.id}"/>
-                            </h:panelGrid>
-                        </p:tab>
-                    </p:tabView>
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
+<ui:composition>
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{mbCliente.init}"/>
+    </f:metadata>
+    <p:dialog id="ClienteCreateDlg" widgetVar="ClienteCreateDialog" modal="true" resizable="false" appendTo="@(body)"
+              header="#{bundle.CreateClienteTitle}">
+        <h:form id="ClienteCreateForm">
+            <h:panelGroup id="display">
+                <p:tabView>
+                    <p:tab title="Geral">
+                        <p:panelGrid columns="2" rendered="#{mbCliente.selected != null}">
+                            <p:outputLabel value="#{bundle.CreateClienteLabel_id}" for="id"/>
+                            <p:inputText id="id" value="#{mbCliente.selected.id}"
+                                         title="#{bundle.CreateClienteTitle_id}" required="true"
+                                         disabled="true" requiredMessage="#{bundle.CreateClienteRequiredMessage_id}"/>
+                            <p:outputLabel value="#{bundle.CreateClienteLabel_nome}" for="nome"/>
+                            <p:inputText id="nome" value="#{mbCliente.selected.nome}"
+                                         title="#{bundle.CreateClienteTitle_nome}" required="true"
+                                         requiredMessage="#{bundle.CreateClienteRequiredMessage_nome}"/>
+                        </p:panelGrid>
+                        <p:commandButton actionListener="#{mbCliente.create}" value="#{bundle.Save}"
+                                         update=":ClienteListForm:datalist,:growl"
+                                         oncomplete="handleSubmit(args,'ClienteCreateDialog');"/>
+                        <p:commandButton value="#{bundle.Cancel}" onclick="ClienteCreateDialog.hide()"/>
+                    </p:tab>
+                    <p:tab title="Endereços">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <h:outputText value="Código" for="codEndereco"/>
+                            <h:inputText id="codEndereco" value="#{mbCliente.selected.id}"/>
+                            <h:outputText value="Logradouro" for="txtLogradouro"/>
+                            <h:inputText id="txtLogradouro" value="#{mbCliente.selected.id}"/>
+                            <h:outputText value="Número" for="txtNumEndereco"/>
+                            <h:inputText id="txtNumEndereco" value="#{mbCliente.selected.id}"/>
+                            <h:outputText value="Bairro" for="txtBairro"/>
+                            <h:inputText id="txtBairro" value="#{mbCliente.selected.id}"/>
+                            <h:outputText value="Complemento" for="txtComplemento"/>
+                            <h:inputText id="txtComplemento" value="#{mbCliente.selected.id}"/>
+                            <h:outputText value="Município" for="txtMunicipio"/>
+                            <h:inputText id="txtMunicipio" value="#{mbCliente.selected.id}"/>
+                            <h:outputText value="CEP" for="txtCep"/>
+                            <h:inputText id="txtCep" value="#{mbCliente.selected.id}"/>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="Telefones">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:outputLabel for="codTelefone" value="Código"/>
+                            <p:inputText id="codTelefone" value="#{mbCliente.selected.id}"/>
+                            <p:outputLabel for="txtDdd" value="DDD"/>
+                            <p:inputText id="txtDdd" value="#{mbCliente.selected.id}"/>
+                            <p:outputLabel for="txtNumTelefone" value="Número"/>
+                            <p:inputText id="txtNumTelefone" value="#{mbCliente.selected.id}"/>
+                        </h:panelGrid>
+                    </p:tab>
+                </p:tabView>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
 
-    </ui:composition>
+</ui:composition>
 </html>

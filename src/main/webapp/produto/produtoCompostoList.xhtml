@@ -1,93 +1,107 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+<ui:composition template="/template.xhtml">
 
-        <ui:define name="title">
-            <h:outputText value="Lista de Produtos"/>
-        </ui:define>
-        
-        <ui:define name="body">
-            <!--<f:metadata>-->
-                <!--<f:event type="preRenderView" listener="" />-->
-            <!--</f:metadata>-->
-            <h:form id="ProdutoListForm">
+    <ui:define name="title">
+        <h:outputText value="Lista de Produtos Composto"/>
+    </ui:define>
+    <f:ajax event="load" listener="#{mbProdutoComposto.init}"/>
+    <ui:define name="body">
+        <!--<f:metadata>-->
+        <!--<f:event type="preRenderView" listener="" />-->
+        <!--</f:metadata>-->
+        <h:form id="ProdutoCListForm">
 
-                <p:panel header="Lista de Produtos">
+            <p:panel header="Lista de Produtos">
 
-                    <p:dataTable id="datalist" value="#{MBProduto.getItems(false)}" var="item"
-                                 selectionMode="single" selection="#{MBProduto.selected}"
-                                 paginator="true" widgetVar="dtWidgetVar"
-                                 rowKey="#{item.id}"
-                                 rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50">
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                <p:dataTable id="datalist" value="#{mbProdutoComposto.items}" var="item"
+                             selectionMode="single" selection="#{mbProdutoComposto.selected}"
+                             paginator="true" widgetVar="dtWidgetVar" rowKey="#{item.id}"
+                             rows="10" rowsPerPageTemplate="10,20,30,40,50">
+                    <p:ajax event="rowSelect" update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column filterBy="#{item.id}" filterStyle="width: 30px">
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListProdutoTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}" style="float:right"/>
-                        </p:column>
-                        <p:column filterBy="#{item.descricao}" filterStyle="width:200px" style="width: 205px">
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListProdutoTitle_descricao}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.descricao}"/>
-                        </p:column>
-                        <p:column style="width: 105px;" filterBy="#{item.precoprecoVenda}" >
-                            <f:facet name="header">
-                                <h:outputText value="Preço (R$)"/>
-                            </f:facet>
-                            <h:outputText value="#{item.precoVenda}" style="float:right">
-                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
-                            </h:outputText>
-                        </p:column>
-                        <p:column filterBy="#{item.dataCadastro}" style="width: 200px;">
-                            <f:facet name="header">
-                                <h:outputText value="Dt.Cadastro"/>
-                            </f:facet>
-                            <h:outputText value="#{item.dataCadastro}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column filterBy="#{item.grupo.descricao}" filterStyle="width: 50px">
-                            <f:facet name="header">
-                                <h:outputText value="Grupo"/>
-                            </f:facet>
-                            <h:outputText value="#{item.grupo.descricao}"/>
-                        </p:column>
-                        <p:column filterBy="#{item.marca.descricao}" filterStyle="width: 50px">
-                            <f:facet name="header">
-                                <h:outputText value="Marca"/>
-                            </f:facet>
-                            <h:outputText value="#{item.marca.descricao}"/>
-                        </p:column>
-                        <p:column style="width: 85px;" filterBy="#{item.unidade.sigla}" filterStyle="width: 45px">
-                            <f:facet name="header">
-                                <h:outputText value="Unidade"/>
-                            </f:facet>
-                            <h:outputText value="#{item.unidade.sigla}"/>
-                        </p:column>
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{MBProduto.prepareCreate}" update=":ProdutoCreateForm" oncomplete="PF('ProdutoCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ProdutoViewForm" oncomplete="PF('ProdutoViewDialog').show()" disabled="#{empty MBProduto.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ProdutoEditForm" oncomplete="PF('ProdutoEditDialog').show()" disabled="#{empty MBProduto.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{MBProduto.destroy}" update=":growl,datalist" disabled="#{empty MBProduto.selected}"/>
-                            <p:commandButton id="refreshButton" icon="ui-icon-refresh"  value="Atualizar" actionListener="#{MBProduto.getItems(true)}" update=":growl,datalist,ProdutoListForm" />
+                    <p:column style="width: 105px;" filterBy="#{item.id}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListProdutoTitle_id}"/>
                         </f:facet>
-                    </p:dataTable>
-                </p:panel>
-            </h:form>
-            <ui:include src="produtoCreate.xhtml"/>
-            <ui:include src="produtoEdit.xhtml"/>
-            <ui:include src="produtoView.xhtml"/>
-        </ui:define>
-    </ui:composition>
+                        <h:outputText value="#{item.id}" style="float:right"/>
+                    </p:column>
+                    <p:column filterBy="#{item.descricao}" filterStyle="width:200px" style="width: 205px"
+                              filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListProdutoTitle_descricao}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.descricao}"/>
+                    </p:column>
+                    <p:column style="width: 105px;" filterBy="#{item.precoVenda}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Preço (R$)"/>
+                        </f:facet>
+                        <h:outputText value="#{item.precoVenda}" style="float:right">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column filterBy="#{item.dataCadastro}" style="width: 200px;" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Dt.Cadastro"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dataCadastro}">
+                            <f:convertDateTime pattern="MM/dd/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column filterBy="#{item.grupo.descricao}" filterStyle="width: 50px" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Grupo"/>
+                        </f:facet>
+                        <h:outputText value="#{item.grupo.descricao}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.marca.descricao}" filterStyle="width: 50px" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Marca"/>
+                        </f:facet>
+                        <h:outputText value="#{item.marca.descricao}"/>
+                    </p:column>
+                    <p:column style="width: 85px;" filterBy="#{item.unidade.sigla}" filterStyle="width: 45px"
+                              filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Unidade"/>
+                        </f:facet>
+                        <h:outputText value="#{item.unidade.sigla}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus" value="#{bundle.Create}"
+                                         rendered="#{mbUsuario.selected.gerente || mbUsuario.selected.adm}"
+                                         actionListener="#{mbProdutoComposto.prepareCreate}"
+                                         update=":ProdutoCCreateForm" oncomplete="PF('ProdutoCCreateDialog').show()"/>
+                        <p:commandButton id="viewButton" icon="ui-icon-search" value="#{bundle.View}"
+                                         update=":ProdutoCViewForm" oncomplete="PF('ProdutoCViewDialog').show()"
+                                         disabled="#{empty mbProdutoComposto.selected}"/>
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{bundle.Edit}"
+                                         rendered="#{mbUsuario.selected.gerente || mbUsuario.selected.adm}"
+                                         update=":ProdutoCEditForm" oncomplete="PF('ProdutoCEditDialog').show()"
+                                         disabled="#{empty mbProdutoComposto.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{bundle.Delete}"
+                                         rendered="#{mbUsuario.selected.adm}"
+                                         actionListener="#{mbProdutoComposto.destroy}" update=":growl,datalist"
+                                         disabled="#{empty mbProdutoComposto.selected}"/>
+                        <p:commandButton id="refreshButton" icon="ui-icon-refresh" value="Atualizar"
+                                         actionListener="#{mbProdutoComposto.atualiza}"
+                                         update=":growl,datalist,ProdutoCListForm"/>
+                    </f:facet>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        <ui:include src="produtoCompostoCreate.xhtml"/>
+        <ui:include src="produtoCompostoEdit.xhtml"/>
+        <ui:include src="produtoCompostoView.xhtml"/>
+    </ui:define>
+</ui:composition>
 </html>

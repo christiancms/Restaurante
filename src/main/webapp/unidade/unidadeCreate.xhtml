@@ -11,15 +11,15 @@
         <p:dialog id="UnidadeCreateDlg" widgetVar="UnidadeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateUnidadeTitle}">
             <h:form id="UnidadeCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBUnidade.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbUnidade.selected != null}">
                         <p:outputLabel value="#{bundle.CreateUnidadeLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBUnidade.selected.id}" title="#{bundle.CreateUnidadeTitle_id}" disabled="true"/>
+                        <p:inputText id="id" value="#{mbUnidade.selected.id}" title="#{bundle.CreateUnidadeTitle_id}" disabled="true"/>
                         <p:outputLabel value="#{bundle.CreateUnidadeLabel_descricao}" for="descricao" />
-                        <p:inputText id="descricao" value="#{MBUnidade.selected.descricao}" title="#{bundle.CreateUnidadeTitle_descricao}" required="true" requiredMessage="#{bundle.CreateUnidadeRequiredMessage_descricao}"/>
+                        <p:inputText id="descricao" value="#{mbUnidade.selected.descricao}" title="#{bundle.CreateUnidadeTitle_descricao}" required="true" requiredMessage="#{bundle.CreateUnidadeRequiredMessage_descricao}"/>
                         <p:outputLabel value="#{bundle.CreateUnidadeLabel_sigla}" for="sigla" />
-                        <p:inputText id="sigla" value="#{MBUnidade.selected.sigla}" title="#{bundle.CreateUnidadeTitle_sigla}" required="true" requiredMessage="#{bundle.CreateUnidadeRequiredMessage_sigla}"/>
+                        <p:inputText id="sigla" value="#{mbUnidade.selected.sigla}" title="#{bundle.CreateUnidadeTitle_sigla}" required="true" requiredMessage="#{bundle.CreateUnidadeRequiredMessage_sigla}"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{MBUnidade.create}" value="#{bundle.Save}" update="display,:UnidadeListForm:datalist,:growl" oncomplete="handleSubmit(args,'UnidadeCreateDialog');"/>
+                    <p:commandButton actionListener="#{mbUnidade.create}" value="#{bundle.Save}" update="display,:UnidadeListForm:datalist,:growl" oncomplete="handleSubmit(args,'UnidadeCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="UnidadeCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

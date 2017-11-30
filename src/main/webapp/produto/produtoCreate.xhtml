@@ -1,68 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
+<ui:composition>
+    <p:dialog id="ProdutoCreateDlg" widgetVar="ProdutoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateProdutoTitle}">
+        <h:form id="ProdutoCreateForm">
+            <h:panelGroup id="display">
+                <p:panelGrid columns="2" rendered="#{mbProduto.selected != null}">
+                    <p:outputLabel value="Produto Composto" for="composto"/>
+                    <p:selectBooleanCheckbox value="#{mbProduto.selected.composto}" id="composto"/>
+                    <p:outputLabel value="SKU" for="id"/>
+                    <p:inputText id="id" value="#{mbProduto.selected.id}" disabled="false" requiredMessage="#{bundle.CreateProdutoRequiredMessage_id}">
+                        <p:ajax event="blur" listener="#{mbProduto.onBlur}" update="display"/>
+                    </p:inputText>
+                    <p:outputLabel value="#{bundle.CreateProdutoLabel_descricao}" for="descricao"/>
+                    <p:inputText id="descricao" value="#{mbProduto.selected.descricao}" maxlength="50" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_descricao}"/>
+                    <p:outputLabel value="Cód de Barras" for="codbarras"/>
+                    <p:inputText id="codbarras" value="#{mbProduto.selected.codigoBarras}" required="#{!mbProduto.selected.composto}" type="number" maxlength="13" requiredMessage="Cód. Barras Campo obrigatório"/>
+                    <p:outputLabel value="#{bundle.CreateProdutoLabel_precoCompra}" for="precoCompra"/>
+                    <p:inputText id="precoCompra" value="#{mbProduto.selected.precoCompra}" onblur="this.value = this.value.replace(',','.')" required="true" name="txtPrecoCompra"
+                                 requiredMessage="#{bundle.CreateProdutoRequiredMessage_precoCompra}"/>
+                    <h:outputText value="Margem de lucro" for="txtMargemLuc"/>
+                    <p:inputText id="txtMargemLuc" value="#{mbProduto.selected.percLucro}" name="txtMargemLuc">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        <p:ajax event="blur" update="precoVenda"/>
+                    </p:inputText>
+                    <p:outputLabel value="#{bundle.CreateProdutoLabel_precoVenda}" for="precoVenda"/>
+                    <p:inputText id="precoVenda" value="#{mbProduto.selected.precoVenda}"
+                                 onblur="this.value = this.value.replace(',','.')"/>
+                    <p:outputLabel value="Grupo:" for="grupoId"/>
+                    <p:selectOneMenu id="grupoId" value="#{mbProduto.selected.grupo.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+                        <f:selectItems value="#{mbProduto.grupos}" var="grupoIdItem" itemValue="#{grupoIdItem}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Marca:" for="marcaId"/>
+                    <p:selectOneMenu id="marcaId" value="#{mbProduto.selected.marca.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_marcaId}">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+                        <f:selectItems value="#{mbProduto.marcas}" var="marcaIdItem" itemValue="#{marcaIdItem}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Unidade:" for="unidadeId"/>
+                    <p:selectOneMenu id="unidadeId" value="#{mbProduto.selected.unidade.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_unidadeId}">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+                        <f:selectItems value="#{mbProduto.unidades}" var="unidadeIdItem" itemValue="#{unidadeIdItem}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Status:" for="statusId"/>
+                    <p:selectOneMenu id="statusId" value="#{mbProduto.selected.status.id}" required="true" requiredMessage="Campo obrigatório">
+                        <f:selectItem itemLabel="Selecione" noSelectionOption="false"/>
+                        <f:selectItems value="#{mbProduto.status}" var="statusIdItem" itemValue="#{statusIdItem}"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:commandButton actionListener="#{mbProduto.create}" value="#{bundle.Save}" update="display,:ProdutoListForm:datalist,:growl" oncomplete="handleSubmit(args,'ProdutoCreateDialog');"/>
+                <p:commandButton value="#{bundle.Cancel}" onclick="ProdutoCreateDialog.hide()"/>
+                <p:inputText type="hidden" id="hdProduto" value="#{mbProduto.selected.versao}"/>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
 
-        <p:dialog id="ProdutoCreateDlg" widgetVar="ProdutoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateProdutoTitle}">
-            <h:form id="ProdutoCreateForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBProduto.selected != null}">
-
-                        <p:outputLabel value="#{bundle.CreateProdutoLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBProduto.selected.id}" title="#{bundle.CreateProdutoTitle_id}" required="false" 
-                                     disabled="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_id}"/>
-                        <p:outputLabel value="#{bundle.CreateProdutoLabel_descricao}" for="descricao" />
-                        <p:inputText id="descricao" value="#{MBProduto.selected.descricao}" title="#{bundle.CreateProdutoTitle_descricao}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_descricao}"/>
-                        <p:outputLabel value="#{bundle.CreateProdutoLabel_precoCompra}" for="precoCompra" />
-                        <p:inputText id="precoCompra" value="#{MBProduto.selected.precoCompra}" title="#{bundle.CreateProdutoTitle_precoCompra}"
-                                     onblur="this.value = this.value.replace(',','.')"
-                                     required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_precoCompra}"/>
-                        <p:outputLabel value="#{bundle.CreateProdutoLabel_precoVenda}" for="precoVenda"/>
-                        <p:inputText id="precoVenda" value="#{MBProduto.selected.precoVenda}" title="#{bundle.CreateProdutoTitle_precoVenda}"
-                                     onblur="this.value = this.value.replace(',','.')"/>
-                        <p:outputLabel value="#{bundle.CreateProdutoLabel_dataCadastro}" for="dataCadastro" />
-                        <p:calendar id="dataCadastro" pattern="dd/MM/yyyy" value="#{MBProduto.selected.dataCadastro}" title="#{bundle.EditProdutoTitle_dataCadastro}"
-                                    mask="99/99/9999" mindate="today"
-                                    required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_dataCadastro}" showOn="button"/>
-
-                        <p:outputLabel value="Grupo:" for="grupoId" />
-                        <p:selectOneMenu id="grupoId" value="#{MBProduto.selected.grupo.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">
-                            <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-                            <f:selectItems value="#{MBProduto.grupos}"
-                                           var="grupoIdItem"
-                                           itemValue="#{grupoIdItem}"/>
-                        </p:selectOneMenu>
-
-                        <p:outputLabel value="Marca:" for="marcaId" />
-                        <p:selectOneMenu id="marcaId" value="#{MBProduto.selected.marca.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_marcaId}">
-                            <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-                            <f:selectItems value="#{MBProduto.marcas}"
-                                           var="marcaIdItem"
-                                           itemValue="#{marcaIdItem}"/>
-                        </p:selectOneMenu>
-
-
-                        <p:outputLabel value="Unidade:" for="unidadeId" />
-                        <p:selectOneMenu id="unidadeId" value="#{MBProduto.selected.unidade.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_unidadeId}">
-                            <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-                            <f:selectItems value="#{MBProduto.unidades}"
-                                           var="unidadeIdItem"
-                                           itemValue="#{unidadeIdItem}"/>
-                        </p:selectOneMenu>
-
-
-                    </p:panelGrid>
-                    <p:commandButton actionListener="#{MBProduto.create}" value="#{bundle.Save}" update="display,:ProdutoListForm:datalist,:growl" oncomplete="handleSubmit(args,'ProdutoCreateDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="ProdutoCreateDialog.hide()"/>
-                    <p:inputText type="hidden" id="hdProduto" value="#{MBProduto.selected.versao}" />
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
-
-    </ui:composition>
+</ui:composition>
 </html>

@@ -11,14 +11,14 @@
         <p:dialog id="MarcaCreateDlg" widgetVar="MarcaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateMarcaTitle}">
             <h:form id="MarcaCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBMarca.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbMarca.selected != null}">
                         <p:outputLabel value="#{bundle.CreateMarcaLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBMarca.selected.id}" title="#{bundle.CreateMarcaTitle_id}" required="true" 
+                        <p:inputText id="id" value="#{mbMarca.selected.id}" title="#{bundle.CreateMarcaTitle_id}" required="true" 
                                      disabled="true" requiredMessage="#{bundle.CreateMarcaRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.CreateMarcaLabel_descricao}" for="descricao" />
-                        <p:inputText id="descricao" value="#{MBMarca.selected.descricao}" title="#{bundle.CreateMarcaTitle_descricao}" required="true" requiredMessage="#{bundle.CreateMarcaRequiredMessage_descricao}"/>
+                        <p:inputText id="descricao" value="#{mbMarca.selected.descricao}" title="#{bundle.CreateMarcaTitle_descricao}" required="true" requiredMessage="#{bundle.CreateMarcaRequiredMessage_descricao}"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{MBMarca.create}" value="#{bundle.Save}" update="display,:MarcaListForm:datalist,:growl" oncomplete="handleSubmit(args,'MarcaCreateDialog');"/>
+                    <p:commandButton actionListener="#{mbMarca.create}" value="#{bundle.Save}" update="display,:MarcaListForm:datalist,:growl" oncomplete="handleSubmit(args,'MarcaCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="MarcaCreateDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

@@ -11,13 +11,13 @@
         <p:dialog id="UnidadeViewDlg" widgetVar="UnidadeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewUnidadeTitle}">
             <h:form id="UnidadeViewForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBUnidade.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbUnidade.selected != null}">
                         <h:outputText value="#{bundle.ViewUnidadeLabel_id}"/>
-                        <h:outputText value="#{MBUnidade.selected.id}" title="#{bundle.ViewUnidadeTitle_id}"/>
+                        <h:outputText value="#{mbUnidade.selected.id}" title="#{bundle.ViewUnidadeTitle_id}"/>
                         <h:outputText value="#{bundle.ViewUnidadeLabel_descricao}"/>
-                        <h:outputText value="#{MBUnidade.selected.descricao}" title="#{bundle.ViewUnidadeTitle_descricao}"/>
+                        <h:outputText value="#{mbUnidade.selected.descricao}" title="#{bundle.ViewUnidadeTitle_descricao}"/>
                         <h:outputText value="#{bundle.ViewUnidadeLabel_sigla}"/>
-                        <h:outputText value="#{MBUnidade.selected.sigla}" title="#{bundle.ViewUnidadeTitle_sigla}"/>
+                        <h:outputText value="#{mbUnidade.selected.sigla}" title="#{bundle.ViewUnidadeTitle_sigla}"/>
                     </p:panelGrid>
                 </h:panelGroup>
             </h:form>

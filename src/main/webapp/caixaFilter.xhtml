@@ -18,9 +18,9 @@
                 <p:panelGrid columns="2">
 
                     <p:fieldset legend="COD" id="cod" style="width: 250px; height: 355px">
-                        <p:inputText value="#{MBProduto.selected.id}" id="codigoProduto"/>
+                        <p:inputText value="#{mbProduto.selected.id}" id="codigoProduto"/>
                         <p:watermark for="codigoProduto" value="Código do Produto" /><br/>
-                        <p:inputText value="#{MBCaixa.init()}" id="quantidade" disabled="false"/>
+                        <p:inputText value="#{mbCaixa.init()}" id="quantidade" disabled="false"/>
                         <p:watermark for="quantidade" value="Quantidade" /><br/>
                         <p:inputText value="" id="vlrUnitario" disabled="false"/>
                         <p:watermark for="vlrUnitario" value="Valor Unitário(R$)" /><br/>
@@ -30,10 +30,10 @@
                         <p:watermark for="qtdeTotal" value="Quantidade Total" /><br/>
                         <p:inputText value="" id="vlrTotal" disabled="false"/>
                         <p:watermark for="vlrTotal" value="Valor Total da Venda" /><br/>
-                        <p:commandButton value="Fechar Venda" action="#{MBCaixa.fecharVenda()}" update="@form" style="width: 222px; color: white; background: green"/>
-                        <p:commandButton value="Cancelar Produto" action="#{MBCaixa.cancelarProduto()}" update="@form" style="width: 222px; color: white; background: orange"/>
-                        <p:commandButton value="Cancelar Venda" action="#{MBCaixa.cancelarVenda()}" update="@form" style="width: 222px; color: white; background: red"/>
-                        <p:commandButton value="Fechar Caixa" action="#{MBCaixa.fecharCaixa()}" update="@form" style="width: 222px; color: white; background: blue"/>
+                        <p:commandButton value="Fechar Venda" action="#{mbCaixa.fecharVenda()}" update="@form" style="width: 222px; color: white; background: green"/>
+                        <p:commandButton value="Cancelar Produto" action="#{mbCaixa.cancelarProduto()}" update="@form" style="width: 222px; color: white; background: orange"/>
+                        <p:commandButton value="Cancelar Venda" action="#{mbCaixa.cancelarVenda()}" update="@form" style="width: 222px; color: white; background: red"/>
+                        <p:commandButton value="Fechar Caixa" action="#{mbCaixa.fecharCaixa()}" update="@form" style="width: 222px; color: white; background: blue"/>
                     </p:fieldset>
 
                     <p:fieldset legend="PRODUTO" id="prod" style="width: 600px; height: 355px">

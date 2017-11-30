@@ -11,11 +11,11 @@
         <p:dialog id="MarcaViewDlg" widgetVar="MarcaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewMarcaTitle}">
             <h:form id="MarcaViewForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBMarca.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbMarca.selected != null}">
                         <h:outputText value="#{bundle.ViewMarcaLabel_id}"/>
-                        <h:outputText value="#{MBMarca.selected.id}" title="#{bundle.ViewMarcaTitle_id}"/>
+                        <h:outputText value="#{mbMarca.selected.id}" title="#{bundle.ViewMarcaTitle_id}"/>
                         <h:outputText value="#{bundle.ViewMarcaLabel_descricao}"/>
-                        <h:outputText value="#{MBMarca.selected.descricao}" title="#{bundle.ViewMarcaTitle_descricao}"/>
+                        <h:outputText value="#{mbMarca.selected.descricao}" title="#{bundle.ViewMarcaTitle_descricao}"/>
                     </p:panelGrid>
                 </h:panelGroup>
             </h:form>

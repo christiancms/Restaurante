@@ -8,7 +8,7 @@
 <h:head>
     <link rel="icon" type="image/x-icon" href="resources/images/logo-web.png"/>
 </h:head>
-<h:body>
+<h:body style="background-image: url('/resources/images/churrasco-wall.jpg'); background-repeat: no-repeat;">
     <p:growl autoUpdate="true"/>
     <center>
         <p:graphicImage value="/resources/images/logo-web.png" style="align-content: center"/>
@@ -25,14 +25,14 @@
         <p:dialog id="dlgpopup" header="Identificação de Entrada" widgetVar="dlg" visible="true" resizable="false">
             <h:panelGrid id="plgform" columns="2" cellpadding="5">
                 <p:graphicImage value="/resources/images/login.png" alt="Identificação de Entrada"/>
-                <p:inputText id="username" value="#{MBLogin.username}" required="true" label="username"/>
+                <p:inputText id="username" value="#{mbLogin.username}" required="true" label="username"/>
 
                 <h:outputLabel for="password" value="Senha:"/>
-                <p:password id="password" value="#{MBLogin.password}" required="true" label="password"/>
+                <p:password id="password" value="#{mbLogin.password}" required="true" label="password"/>
 
                 <f:facet name="footer">
                     <p:commandButton value="Entrar" style="width: 100%" update="growl,:loginIndex"
-                                     actionListener="#{MBLogin.doLogin}" oncomplete="handleLoginRequest(xhr, status, args)">
+                                     actionListener="#{mbLogin.doLogin}" oncomplete="handleLoginRequest(xhr, status, args)">
                         <p:resetInput target=":loginIndex"/>
                     </p:commandButton>
                 </f:facet>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Relatório de Produtos"/>
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:dataTable id="tbl" var="item" value="#{mbProduto.items}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                         paginator="true" rows="10" style="margin-bottom:20px">
+
+                <f:facet name="{Exporters}">
+                    <h:commandLink>
+                        <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                        <p:dataExporter type="pdf" target="tbl" fileName="produtos" encoding="iso-8859-1"
+                        preProcessor="#{mbProduto.preProcessPDF}"/>
+                    </h:commandLink>
+                </f:facet>
+                <p:column style="width: 90px">
+                    <f:facet name="header">
+                        <h:outputText value="Código" />
+                    </f:facet>
+                    <h:outputText value="#{item.id}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Descrição" />
+                    </f:facet>
+                    <h:outputText value="#{item.descricao}" />
+                </p:column>
+                <p:column style="width: 100px">
+                    <f:facet name="header">
+                        <h:outputText value="V.Compra" />
+                    </f:facet>
+                    <h:outputText value="#{item.precoCompra}" >
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="width: 90px">
+                    <f:facet name="header">
+                        <h:outputText value="Lucro(%)" />
+                    </f:facet>
+                    <h:outputText value="#{item.percLucro}" >
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="width: 90px">
+                    <f:facet name="header">
+                        <h:outputText value="V.Venda" />
+                    </f:facet>
+                    <h:outputText value="#{item.precoVenda}" >
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="width: 100px">
+                    <f:facet name="header">
+                        <h:outputText value="Dt.Cadastro" />
+                    </f:facet>
+                    <h:outputText value="#{item.dataCadastro}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Grupo" />
+                    </f:facet>
+                    <h:outputText value="#{item.grupo.descricao}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

@@ -1,75 +1,52 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-<f:view contentType="text/html">
-    <h:head>
-        <link rel="icon" type="image/x-icon" href="/images/logo-web.png"/>
-        <f:facet name="first">
-            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-            <title>EzzySoft - Restaurante Sistema de Controle de Mesas 03/2017</title>
-            <!--<link rel="stylesheet" type="text/css" href="resources/jsfcrud.css" />-->
-        </f:facet>
-        <h:outputStylesheet library="css" name="jsfcrud.css"/>
-        <h:outputScript library="js" name="jsfcrud.js"/>
-    </h:head>
-    <h:body>
-        <p:growl id="growl" life="3000" />
-        <p:layout fullPage="true">
 
-            <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true">
-                <h:form>
-                    <h:outputText value="#{MBLogin.sessionUser.username}"/>
-                    <p:commandButton value="sair" actionListener="#{MBLogin.doLogout}"/>
-                </h:form>
-            </p:layoutUnit>
-            <!--
+    <ui:define name="body">
+        <p:menu toggleable="true">
+            <p:menuitem value="EzzySoft" outcome="/index" icon="fa fa-home" />
+            <p:submenu label="Cadastro" expanded="false">
+                <p:menuitem value=" Cliente" outcome="/cliente/clienteList" icon="fa fa-user"/>
+                <p:menuitem value=" Colaborador" outcome="/colaborador/colaboradorList" icon="fa fa-user-plus"/>
+                <p:menuitem value=" Grupo" outcome="/grupo/grupoList" icon="fa fa-group"/>
+                <p:menuitem value=" Marca" outcome="/marca/marcaList" icon="fa fa-cutlery"/>
+                <p:menuitem value=" Produto" outcome="/produto/produtoList" icon="fa fa-cutlery"/>
+                <p:menuitem value=" Produto Composto" outcome="/produto/produtoCompostoList" icon="fa fa-cutlery"/>
+                <p:menuitem value=" Unidade" outcome="/unidade/unidadeList" icon="fa fa-cutlery"/>
+            </p:submenu>
+            <p:submenu label="Caixa" expanded="false">
+                <p:menuitem value=" PDV" outcome="/caixaFilter" icon="fa fa-cutlery"/>
+            </p:submenu>
+            <p:submenu label="Config" expanded="false">
+                <p:menuitem value=" Configuração" outcome="/config/configList" icon="fa fa-android"/>
+                <p:menuitem value=" Empresa" outcome="/empresa/empresaList" icon="fa fa-institution"/>
+            </p:submenu>
+            <p:submenu label="Financeiro" expanded="false">
+                <p:menuitem value=" Lançamento" outcome="/grafico" icon="fa fa-pie-chart"/>
+            </p:submenu>
+            <p:submenu label="Gráfico" expanded="false">
+                <p:menuitem value=" Produto" outcome="/grafico" icon="fa fa-pie-chart"/>
+                <p:menuitem value=" Vendas" outcome="/graficoVendas" icon="fa fa-pie-chart"/>
+            </p:submenu>
+            <p:submenu label="Pedido" expanded="false">
+                <p:menuitem value=" Cardápio" outcome="/cardapio/mobi" icon="fa fa-shopping-cart"/>
+                <p:menuitem value=" Visualizar" outcome="/pedido/pedidoList" icon="fa fa-shopping-cart"/>
+            </p:submenu>
+            <p:submenu label="Relatório" expanded="false">
+                <p:menuitem value=" Produtos" outcome="/produto/produtoReport" icon="fa fa-line-chart"/>
+                <p:menuitem value=" Vendas" outcome="/pedido/pedidoReport" icon="fa fa-line-chart"/>
+            </p:submenu>
+            <p:submenu label="Testes" expanded="false" >
+                <p:menuitem value=" Cliente Diálogo" outcome="/cliente/clienteSelect" />
+                <p:menuitem value=" Produto Diálogo" outcome="/produto/produtoSelect" />
+            </p:submenu>
 
-             <p:layoutUnit position="south" size="0" closable="true" collapsible="true">
-             </p:layoutUnit>-->
+        </p:menu>
 
-            <p:layoutUnit position="west" size="175" header="Ocultar" collapsible="true">
-                <p:menu>
-                    <p:menuitem value="EzzySoft" outcome="/index" icon="fa fa-home"/>
-                    <p:submenu label="Cadastro">
-                        <p:menuitem value=" Cliente" outcome="/cliente/clienteList" icon="fa fa-user"/>
-                        <p:menuitem value=" Colaborador" outcome="/colaborador/colaboradorList" icon="fa fa-user-plus"/>
-                        <p:menuitem value=" Grupo" outcome="/grupo/grupoList" icon="fa fa-group"/>
-                        <p:menuitem value=" Marca" outcome="/marca/marcaList" icon="fa fa-cutlery"/>
-                        <p:menuitem value=" Produto" outcome="/produto/produtoList" icon="fa fa-cutlery"/>
-                        <p:menuitem value=" Unidade" outcome="/unidade/unidadeList" icon="fa fa-cutlery"/>
-                    </p:submenu>
-                    <p:submenu label="Caixa">
-                        <p:menuitem value=" PDV" outcome="/caixaFilter" icon="fa fa-cutlery"/>
-                        <p:menuitem value=" Tele-entrega" outcome="/caixaFilter" icon="fa fa-motorcycle"/>
-                    </p:submenu>
-                    <p:submenu label="Config">
-                        <p:menuitem value=" Android" outcome="/android/androidList" icon="fa fa-android"/>
-                        <p:menuitem value=" Empresa" outcome="/empresa/empresaList" icon="fa fa-institution"/>
-                    </p:submenu>
-                    <p:submenu label="Pedido">
-                        <p:menuitem value=" Visualizar" outcome="/pedido/pedidoList" icon="fa fa-shopping-cart"/>
-                    </p:submenu>
-
-                    <p:submenu label="Relatório">
-                        <p:menuitem value=" Vendas" url="" icon="fa fa-line-chart"/>
-                    </p:submenu>
-                    <p:submenu label="Gráfico">
-                        <p:menuitem value=" Produto" outcome="/grafico" icon="fa fa-pie-chart"/>
-                    </p:submenu>
-                </p:menu>
-            </p:layoutUnit>
-
-            <p:layoutUnit position="center" id="centro">
-                <ui:insert name="body"/>
-            </p:layoutUnit>
-        </p:layout>
-    </h:body>
-</f:view>
+</ui:composition>
 </html>
-

@@ -1,30 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
+<ui:composition>
 
-        <p:dialog id="ColaboradorEditDlg" widgetVar="ColaboradorEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditColaboradorTitle}">
-            <h:form id="ColaboradorEditForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBColaborador.selected != null}">
-                        <p:outputLabel value="#{bundle.EditColaboradorLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBColaborador.selected.id}" title="#{bundle.EditColaboradorTitle_id}" required="true"
-                                     disabled="true" requiredMessage="#{bundle.EditColaboradorRequiredMessage_id}"/>
-                        <p:outputLabel value="Nome:" for="nome" />
-                        <p:inputText id="nome" value="#{MBColaborador.selected.nome}" title="Nome" required="true" requiredMessage="O campo Nome é requerido."/>
-                        <p:outputLabel value="AppToke:" for="AppToken" />
-                        <p:inputText id="AppToken" value="#{MBColaborador.selected.nome}" title="Nome" required="true" requiredMessage="O campo Nome é requerido."/>
-                    </p:panelGrid>
-                    <p:commandButton actionListener="#{MBColaborador.update}" value="#{bundle.Save}" update="display,:ColaboradorListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ColaboradorEditDialog');"/>
+    <p:dialog id="ColaboradorEditDlg" widgetVar="ColaboradorEditDialog" modal="true" resizable="false"
+              appendTo="@(body)" header="#{bundle.EditColaboradorTitle}">
+        <h:form id="ColaboradorEditForm">
+            <h:panelGroup id="display">
+                <p:messages id="messages" showDetail="true" autoUpdate="true"/>
+                <p:panelGrid columns="2" rendered="#{mbColaborador.selected != null}">
+                    <p:outputLabel value="Nível" for="txtNivel"/>
+                    <p:selectOneRadio id="txtNivel" value="#{mbColaborador.selected.nivel}">
+                        <f:selectItem itemLabel="Administrador" itemValue="0"/>
+                        <f:selectItem itemLabel="Gerente" itemValue="1"/>
+                        <f:selectItem itemLabel="Usuário" itemValue="2"/>
+                    </p:selectOneRadio>
+                    <p:outputLabel value="#{bundle.EditColaboradorLabel_id}" for="id"/>
+                    <p:inputText id="id" value="#{mbColaborador.selected.id}"
+                                 title="#{bundle.EditColaboradorTitle_id}" required="true"
+                                 disabled="true" requiredMessage="#{bundle.EditColaboradorRequiredMessage_id}"/>
+                    <p:outputLabel value="Nome:" for="nome"/>
+                    <p:inputText id="nome" value="#{mbColaborador.selected.nome}" title="Nome" required="true"
+                                 requiredMessage="O campo Nome é requerido."/>
+                    <p:outputLabel value="AppToken:" for="AppToken"/>
+                    <p:inputText id="AppToken" value="#{mbColaborador.selected.appToken}" title="Nome"
+                                 required="false"/>
+
+                    <p:outputLabel value="Usuário:" for="txtNomeUsuario"/>
+                    <p:inputText id="txtNomeUsuario" value="#{mbColaborador.selected.username}"
+                                  required="true" requiredMessage="O campo Usuário é requerido."/>
+
+                    <p:outputLabel value="Senha:" for="txtSenhaUsuario"/>
+                    <p:password id="txtSenhaUsuario" value="#{mbColaborador.selected.password}"
+                                match="txtConfirmacao" feedback="true"
+                                 required="true" requiredMessage="O campo Senha é requerido."/>
+
+                    <p:outputLabel value="Confirmação:" for="txtConfirmacao"/>
+                    <p:password id="txtConfirmacao" value="#{mbColaborador.selected.password}"
+                                 required="true" />
+                    <p:commandButton actionListener="#{mbColaborador.update}" value="#{bundle.Save}"
+                                     update="display,:ColaboradorListForm:datalist,:growl"
+                                     oncomplete="handleSubmit(args, 'ColaboradorEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ColaboradorEditDialog.hide()"/>
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
+                </p:panelGrid>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
 
-    </ui:composition>
+</ui:composition>
 </html>

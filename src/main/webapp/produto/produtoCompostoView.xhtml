@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+
+    <p:dialog id="ProdutoCViewDlg" widgetVar="ProdutoCViewDialog" modal="true" resizable="false"
+              width="50%"
+              appendTo="@(body)" header="#{bundle.ViewProdutoTitle}">
+        <h:form id="ProdutoCViewForm">
+            <h:panelGroup id="display">
+                <p:panelGrid columns="4" rendered="#{mbProdutoComposto.selected != null}">
+                    <h:outputText value="#{bundle.ViewProdutoLabel_id}" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.id}" title="Id"/>
+                    <h:outputText value="#{bundle.ViewProdutoLabel_descricao}" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.descricao}" title="Descrição"/>
+                    <h:outputText value="Código de Barras" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.codigoBarras}" title="Cód. Barras"/>
+                    <h:outputText value="#{bundle.ViewProdutoLabel_precoCompra}" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.precoCompra}" title="Preço Compra">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewProdutoLabel_precoVenda}" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.precoVenda}" title="Preço Venda">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
+                    <h:outputText value="Margem de lucro" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.percLucro}" title="Margem Lucro">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewProdutoLabel_dataCadastro}" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.dataCadastro}" title="Dt.Cadastro">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                    <h:outputText value="Grupo" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.grupo.descricao}" title="Grupo"/>
+                    <h:outputText value="Marca" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.marca.descricao}" title="Marca"/>
+                    <h:outputText value="Unidade" style="font-weight: bold"/>
+                    <h:outputText value="#{mbProdutoComposto.selected.unidade.sigla}" title="Unidade"/>
+                </p:panelGrid>
+            </h:panelGroup>
+
+            <p:panel header="Lista de Itens do Produto">
+                <p:dataTable id="datalist" value="#{mbProdutoComposto.getItensProduto(mbProdutoComposto.selected.id)}"
+                             var="itemproduto" selectionMode="single" selection="#{mbProdutoComposto.selected}"
+                             paginator="true"
+                             rowKey="#{itemproduto.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50">
+
+
+                    <p:column headerText="#{bundle.ListPedidoTitle_id}" style="width: 105px">
+                        <h:outputText value="#{itemproduto.id}"/>
+                    </p:column>
+                    <p:column headerText="Quantidade" style="width: 105px">
+                        <h:outputText value="#{itemproduto.quantidade}">
+                            <f:convertNumber pattern="#0.000" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Produto">
+                        <h:outputText value="#{itemproduto.produto.descricao}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>
+</html>

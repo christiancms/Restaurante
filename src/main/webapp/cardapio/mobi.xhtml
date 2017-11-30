@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+    <h:head>
+        <link rel="icon" type="image/x-icon" href="resources/images/logo-web.png"/>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>EzzySoft - Restaurante Sistema de Controle de Mesas 03/2017</title>
+            <!--<link rel="stylesheet" type="text/css" href="resources/jsfcrud.css" />-->
+        </f:facet>
+    </h:head>
+    <h:body>
+        <h:form id="CardapioListForm">
+            <p:panel header="Cardápio - EzzySoft">
+                <p:dataTable id="datalist" value="#{mbProduto.mobi}" var="item"
+                             emptyMessage="Nenhum produto encontrado" rowKey="#{item.id}"
+                             rowStyleClass="#{item.grupo.id le 15 ? 'old':null}"
+                             sortBy="#{item.grupo.descricao}"
+                             sortOrder="ascending"
+                             selectionMode="single">
+
+                    <p:column style="width: 100px;" filterMatchMode="startsWith"
+                              filterBy="#{item.grupo.descricao}">
+                        <h:outputText value="#{item.grupo.descricao}"/>
+                    </p:column>
+                    <p:column style="width: 50px;">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListProdutoTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}" style="float:right"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListProdutoTitle_descricao}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.descricao}"/>
+                    </p:column>
+                    <p:column style="width: 105px;">
+                        <f:facet name="header">
+                            <h:outputText value="Preço (R$)"/>
+                        </f:facet>
+                        <h:outputText value="#{item.precoVenda}" style="float:right">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</f:view>
+</html>

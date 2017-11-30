@@ -1,0 +1,84 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml">
+
+<ui:define name="title">
+    <h:outputText value="Relatório de Vendas"/>
+</ui:define>
+
+<ui:define name="body">
+<h:form>
+    <p:dataTable id="tbl" var="item" value="#{mbPedido.getItems(true)}" widgetVar="vendasTable"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                 paginator="true" rows="30" style="margin-bottom:20px">
+
+        <f:facet name="{Exporters}">
+            <h:commandLink>
+                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                <p:dataExporter type="pdf" target="tbl" fileName="vendas" encoding="iso-8859-1"
+                                preProcessor="#{mbPedido.preProcessPDF}"/>
+            </h:commandLink>
+        </f:facet>
+        <p:column style="width: 90px" filterBy="#{item.id}" filterMatchMode="contains">
+            <f:facet name="header">
+                <h:outputText value="Código" />
+            </f:facet>
+            <h:outputText value="#{item.id}" />
+        </p:column>
+        <p:column style="width: 100px" filterBy="#{item.mesa}" filterMatchMode="contains">
+            <f:facet name="header">
+                <h:outputText value="Mesa" />
+            </f:facet>
+            <h:outputText value="#{item.mesa}" />
+        </p:column>
+        <p:column style="width: 100px" filterBy="#{item.colaborador.nome}" filterMatchMode="exact">
+            <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('vendasTable').filter()" >
+                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{mbPedido.garcons}" />
+                </p:selectOneMenu>
+            </f:facet>
+            <h:outputText value="#{item.colaborador.nome}" />
+        </p:column>
+        <p:column style="width: 100px">
+            <f:facet name="header">
+                <h:outputText value="Data" />
+            </f:facet>
+            <h:outputText value="#{item.dataPedido}" >
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+            </h:outputText>
+        </p:column>
+        <p:column style="width: 105px;" filterBy="#{item.status.opcao}" filterMatchMode="exact">
+            <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('vendasTable').filter()" >
+                    <f:selectItem itemLabel="Selecione" itemValue="#{item.status.opcao}" noSelectionOption="true" />
+                    <f:selectItems value="#{mbPedido.statusPedido}" />
+                </p:selectOneMenu>
+            </f:facet>
+            <h:outputText value="#{item.status.opcao}"/>
+        </p:column>
+        <p:column style="width: 90px">
+            <f:facet name="header">
+                <h:outputText value="V.Venda" />
+            </f:facet>
+            <h:outputText value="#{item.totalPedido}" >
+                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+            </h:outputText>
+        </p:column>
+        <p:columnGroup type="footer">
+            <p:row>
+                <p:column colspan="2" style="text-align:right" footerText="Totais:" />
+
+                <p:column footerText="$#{mbPedido.total}" />
+            </p:row>
+        </p:columnGroup>
+    </p:dataTable>
+
+</h:form>
+</ui:define>
+</ui:composition>
+</html>

@@ -11,15 +11,15 @@
         <p:dialog id="ClienteEditDlg" widgetVar="ClienteEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditClienteTitle}">
             <h:form id="ClienteEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBCliente.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbCliente.selected != null}">
                         <p:outputLabel value="#{bundle.EditClienteLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{MBCliente.selected.id}" title="#{bundle.EditClienteTitle_id}" required="true" 
+                        <p:inputText id="id" value="#{mbCliente.selected.id}" title="#{bundle.EditClienteTitle_id}" required="true"
                                      disabled="true" requiredMessage="#{bundle.EditClienteRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditClienteLabel_nome}" for="nome" />
-                        <p:inputText id="nome" value="#{MBCliente.selected.nome}" title="#{bundle.EditClienteTitle_nome}" required="true" 
+                        <p:inputText id="nome" value="#{mbCliente.selected.nome}" title="#{bundle.EditClienteTitle_nome}" required="true"
                                      requiredMessage="#{bundle.EditClienteRequiredMessage_nome}"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{MBCliente.update}" value="#{bundle.Save}" update="display,:ClienteListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ClienteEditDialog');"/>
+                    <p:commandButton actionListener="#{mbCliente.update}" value="#{bundle.Save}" update="display,:ClienteListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ClienteEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ClienteEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

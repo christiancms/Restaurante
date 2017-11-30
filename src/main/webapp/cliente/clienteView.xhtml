@@ -11,11 +11,11 @@
         <p:dialog id="ClienteViewDlg" widgetVar="ClienteViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewClienteTitle}">
             <h:form id="ClienteViewForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{MBCliente.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbCliente.selected != null}">
                         <h:outputText value="#{bundle.ViewClienteLabel_id}"/>
-                        <h:outputText value="#{MBCliente.selected.id}" title="#{bundle.ViewClienteTitle_id}"/>
+                        <h:outputText value="#{mbCliente.selected.id}" title="#{bundle.ViewClienteTitle_id}"/>
                         <h:outputText value="#{bundle.ViewClienteLabel_nome}"/>
-                        <h:outputText value="#{MBCliente.selected.nome}" title="#{bundle.ViewClienteTitle_nome}"/>
+                        <h:outputText value="#{mbCliente.selected.nome}" title="#{bundle.ViewClienteTitle_nome}"/>
                     </p:panelGrid>
                 </h:panelGroup>
             </h:form>
