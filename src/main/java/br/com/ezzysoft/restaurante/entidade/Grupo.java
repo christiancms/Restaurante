@@ -16,8 +16,12 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g "),
     @NamedQuery(name = "Grupo.findAllOrder", query = "SELECT g FROM Grupo g ORDER BY g.descricao"),
-    @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id")})
+    @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id"),
+    @NamedQuery(name = "Grupo.findCardapio", query = "SELECT g FROM Grupo g WHERE g.cardapio = true")
+})
 public class Grupo implements Serializable {
+
+    public static final String CARDAPIO = "Grupo.findCardapio";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +38,8 @@ public class Grupo implements Serializable {
     private byte[] foto;
     @Column(name = "caminho_foto")
     private String caminhoFoto;
+    @Column(name = "cardapio")
+    private boolean cardapio = false;
 
     public Long getId() {
         return id;
@@ -69,7 +75,15 @@ public class Grupo implements Serializable {
         this.foto = foto;
     }
 
-//    public Upload getImagem() {
+    public boolean isCardapio() {
+        return cardapio;
+    }
+
+    public void setCardapio(boolean cardapio) {
+        this.cardapio = cardapio;
+    }
+
+    //    public Upload getImagem() {
 //        return imagem;
 //    }
 //

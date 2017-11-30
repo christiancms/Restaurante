@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NamedQueries({
     @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c"),
     @NamedQuery(name = "Colaborador.findById", query = "SELECT c FROM Colaborador c WHERE c.id = :id")})
-public class Colaborador implements Serializable {
+public class Colaborador extends Usuario implements Serializable {
 
     public static final String FINDBYID = "Colaborador.findById";
 
@@ -25,9 +25,9 @@ public class Colaborador implements Serializable {
     private String nome;
     @Column(name = "appToken")
     private String appToken;
-    @OneToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private Usuario usuario;
+//    @OneToOne
+//    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+//    private Usuario usuario;
     @Column(name = "versao")
     @Version
     private Integer versao;
@@ -40,9 +40,9 @@ public class Colaborador implements Serializable {
         this.nome = nome;
     }
 
-    public Colaborador(String nome, Usuario usuario) {
+    public Colaborador(String username, String password, String nome) {
+        super(username, password);
         this.nome = nome;
-        this.usuario = usuario;
     }
 
     public Long getId() {
@@ -67,14 +67,6 @@ public class Colaborador implements Serializable {
 
     public void setAppToken(String appToken) {
         this.appToken = appToken;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public Integer getVersao() {

@@ -14,8 +14,11 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c"),
         @NamedQuery(name = "Cliente.findAllOrder", query = "SELECT c FROM Cliente c ORDER BY c.nome "),
-        @NamedQuery(name = "Cliente.findById", query = "SELECT c FROM Cliente c WHERE c.id = :id")})
+        @NamedQuery(name = "Cliente.findById", query = "SELECT c FROM Cliente c WHERE c.id = :id"),
+        @NamedQuery(name = "Cliente.NomeSemelhante", query = "SELECT c FROM Cliente c WHERE c.nome  LIKE :nome"),})
 public class Cliente extends Pessoa implements Serializable {
+
+    public static final String NOMESEMELHANTE = "Cliente.NomeSemelhante";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

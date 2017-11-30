@@ -1,6 +1,7 @@
 package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.*;
 
 /**
@@ -23,13 +24,17 @@ public class ItemPedido implements Serializable {
     private Long id;
     @Column(name = "quantidade")
     private Double quantidade;
+    @Column(name = "valor_item")
+    private Double valorItem;
+    @Column(name = "valor_unit")
+    private Double valorUnit;
     //---------------- Produto ----------------
     @ManyToOne(optional = false)
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
     //---------------- Pedido ----------------
     @ManyToOne
-    @JoinColumn(name = "pedido_id")
+    @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
     public Long getId() {
@@ -64,4 +69,44 @@ public class ItemPedido implements Serializable {
         this.pedido = pedido;
     }
 
+    public Double getValorItem() {
+        return valorItem;
+    }
+
+    public void setValorItem(Double valorItem) {
+        this.valorItem = valorItem;
+    }
+
+    public Double getValorUnit() {
+        return valorUnit;
+    }
+
+    public void setValorUnit(Double valorUnit) {
+        this.valorUnit = valorUnit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ItemPedido that = (ItemPedido) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Transient
+    public Double getValorTotal() {
+        return (this.getValorUnit() * this.getQuantidade());
+    }
+
+    @Transient
+    public boolean isProdutoAssociado() {
+        return this.getProduto() != null && this.getProduto().getId() != null;
+    }
 }

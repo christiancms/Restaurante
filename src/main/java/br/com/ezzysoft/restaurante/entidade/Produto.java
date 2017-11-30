@@ -14,13 +14,24 @@ import javax.persistence.*;
  * @author Christian Medeiros <christian.souza@gmail.com>
  */
 @Entity
-@Table(name = "produto")@NamedQueries({
+@Table(name = "produto")
+@NamedQueries({
         @NamedQuery(name = "Produto.findAll", query = "SELECT p FROM Produto p"),
-        @NamedQuery(name = "Produto.Grafico", query = "SELECT p FROM Produto p INNER JOIN Marca m ON p.marca.id=m.id")
+        @NamedQuery(name = "Produto.Grafico", query = "SELECT p FROM Produto p INNER JOIN Marca m ON p.marca.id=m.id"),
+        @NamedQuery(name = "Produto.findByGrupo", query = "SELECT p FROM Produto p INNER JOIN Grupo g ON p.grupo.id=g.id WHERE g.id = :grupoId"),
+        @NamedQuery(name = "Produto.Cardapio", query = "SELECT p FROM Produto p WHERE p.cardapio = true "),
+        @NamedQuery(name = "Produto.ItensCompoeProduto", query = "SELECT p FROM Produto p WHERE p.cardapio = false "),
+        @NamedQuery(name = "ProdutoComposto.findAll", query = "SELECT p FROM Produto p WHERE p.composto = true"),
+        @NamedQuery(name = "Produto.NomeSemelhante", query = "SELECT p FROM Produto p WHERE p.composto = false AND p.cardapio = false AND p.descricao LIKE :descricao ")
 })
 public class Produto implements Serializable {
 
     public static final String GRAFPROXMARCA = "Produto.Grafico";
+    public static final String ITENSPORGRUPO = "Produto.findByGrupo";
+    public static final String PRODUTOSCOMPOSTO = "ProdutoComposto.findAll";
+    public static final String CARDAPIO = "Produto.Cardapio";
+    public static final String ITENSCOMPOEPRODUTO = "Produto.ItensCompoeProduto";
+    public static final String NOMESEMELHANTE = "Produto.NomeSemelhante";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +42,7 @@ public class Produto implements Serializable {
     @Column(name = "descricao")
     private String descricao;
     @Column(name = "descricaoAdc", length = 180)
-    private String descAdicional;
+    private String descAdicional = "";
     @Basic(optional = false)
     @Column(name = "preco_compra")
     private Double precoCompra;
@@ -42,17 +53,16 @@ public class Produto implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
     @Column(name = "codigo_barras", length = 20, unique = true)
-    private String codigoBarras;
+    private String codigoBarras = "";
     @Column(name = "percentual_lucro")
     private Double percLucro = 0d;
-    @Column(name = "status")
-    @Enumerated(EnumType.ORDINAL)
-    private Status status = Status.ATIVO;
+    @Column(name = "cardapio")
+    private boolean cardapio = false;
     @Column(name = "composto")
     private boolean composto = false;
     //---------------- ItensProduto ----------------
     @OneToMany(mappedBy = "produto")
-    private List<ProdutoComposto> itensProdutoComposto;
+    private List<ItemProduto> itensProduto;
     @Column(name = "versao")
     @Version
     private Integer versao;
@@ -70,10 +80,12 @@ public class Produto implements Serializable {
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", updatable = true)
     private Unidade unidade = new Unidade();
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="combinado_produto",
-            joinColumns={@JoinColumn(name="combinado_id")},
+    @JoinTable(name="combinado_produto", joinColumns={@JoinColumn(name="combinado_id")},
             inverseJoinColumns={@JoinColumn(name="produto_id")})
     private List<Combinado> combinados = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", referencedColumnName = "id", updatable = true)
+    private Status status = new Status();
 
     public Produto() {
     }
@@ -91,31 +103,6 @@ public class Produto implements Serializable {
         this.grupo = grupo;
         this.marca = marca;
         this.unidade = unidade;
-    }
-
-    public enum Status {
-        ATIVO, INATIVO, EMFALTA, DEFASADO;
-
-        public static Status indice(int pos) {
-            Status st = null;
-            switch (pos) {
-                case 0:
-                    st = ATIVO;
-                    break;
-                case 1:
-                    st = INATIVO;
-                    break;
-                case 2:
-                    st = EMFALTA;
-                    break;
-                case 3:
-                    st = DEFASADO;
-                    break;
-                default:
-                    System.out.println("erro na posição");
-            }
-            return st;
-        }
     }
 
     public Long getId() {
@@ -230,20 +217,20 @@ public class Produto implements Serializable {
         this.composto = composto;
     }
 
-    public List<ProdutoComposto> getItensProdutoComposto() {
-        return itensProdutoComposto;
-    }
-
-    public void setItensProdutoComposto(List<ProdutoComposto> itensProdutoComposto) {
-        this.itensProdutoComposto = itensProdutoComposto;
-    }
-
     public Integer getVersao() {
         return versao;
     }
 
     public void setVersao(Integer versao) {
         this.versao = versao;
+    }
+
+    public boolean isCardapio() {
+        return cardapio;
+    }
+
+    public void setCardapio(boolean cardapio) {
+        this.cardapio = cardapio;
     }
 
     @Override

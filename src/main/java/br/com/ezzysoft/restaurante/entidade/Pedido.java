@@ -2,7 +2,9 @@ package br.com.ezzysoft.restaurante.entidade;
 
 import java.io.Serializable;
 import java.util.*;
+import javax.inject.Named;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -11,17 +13,20 @@ import javax.persistence.*;
 @Entity
 @Table(name = "pedido")
 @NamedQueries({
-        @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p "),
+        @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p ORDER BY p.id desc "),
         @NamedQuery(name = "Pedido.findAllColaborador", query = "SELECT p FROM Pedido p INNER JOIN Colaborador c ON p.colaborador.id = c.id"),
         @NamedQuery(name = "Pedido.findById", query = "SELECT p FROM Pedido p WHERE  p.id = :id"),
         @NamedQuery(name = "Pedido.listItens", query = "SELECT  p FROM Pedido p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id"),
         @NamedQuery(name = "Pedido.listItensByPedido", query = "SELECT  p FROM Pedido p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.id = :pedidoId"),
-        @NamedQuery(name = "Pedido.findByDate", query = "SELECT p FROM Pedido  p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.dataPedido = :dataAtual")
+        @NamedQuery(name = "Pedido.findByDate", query = "SELECT p FROM Pedido  p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.dataPedido = :dataAtual ORDER BY p.id desc"),
+        @NamedQuery(name = "Pedido.grafico", query = "SELECT p FROM Pedido p INNER JOIN Status s ON p.status.id=s.id GROUP BY s.opcao, p.id")
         })
 public class Pedido implements Serializable {
 
     public static final String LISTITENSPEDIDO = "Pedido.listItens";
     public static final String LISTPEDIDOSATUAL = "Pedido.findByDate";
+    public static final String PEDIDOSFINDALL = "Pedido.findAll";
+    public static final String GRAFPEDXSTATUS = "Pedido.grafico";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,17 +48,27 @@ public class Pedido implements Serializable {
     private Colaborador colaborador = new Colaborador();
     @Column(name = "mesa")
     private Integer mesa;
+    @Column(name = "total_pedido")
+    private Double totalPedido = 0d;
+    @Column(name = "total_produtos")
+    private Double totalProdutos = 0d;
+    @Column(name = "total_servico")
+    private Double totalServico = 0d;
+    private FormaPagamento formaPagamento;
+
 //---------------- ItensPedido ----------------
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itensPedido;
     @Column(name = "versao")
     @Version
     private Integer versao;
-    @Column(name = "status")
-    @Enumerated(EnumType.ORDINAL)
-    private Status status = Status.PENDENTE;
-    @Transient
-    private Double totalPedido = 0d;
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", referencedColumnName = "id", updatable = true)
+    private Status status = new Status();
+    
+
+    public Pedido() {
+    }
 
     public Long getId() {
         return id;
@@ -135,6 +150,22 @@ public class Pedido implements Serializable {
         this.totalPedido = totalPedido;
     }
 
+    public Double getTotalProdutos() {
+        return totalProdutos;
+    }
+
+    public void setTotalProdutos(Double totalProdutos) {
+        this.totalProdutos = totalProdutos;
+    }
+
+    public Double getTotalServico() {
+        return totalServico;
+    }
+
+    public void setTotalServico(Double totalServico) {
+        this.totalServico = totalServico;
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -143,42 +174,17 @@ public class Pedido implements Serializable {
         this.status = status;
     }
 
-    public enum Status {
-        APROVADO,
-        CANCELADO,
-        ENTREGUE,
-        FATURADO,
-        PENDENTE,
-        PRONTO;
-
-
-        public static Pedido.Status indice(int pos) {
-            Pedido.Status st = null;
-            switch (pos) {
-                case 0:
-                    st = APROVADO;
-                    break;
-                case 1:
-                    st = CANCELADO;
-                    break;
-                case 2:
-                    st = ENTREGUE;
-                    break;
-                case 3:
-                    st = FATURADO;
-                    break;
-                case 4:
-                    st = PENDENTE;
-                    break;
-                case 5:
-                    st = PRONTO;
-                    break;
-                default:
-                    System.out.println("erro na posição");
-            }
-            return st;
-        }
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "forma_pagamento", nullable = false, length = 20)
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
     }
+
+    public void setFormaPagamento(FormaPagamento formaPagamento) {
+        this.formaPagamento = formaPagamento;
+    }
+
 
     @Override
     public int hashCode() {
@@ -205,4 +211,24 @@ public class Pedido implements Serializable {
         return true;
     }
 
+    public enum FormaPagamento {
+
+        DINHEIRO("Dinheiro"),
+        CARTAO_CREDITO("Cartão de crédito"),
+        CARTAO_DEBITO("Cartão de débito"),
+        CHEQUE("Cheque"),
+        BOLETO_BANCARIO("Boleto bancário"),
+        DEPOSITO_BANCARIO("Depósito bancário");
+
+        private String descricao;
+
+        FormaPagamento(String descricao) {
+            this.descricao = descricao;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
+
+    }
 }

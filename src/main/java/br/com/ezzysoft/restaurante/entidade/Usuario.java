@@ -33,6 +33,8 @@ public class Usuario implements Serializable {
     @Column(name = "versao")
     @Version
     private Integer versao;
+    @Column(name = "nivel")
+    private Integer nivel = 2;
 
     public Usuario() {
     }
@@ -67,7 +69,7 @@ public class Usuario implements Serializable {
     }
 
     public void setPassword(String senha) {
-        this.password = senha.trim();
+        this.password = convertStringToMd5(senha.trim());
     }
 
     public Integer getVersao() {
@@ -76,6 +78,14 @@ public class Usuario implements Serializable {
 
     public void setVersao(Integer versao) {
         this.versao = versao;
+    }
+
+    public Integer getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
     }
 
     @Override
@@ -139,4 +149,13 @@ public class Usuario implements Serializable {
         }
     }
 
+    public boolean isAdm(){
+        return 0 == nivel;
+    }
+    public boolean isGerente(){
+        return 1 == nivel;
+    }
+    public boolean isUsuario(){
+        return 2 == nivel;
+    }
 }

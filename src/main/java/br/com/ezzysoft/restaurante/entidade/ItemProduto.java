@@ -9,7 +9,14 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "itensProduto")
+@NamedQueries({
+        @NamedQuery(name = "ItemProduto.findAll", query = "SELECT o FROM ItemProduto o"),
+        @NamedQuery(name = "ItemProduto.findById", query = "SELECT o FROM ItemProduto o WHERE o.id = :id"),
+        @NamedQuery(name = "ItemProduto.findByProduto", query = "SELECT o FROM ItemProduto o WHERE o.idProdutoComposto = :compostoId")
+})
 public class ItemProduto implements Serializable {
+
+    public static final String ITENSPORPRODUTO = "ItemProduto.findByProduto";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,13 +25,12 @@ public class ItemProduto implements Serializable {
     @Column(name = "quantidade")
     private Double quantidade;
     //---------------- Produto ----------------
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "produto_id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "produto_id")
     private Produto produto;
     //---------------- Pedido ----------------
-    @ManyToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    @Column(name = "produto_composto_id")
+    private Long idProdutoComposto;
 
     public Long getId() {
         return id;
@@ -50,12 +56,11 @@ public class ItemProduto implements Serializable {
         this.quantidade = quantidade;
     }
 
-    public Pedido getPedido() {
-        return pedido;
+    public Long getIdProdutoComposto() {
+        return idProdutoComposto;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public void setIdProdutoComposto(Long idProdutoComposto) {
+        this.idProdutoComposto = idProdutoComposto;
     }
-
 }
