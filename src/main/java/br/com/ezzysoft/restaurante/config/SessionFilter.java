@@ -27,7 +27,8 @@ public class SessionFilter implements Filter {
         System.out.println("Caminho atual: " + url);
         System.out.println("Atributos sessão: " + httpRequest.getSession().getAttribute("username"));
 
-        if (!url.contains("ws") && !url.contains("images")) {
+        if (!url.contains("/ws") && !url.contains("/images") &&
+                !url.contains("/cardapio") && !url.contains("faces.resource/")) {
             if (session.getAttribute("username") == null && precisaAutenticar(url)) {
                 System.out.println("Caminho de contexto: "+httpRequest.getContextPath());
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/login.jsf");
@@ -52,7 +53,7 @@ public class SessionFilter implements Filter {
     }
 
     private boolean precisaAutenticar(String url) {
-        return !url.contains("login.jsf");// && !url.contains("javax.faces.resource");
+        return !url.contains("login.jsf");
     }
 
 }
