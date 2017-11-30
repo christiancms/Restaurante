@@ -31,5 +31,10 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
         Query q = em.createNamedQuery("Cliente.findAllOrder");
         return (List<Cliente>)q.getResultList();
     }
+
+    public List<Cliente> porNomeSemelhante(String nome){
+        List<Cliente> lista = getEntityManager().createNamedQuery(Cliente.NOMESEMELHANTE).setParameter("nome", "%"+nome+"%").getResultList();
+        return lista;
+    }
     
 }

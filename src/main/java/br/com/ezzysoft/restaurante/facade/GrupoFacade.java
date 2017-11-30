@@ -31,4 +31,8 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         Query q = em.createNamedQuery("Grupo.findAllOrder");
         return (List<Grupo>)q.getResultList();
     }
+
+    public List<Grupo> findCardapio(){
+        return getEntityManager().createNamedQuery(Grupo.CARDAPIO).getResultList();
+    }
 }

@@ -2,6 +2,7 @@ package br.com.ezzysoft.restaurante.facade;
 
 import br.com.ezzysoft.restaurante.entidade.ItemPedido;
 import br.com.ezzysoft.restaurante.entidade.Pedido;
+import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,12 +28,21 @@ public class PedidoFacade extends AbstractFacade<Pedido> {
         super(Pedido.class);
     }
 
+    @Override
+    public List<Pedido> findAll(){
+        return getEntityManager().createNamedQuery(Pedido.PEDIDOSFINDALL).getResultList();
+    }
+
     public List<Pedido> getPedidoAtual(Date dataAtual){
      return getEntityManager().createNamedQuery(Pedido.LISTPEDIDOSATUAL).setParameter("dataAtual", dataAtual).getResultList();
     }
 
     public List<ItemPedido> getItensPedido(Long pedidoId){
         return getEntityManager().createNamedQuery(ItemPedido.ITENSPORPEDIDO).setParameter("pedidoId", pedidoId).getResultList();
+    }
+
+    public List<Pedido> buscarGrafico() throws ErroSistema {
+        return getEntityManager().createNamedQuery(Pedido.GRAFPEDXSTATUS).getResultList();
     }
     
 }
