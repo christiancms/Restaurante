@@ -1,7 +1,7 @@
 package br.com.ezzysoft.restaurante.config;
 
-import org.json.simple.JSONObject;
-import org.primefaces.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class FCM {
      * @param message    which contains actual information.
      */
 
-    public static void send_FCM_Notification(String tokenId, String server_key, String message) {
+    public static void send_FCM_Notification(String tokenId, String server_key, String message, String title) {
 
 
         try {
@@ -52,14 +52,14 @@ public class FCM {
             conn.setRequestProperty("Content-Type", "application/json");
 
             //Create JSON Object & pass value
-            JSONObject infoJson = new JSONObject();
-            infoJson.put("title", "Pedido pronto, favor retirar na cozinha para servir o cliente.");
-            infoJson.put("body", message);
 
 
             JSONObject json = new JSONObject();
-            json.put("to", tokenId.trim());
-            json.put("notification", infoJson);
+            json.put("to", "/topics/"+tokenId);
+            JSONObject data = new JSONObject();
+            data.put("title", title);
+            data.put("body", message);
+            json.put("data", data);
 
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(json.toString());
