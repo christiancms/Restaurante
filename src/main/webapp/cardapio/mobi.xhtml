@@ -18,7 +18,17 @@
     </h:head>
     <h:body>
         <h:form id="CardapioListForm">
-            <p:panel header="Cardápio - EzzySoft">
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                    <h:outputText value="Cardápio - EzzySoft"/>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:inputText value="#{mbProduto.numeroMesa}" id="mesa" required="true" requiredMessage="Insira o número da mesa" size="5"/>
+                    <p:spacer/>
+                    <p:commandButton value="Chamar" actionListener="#{mbProduto.getGarcom}"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <p:panel>
                 <p:dataTable id="datalist" value="#{mbProduto.mobi}" var="item"
                              emptyMessage="Nenhum produto encontrado" rowKey="#{item.id}"
                              rowStyleClass="#{item.grupo.id le 15 ? 'old':null}"
@@ -52,6 +62,8 @@
                     </p:column>
                 </p:dataTable>
             </p:panel>
+            <p:tooltip id="toolTipGrow" for="mesa" value="Insira o número da mesa para chamar o Garçom"
+                       showEffect="clip" hideEffect="explode" position="left"/>
         </h:form>
     </h:body>
 </f:view>
