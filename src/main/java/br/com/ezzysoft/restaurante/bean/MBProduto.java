@@ -1,5 +1,6 @@
 package br.com.ezzysoft.restaurante.bean;
 
+import br.com.ezzysoft.restaurante.config.FCM;
 import br.com.ezzysoft.restaurante.entidade.*;
 import br.com.ezzysoft.restaurante.facade.*;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
@@ -62,6 +63,8 @@ public class MBProduto implements Serializable {
     private StatusFacade facadeStatus;
     @EJB
     private UsuarioFacade facadeUsuario;
+    @EJB
+    private ConfiguracaoFacade facadeConfig;
 
     private List<Produto> items = null;
     private Produto selected;
@@ -71,6 +74,7 @@ public class MBProduto implements Serializable {
     private Status selectedStatus;
     private ExcelOptions excelOpt;
     private PDFOptions pdfOpt;
+    private Integer numeroMesa;
 
     public MBProduto() {
     }
@@ -150,10 +154,17 @@ public class MBProduto implements Serializable {
     }
 
     public List<Produto> getMobi() {
-        if (items == null) {
-            items = getFacade().getCardapio();
+        return getFacade().getCardapio();
+    }
+
+    public void getGarcom(){
+        List<Configuracao> elem = facadeConfig.findAll();
+        if (!elem.isEmpty()) {
+            String token = elem.get(0).getToken();
+            String message = "Mesa " + numeroMesa + " chamou o garçom!";
+            String serverKey = elem.get(0).getServerkey();
+            FCM.send_FCM_Notification(token, serverKey, message, "");
         }
-        return items;
     }
 
     public Produto onBlur() {
@@ -192,7 +203,9 @@ public class MBProduto implements Serializable {
                     if (persistAction.equals(PersistAction.CREATE)) {
                         selected.setDataCadastro(sdf.parse(sdf.format(new Date())));
                     }
-                    selected = calcMargem(selected);
+                    if (!selected.isComposto()) {
+                        selected = calcMargem(selected);
+                    }
                     getFacade().salvar(selected);
 
                 } else {
@@ -436,11 +449,22 @@ public class MBProduto implements Serializable {
         pdfOpt.setColumnWidths(columnWidths);
     }
 
+    public Integer getNumeroMesa() {
+        return numeroMesa;
+    }
+
+    public void setNumeroMesa(Integer numeroMesa) {
+        this.numeroMesa = numeroMesa;
+    }
+
     @PostConstruct
     public void init() {
 //        this.selected = new Produto();
 //        getItems();
+
         String userid = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
-        mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
+        if (userid != null) {
+            mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
+        }
     }
 }
