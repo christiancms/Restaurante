@@ -1,6 +1,8 @@
 package br.com.ezzysoft.restaurante.ws.service;
 
+import br.com.ezzysoft.restaurante.facade.AbstractFacade;
 import br.com.ezzysoft.restaurante.entidade.*;
+import br.com.ezzysoft.restaurante.facade.PedidoFacade;
 import br.com.ezzysoft.restaurante.ws.ItemTransporter;
 import br.com.ezzysoft.restaurante.ws.PedidoTransporter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,6 +40,8 @@ import javax.ws.rs.core.MediaType;
 @Path("/pedido")
 public class PedidoService extends AbstractFacade<Pedido> {
 
+    @EJB
+    private PedidoFacade facade;
     @EJB
     private ColaboradorService colaboradorFacade;
     @EJB
@@ -115,7 +119,7 @@ public class PedidoService extends AbstractFacade<Pedido> {
     public String getPedidos() {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat dfh = new SimpleDateFormat("HH:mm:ss");
-        List<Pedido> lista = super.findAll();
+        List<Pedido> lista = facade.androidLista();
         ObjectMapper mapper = new ObjectMapper();
         List<ItemPedido> itens;
         PedidoTransporter pt;
@@ -131,8 +135,10 @@ public class PedidoService extends AbstractFacade<Pedido> {
                 pt.setIdPedido(elem.getId());
                 pt.setClienteId(elem.getCliente().getId());
                 pt.setColaboradorId(elem.getColaborador().getId());
-                pt.setDataPedido(df.format(new Date()));//elem.getDataPedido().toString());
-                pt.setHoraPedido(dfh.format(new Date()));//elem.getHoraPedido().toString());
+//              pt.setDataPedido(df.format(new Date()));
+                pt.setDataPedido(df.format(elem.getDataPedido()));
+//              pt.setHoraPedido(dfh.format(new Date()));
+                pt.setHoraPedido(dfh.format(elem.getHoraPedido()));
                 pt.setMesa(elem.getMesa());
                 pt.setDescricao(elem.getDescricao());
 
@@ -250,6 +256,7 @@ public class PedidoService extends AbstractFacade<Pedido> {
         ped.setMesa(pedT.getMesa());
         Status status = statusFacade.find(9l);
         ped.setStatus(status);
+        ped.setFormaPagamento(Pedido.FormaPagamento.DINHEIRO);
         try {
             String dataAtual = sdf.format(new Date());
             String horaAtual = shf.format(new Date());
@@ -258,29 +265,35 @@ public class PedidoService extends AbstractFacade<Pedido> {
         } catch (Exception e) {
         }
 
-        create(ped);
+        this.create(ped);
 
         fillItensPedido(ped, pedT);
+        this.edit(ped);
         return ped;
 
     }
 
     private Pedido fillItensPedido(Pedido ped, PedidoTransporter pedT) {
         ItemPedido item;
-
-        Produto prod = new Produto();
+        Double acumulador = 0d;
+        Produto prod;
         List<ItemPedido> lista = new ArrayList<>();
 
         for (ItemTransporter itemT : pedT.getItensTransporter()) {
-
+            prod = new Produto();
             item = new ItemPedido();
             item.setPedido(ped);
 
-            prod = (Produto) produtoFacade.find(itemT.getProdutoId());
+            prod = produtoFacade.find(itemT.getProdutoId());
             item.setProduto(prod);
             item.setQuantidade(itemT.getQuantidade());
+            item.setValorUnit(prod.getPrecoVenda());
+            item.setValorItem(item.getQuantidade() * item.getValorUnit());
             itemFacade.create(item);
+            acumulador += item.getValorItem();
         }
+        ped.setTotalProdutos(acumulador);
+        ped.setTotalPedido(acumulador);
         ped.setItensPedido(lista);
         return ped;
     }
