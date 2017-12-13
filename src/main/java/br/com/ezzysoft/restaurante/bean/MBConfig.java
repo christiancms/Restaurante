@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -28,6 +29,9 @@ import java.util.logging.Logger;
 @ManagedBean(name = "mbConfig")
 @SessionScoped
 public class MBConfig implements Serializable {
+
+    @ManagedProperty(value = "#{mbUsuario}")
+    private MBUsuario mbUsuario = new MBUsuario();
 
     @EJB
     private ConfiguracaoFacade facade;
@@ -280,6 +284,14 @@ public class MBConfig implements Serializable {
         return "Unknown";
     }
 
+    public MBUsuario getMbUsuario() {
+        return mbUsuario;
+    }
+
+    public void setMbUsuario(MBUsuario mbUsuario) {
+        this.mbUsuario = mbUsuario;
+    }
+
     @PostConstruct
     public void init() {
         List<Configuracao> lista = getItems();
@@ -287,6 +299,10 @@ public class MBConfig implements Serializable {
             prepareCreate();
         } else {
             setSelected(lista.get(0));
+        }
+        String userid = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        if (userid != null) {
+            mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
         }
     }
 

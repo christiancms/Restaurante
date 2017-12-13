@@ -2,6 +2,7 @@ package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.entidade.Usuario;
 import br.com.ezzysoft.restaurante.facade.UsuarioFacade;
+import br.com.ezzysoft.restaurante.util.Util;
 import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +33,10 @@ public class MBLogin implements Serializable {
     private String password;
     private Usuario sessionUser;
     private boolean loggedIn;
+    private String expressao = "";
+    private Integer resposta;
+    private Integer resultado;
+    private Util util = new Util();
 
     public String getUsername() {
         return username;
@@ -69,6 +74,38 @@ public class MBLogin implements Serializable {
         this.loggedIn = loggedIn;
     }
 
+    public String getExpressao() {
+        expressao = util.myCaptcha();
+        if (expressao.trim().isEmpty()) {
+            getExpressao();
+        } else {
+            int x, y;
+            String xx = expressao.trim().substring(0, 1);
+            String sinal = expressao.trim().substring(2, 3);
+            String yy = expressao.trim().substring(4, 5);
+            x = !xx.trim().isEmpty() ? Integer.parseInt(xx) : 0;
+            y = !yy.trim().isEmpty() ? Integer.parseInt(yy) : 0;
+            if (sinal.equals("+")) {
+                resultado = x + y;
+            } else {
+                resultado = x - y;
+            }
+        }
+        return expressao;
+    }
+
+    public void setExpressao(String expressao) {
+        this.expressao = expressao;
+    }
+
+    public Integer getResposta() {
+        return resposta;
+    }
+
+    public void setResposta(Integer resposta) {
+        this.resposta = resposta;
+    }
+
     public void doLogin(ActionEvent event) throws IOException {
         RequestContext context = RequestContext.getCurrentInstance();
 
@@ -92,8 +129,11 @@ public class MBLogin implements Serializable {
                 RequestContext.getCurrentInstance().reset(":loginIndex");
 //                FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
             }
+        } else {
+            loggedIn = false;
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao autenticar", "Credenciais");
+            RequestContext.getCurrentInstance().reset(":loginIndex");
         }
-
 
         FacesContext.getCurrentInstance().addMessage(null, message);
         context.addCallbackParam("loggedIn", loggedIn);
@@ -127,13 +167,29 @@ public class MBLogin implements Serializable {
     }
 
     public boolean validaLogin(String username, String password) {
-        return ((!username.isEmpty() || username != null) && (password.isEmpty() || password != null));
+        if (resultado != resposta) {
+            return false;
+        }
+        if (username.isEmpty() || username == null) {
+            return false;
+        }
+        if (password.isEmpty() || password == null) {
+            return false;
+        }
+        return true;
     }
+
+    public void testeCaptcha() {
+        Integer resultado = Integer.parseInt(getExpressao());
+    }
+
 
     @PostConstruct
     public void init() {
+        setExpressao(util.myCaptcha());
         if (sessionUser == null) {
             sessionUser = new Usuario();
         }
+        getExpressao();
     }
 }

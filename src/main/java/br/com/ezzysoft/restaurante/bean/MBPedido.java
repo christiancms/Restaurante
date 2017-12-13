@@ -1,37 +1,33 @@
 package br.com.ezzysoft.restaurante.bean;
 
 import br.com.ezzysoft.restaurante.dao.ColaboradorDAO;
-import br.com.ezzysoft.restaurante.entidade.Colaborador;
-import br.com.ezzysoft.restaurante.entidade.ItemPedido;
-import br.com.ezzysoft.restaurante.entidade.Pedido;
-import br.com.ezzysoft.restaurante.entidade.Status;
-import br.com.ezzysoft.restaurante.facade.ColaboradorFacade;
-import br.com.ezzysoft.restaurante.facade.PedidoFacade;
-import br.com.ezzysoft.restaurante.facade.StatusFacade;
+import br.com.ezzysoft.restaurante.entidade.*;
+import br.com.ezzysoft.restaurante.facade.*;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
 import com.lowagie.text.*;
+import org.primefaces.mobile.component.footer.Footer;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
-import javax.persistence.PreUpdate;
 import javax.servlet.ServletContext;
 
 /**
@@ -43,11 +39,21 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
 
 
     @EJB
-    private PedidoFacade ejbFacade;
+    private PedidoFacade facade;
     @EJB
     private ColaboradorFacade facadeColaborador;
     @EJB
     private StatusFacade facadeStatus;
+    @EJB
+    private ProdutoFacade facadeProduto;
+    @EJB
+    private ItemPedidoFacade facadeIpedido;
+
+    @ManagedProperty(value = "#{mbClienteSelect}")
+    private MBClienteSelect mbClienteSelect = new MBClienteSelect();
+
+    @ManagedProperty(value = "#{mbGarcomSelect}")
+    private MBGarcomSelect mbGarcomSelect = new MBGarcomSelect();
 
     private Pedido selected;
     private ItemPedido selectedItem;
@@ -56,6 +62,18 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
     private Colaborador selectedColaborador;
     private Double totalPedido = 0d;
     private Status selectedStatus;
+    private List<Pedido> pedidosFiltrados;
+    private Date dtInicial;
+    private Date dtFinal;
+    private String statusPed;
+    private String garcomPedido;
+
+    private String totalAprovado;
+    private String totalCancelado;
+    private String totalEntregue;
+    private String totalFaturado;
+    private String totalPendente;
+    private String totalPronto;
 
     public MBPedido() {
     }
@@ -85,7 +103,7 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
     }
 
     private PedidoFacade getFacade() {
-        return ejbFacade;
+        return facade;
     }
 
     public Pedido prepareCreate() {
@@ -164,6 +182,10 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
             items = getFacade().findAll();
         }
         return items;
+    }
+
+    public List<Pedido> porStatus(String descricao){
+        return facade.porStatus(descricao);
     }
 
     public List<ItemPedido> getItensPedido(Long pedidoId) {
@@ -306,37 +328,212 @@ public class MBPedido implements InterfaceCad<Pedido>, Serializable {
         logotipo.scalePercent(25);
 
         HeaderFooter header = new HeaderFooter(new Phrase("Tabela de vendas"), false);
+
         pdf.setHeader(header);
+
         if (!pdf.isOpen()) {
             pdf.open();
             pdf.add(logotipo);
         }
     }
 
-    public List<String> getGarcons(){
+    public List<String> getGarcons() {
         List<Colaborador> listagem = facadeColaborador.findAll();
         List<String> temp = new ArrayList<>();
-        for (Colaborador elem: listagem) {
+        for (Colaborador elem : listagem) {
             temp.add(elem.getNome());
         }
         return temp;
     }
 
-    public List<String> getStatusPedido(){
+    public List<String> getStatusPedido() {
         List<Status> listagem = facadeStatus.getEnumPedido();
         List<String> temp = new ArrayList<>();
-        for (Status elem: listagem) {
+        for (Status elem : listagem) {
             temp.add(elem.getOpcao());
         }
         return temp;
     }
-    public String getTotal() {
-        int total = 0;
 
-        for(Pedido ped : getItems(true)) {
+    public String getTotal() {
+        Double total = 0d;
+
+        for (Pedido ped : getItems(true)) {
             total += ped.getTotalPedido();
         }
+        Locale ptBr = new Locale("pt", "BR");
+        NumberFormat nf = NumberFormat.getNumberInstance(ptBr);
+        DecimalFormat df = (DecimalFormat) nf;
 
-        return new DecimalFormat("###,###.###").format(total);
+        return df.format(total);
+    }
+
+    public String getTotalAprovado() {
+        Double aprovado = 0d;
+
+        for (Pedido ped : getItems(true)) {
+            if (ped.getStatus().getOpcao().equals("APROVADO")) {
+                aprovado += ped.getTotalPedido();
+            }
+        }
+
+        Locale ptBr = new Locale("pt", "BR");
+        NumberFormat nf = NumberFormat.getNumberInstance(ptBr);
+        DecimalFormat df = (DecimalFormat) nf;
+        return df.format(aprovado);
+    }
+
+    public void setTotalAprovado(String totalAprovado) {
+        this.totalAprovado = totalAprovado;
+    }
+
+    public String getTotalCancelado() {
+        Double cancelado = 0d;
+
+        for (Pedido ped : getItems(true)) {
+            if (ped.getStatus().getOpcao().equals("CANCELADO")) {
+                cancelado += ped.getTotalPedido();
+            }
+        }
+
+        Locale ptBr = new Locale("pt", "BR");
+        NumberFormat nf = NumberFormat.getNumberInstance(ptBr);
+        DecimalFormat df = (DecimalFormat) nf;
+        return df.format(cancelado);
+    }
+
+    public void setTotalCancelado(String totalCancelado) {
+        this.totalCancelado = totalCancelado;
+    }
+
+    public String getTotalEntregue() {
+        Double entregue = 0d;
+
+        for (Pedido ped : getItems(true)) {
+            if (ped.getStatus().getOpcao().equals("ENTREGUE")) {
+                entregue += ped.getTotalPedido();
+            }
+        }
+
+        Locale ptBr = new Locale("pt", "BR");
+        NumberFormat nf = NumberFormat.getNumberInstance(ptBr);
+        DecimalFormat df = (DecimalFormat) nf;
+        return df.format(entregue);
+    }
+
+    public void setTotalEntregue(String totalEntregue) {
+        this.totalEntregue = totalEntregue;
+    }
+
+    public String getTotalFaturado() {
+        Double faturado = 0d;
+
+        for (Pedido ped : getItems(true)) {
+            if (ped.getStatus().getOpcao().equals("FATURADO")) {
+                faturado += ped.getTotalPedido();
+            }
+        }
+
+        Locale ptBr = new Locale("pt", "BR");
+        NumberFormat nf = NumberFormat.getNumberInstance(ptBr);
+        DecimalFormat df = (DecimalFormat) nf;
+        return df.format(faturado);
+    }
+
+    public void setTotalFaturado(String totalFaturado) {
+        this.totalFaturado = totalFaturado;
+    }
+
+    public String getTotalPendente() {
+        Double pendente = 0d;
+
+        for (Pedido ped : getItems(true)) {
+            if (ped.getStatus().getOpcao().equals("PENDENTE")) {
+                pendente += ped.getTotalPedido();
+            }
+        }
+
+        Locale ptBr = new Locale("pt", "BR");
+        NumberFormat nf = NumberFormat.getNumberInstance(ptBr);
+        DecimalFormat df = (DecimalFormat) nf;
+        return df.format(pendente);
+    }
+
+    public void setTotalPendente(String totalPendente) {
+        this.totalPendente = totalPendente;
+    }
+
+    public String getTotalPronto() {
+        Double pronto = 0d;
+
+        for (Pedido ped : getItems(true)) {
+            if (ped.getStatus().getOpcao().equals("PRONTO")) {
+                pronto += ped.getTotalPedido();
+            }
+        }
+
+        Locale ptBr = new Locale("pt", "BR");
+        NumberFormat nf = NumberFormat.getNumberInstance(ptBr);
+        DecimalFormat df = (DecimalFormat) nf;
+        return df.format(pronto);
+    }
+
+    public void setTotalPronto(String totalPronto) {
+        this.totalPronto = totalPronto;
+    }
+
+    public Date getDtInicial() {
+        return dtInicial;
+    }
+
+    public void setDtInicial(Date dtInicial) {
+        this.dtInicial = dtInicial;
+    }
+
+    public Date getDtFinal() {
+        return dtFinal;
+    }
+
+    public void setDtFinal(Date dtFinal) {
+        this.dtFinal = dtFinal;
+    }
+
+    public void setStatusPed(String statusPed) {
+        this.statusPed = statusPed;
+    }
+
+    public String getStatusPed() {
+        return statusPed;
+    }
+
+    public String getGarcomPedido() {
+        return garcomPedido;
+    }
+
+    public void setGarcomPedido(String garcomPedido) {
+        this.garcomPedido = garcomPedido;
+    }
+
+    public List<Pedido> getPedidosFiltrados() {
+        return pedidosFiltrados;
+    }
+
+    public void pesquisar() {
+    }
+
+    public MBClienteSelect getMbClienteSelect() {
+        return mbClienteSelect;
+    }
+
+    public void setMbClienteSelect(MBClienteSelect mbClienteSelect) {
+        this.mbClienteSelect = mbClienteSelect;
+    }
+
+    public MBGarcomSelect getMbGarcomSelect() {
+        return mbGarcomSelect;
+    }
+
+    public void setMbGarcomSelect(MBGarcomSelect mbGarcomSelect) {
+        this.mbGarcomSelect = mbGarcomSelect;
     }
 }

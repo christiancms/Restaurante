@@ -5,6 +5,7 @@ import br.com.ezzysoft.restaurante.facade.*;
 import br.com.ezzysoft.restaurante.util.JsfUtil;
 import br.com.ezzysoft.restaurante.util.JsfUtil.PersistAction;
 import br.com.ezzysoft.restaurante.util.exception.ErroSistema;
+import com.lowagie.text.pdf.AcroFields;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DualListModel;
 
@@ -52,8 +53,11 @@ public class MBProdutoComposto implements Serializable {
     private StatusFacade facadeStatus;
     @EJB
     private UsuarioFacade facadeUsuario;
+    @EJB
+    private ItemProdutoFacade facadeItemProduto;
 
     private List<Produto> items = null;
+    private List<ItemProduto> itemsProduto = null;
     private List<Produto> selectedItems;
     private Produto selected;
     private ItemProduto selectedIProd;
@@ -111,6 +115,11 @@ public class MBProdutoComposto implements Serializable {
         return selected;
     }
 
+    public void prepareItem() {
+        selectedIProd = new ItemProduto();
+        selectedIProd.setIdProdutoComposto(selected.getId());
+    }
+
     public MBUsuario getMbUsuario() {
         return mbUsuario;
     }
@@ -120,18 +129,25 @@ public class MBProdutoComposto implements Serializable {
     }
 
     public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("resources/Bundle").getString("ProdutoCreated"));
+        persist(PersistAction.CREATE, ResourceBundle.getBundle("resources/Bundle").getString("ProdutoCreated"), false);
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
 
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("resources/Bundle").getString("ProdutoUpdated"));
+    public void createItem() {
+        persist(PersistAction.CREATE, ResourceBundle.getBundle("resources/Bundle").getString("ItemProdutoCreated"), true);
+        if (!JsfUtil.isValidationFailed()) {
+            itemsProduto = null;
+        }
     }
 
-    public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("resources/Bundle").getString("ProdutoDeleted"));
+    public void update() {
+        persist(PersistAction.UPDATE, ResourceBundle.getBundle("resources/Bundle").getString("ProdutoUpdated"), false);
+    }
+
+    public void destroy(boolean itemProduto) {
+        persist(PersistAction.DELETE, ResourceBundle.getBundle("resources/Bundle").getString("ProdutoDeleted"), false);
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
             items = null;    // Invalidate list of items to trigger re-query.
@@ -153,35 +169,85 @@ public class MBProdutoComposto implements Serializable {
         return getFacade().getItensProduto(produtoId);
     }
 
-    private void persist(PersistAction persistAction, String successMessage) {
+    private void persist(PersistAction persistAction, String successMessage, boolean itemProduto) {
         if (selected != null) {
-            setEmbeddableKeys();
-            try {
-                if (persistAction != PersistAction.DELETE) {
+            if (!itemProduto) {
+                setEmbeddableKeys();
+                try {
+                    if (persistAction != PersistAction.DELETE) {
 //                    getFacade().edit(selected);
-                    getFacade().salvar(selected);
-                } else {
-                    getFacade().remove(selected);
-                }
-                JsfUtil.addSuccessMessage(successMessage);
-                if (selected.getVersao() != null) {
-                    JsfUtil.addSuccessMessage(" Versão: " + selected.getVersao());
-                }
-            } catch (EJBException ex) {
-                String msg = "";
-                Throwable cause = ex.getCause();
-                if (cause != null) {
-                    msg = cause.getLocalizedMessage();
-                }
-                if (msg.length() > 0) {
-                    JsfUtil.addErrorMessage(msg);
-                } else {
+                        calculaTotalProduto(selectedIProd.getIdProdutoComposto(), selected);
+                        getFacade().salvar(selected);
+                    } else {
+                        getFacade().remove(selected);
+                    }
+                    JsfUtil.addSuccessMessage(successMessage);
+                    if (selected.getVersao() != null) {
+                        JsfUtil.addSuccessMessage(" Versão: " + selected.getVersao());
+                    }
+                } catch (EJBException ex) {
+                    String msg = "";
+                    Throwable cause = ex.getCause();
+                    if (cause != null) {
+                        msg = cause.getLocalizedMessage();
+                    }
+                    if (msg.length() > 0) {
+                        JsfUtil.addErrorMessage(msg);
+                    } else {
+                        JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
             }
+        } else {
+            if (selectedIProd != null) {
+                setEmbeddableKeys();
+                try {
+                    if (persistAction != PersistAction.DELETE) {
+                        facadeItemProduto.edit(selectedIProd);
+                        selected = new Produto();
+                        selected = ejbFacade.find(selectedIProd.getIdProdutoComposto());
+                        calculaTotalProduto(selectedIProd.getIdProdutoComposto(), selected);
+                        getFacade().salvar(selected);
+                    } else {
+                        facadeItemProduto.remove(selectedIProd);
+                    }
+                    JsfUtil.addSuccessMessage(successMessage);
+                } catch (EJBException ex) {
+                    String msg = "";
+                    Throwable cause = ex.getCause();
+                    if (cause != null) {
+                        msg = cause.getLocalizedMessage();
+                    }
+                    if (msg.length() > 0) {
+                        JsfUtil.addErrorMessage(msg);
+                    } else {
+                        JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
+                }
+            }
+        }
+
+    }
+
+    private void calculaTotalProduto(Long idProdutoComposto, Produto produto) {
+        List<ItemProduto> listaCalc = facadeItemProduto.getItensProdutoComposto(idProdutoComposto);
+        Double totalCompra = 0d, totalVenda = 0d;
+        if (!listaCalc.isEmpty()) {
+            for (ItemProduto elem : listaCalc) {
+                totalCompra += elem.getQuantidade() * elem.getProduto().getPrecoCompra();
+                totalVenda += elem.getQuantidade() * elem.getProduto().getPrecoVenda();
+            }
+
+            produto.setPrecoCompra(totalCompra);
+            produto.setPrecoVenda(totalVenda);
+            produto.setPercLucro(((totalVenda-totalCompra)*100)/totalCompra);
+
         }
     }
 
@@ -347,17 +413,25 @@ public class MBProdutoComposto implements Serializable {
 
     public void produtoSelecionado(SelectEvent event) {
         Produto produto = (Produto) event.getObject();
-        ItemProduto itemLista = new ItemProduto();
-        itemLista.setProduto(produto);
+        getSelectedIProd().setProduto(produto);
+    }
+
+    public void remove(Long itemId){
+        ItemProduto ip = facadeItemProduto.find(itemId);
+        Produto p = ejbFacade.find(ip.getIdProdutoComposto());
+        ItemProduto item = ip;
+        facadeItemProduto.remove(ip);
+        calculaTotalProduto(item.getIdProdutoComposto(),p);
+        getFacade().salvar(p);
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
 //        this.selected = new Produto();
 //        getItems();
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 //        return sdf.format(new Date());
-        String userid = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        String userid = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
         mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
     }
 }

@@ -4,6 +4,7 @@ import br.com.ezzysoft.restaurante.entidade.Colaborador;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  *
@@ -23,5 +24,12 @@ public class ColaboradorFacade extends AbstractFacade<Colaborador> {
     public ColaboradorFacade() {
         super(Colaborador.class);
     }
-    
+
+    public List<Colaborador> porNomeSemelhante(String nome){
+        List<Colaborador> lista = getEntityManager()
+                .createNamedQuery(Colaborador.NOMESEMELHANTE)
+                .setParameter("nome", "%"+nome+"%")
+                .getResultList();
+        return lista;
+    }
 }
