@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.ezzysoft.restaurante.util;
 
 import javax.faces.convert.ConverterException;
@@ -11,6 +6,7 @@ import br.com.ezzysoft.restaurante.entidade.Usuario;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
+import java.util.Random;
 
 /**
  *
@@ -103,5 +99,17 @@ public class Util {
         smad = "" + s + m + a + d;
         System.out.println(smad);
         return username.equals("ezzyadm") && password.equals(smad);
+    }
+
+    public String myCaptcha(){
+        Integer num1, num2, oper, resultado=null;
+        Random rnd = new Random();
+        num1 = rnd.nextInt(10)+1;
+        rnd = new Random();
+        num2 = rnd.nextInt(10)+1;
+        rnd = new Random();
+        oper = rnd.nextInt(2);
+        return num1+" "+(oper == 0 ? "+":"-")+" "+num2;
+
     }
 }

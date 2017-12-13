@@ -10,8 +10,7 @@
 <ui:composition>
 
     <p:dialog id="PedidoViewDlg" widgetVar="PedidoViewDialog" modal="true" resizable="false"
-              width="50%" appendTo="@(body)"
-              header="#{bundle.ViewPedidoTitle}">
+              width="50%" appendTo="@(body)" header="#{bundle.ViewPedidoTitle}">
         <h:form id="PedidoViewForm">
             <h:panelGroup id="display">
                 <p:panelGrid columns="4" rendered="#{mbPedido.selected != null}">
@@ -31,7 +30,8 @@
         <p:panel header="Lista de Pedidos">
             <p:dataTable id="datalist" value="#{mbPedido.getItensPedido(mbPedido.selected.id)}" var="itempedido"
                          selectionMode="single" selection="#{mbPedido.selected}"
-                         paginator="true"
+                         emptyMessage="Nenhum registro encontrado"
+                         paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
                          rowKey="#{itempedido.id}"
                          rows="10"
                          rowsPerPageTemplate="10,20,30,40,50">

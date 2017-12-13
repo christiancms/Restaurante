@@ -116,3 +116,9 @@ VALUES
 ('Pedido',3,'FATURADO',1),
 ('Pedido',4,'PENDENTE',1),
 ('Pedido',5,'PRONTO',1);
+
+
+
+DROP INDEX codigo_barras ON restaurante.produto;
+ALTER TABLE restaurante.configuracao ADD token VARCHAR(50) NULL;
+ALTER TABLE restaurante.configuracao ADD serverkey VARCHAR(500) NULL;

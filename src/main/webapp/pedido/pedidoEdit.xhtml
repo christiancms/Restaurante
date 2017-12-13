@@ -8,20 +8,70 @@
 
     <ui:composition>
 
-        <p:dialog id="PedidoEditDlg" widgetVar="PedidoEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditPedidoTitle}">
+        <p:dialog id="PedidoEditDlg" widgetVar="PedidoEditDialog" modal="true" resizable="false"
+                  width="50%" appendTo="@(body)" header="#{bundle.EditPedidoTitle}">
             <h:form id="PedidoEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{mbPedido.selected != null}">
+                    <p:panelGrid columns="4" rendered="#{mbPedido.selected != null}">
                         <p:outputLabel value="#{bundle.EditPedidoLabel_id}" for="id" />
                         <p:inputText id="id" value="#{mbPedido.selected.id}" title="#{bundle.EditPedidoTitle_id}" required="true" requiredMessage="#{bundle.EditPedidoRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditPedidoLabel_mesa}" for="mesa" />
                         <p:inputText id="mesa" value="#{mbPedido.selected.mesa}" title="#{bundle.EditPedidoTitle_mesa}" />
                         <p:outputLabel value="#{bundle.EditPedidoLabel_garcom}" for="garcom" />
                         <p:inputText id="garcom" value="#{mbPedido.selected.colaborador.nome}" title="#{bundle.EditPedidoTitle_garcom}" />
+                        <h:outputText value="Total (R$)" />
+                        <p:inputText value="#{mbPedido.selected.totalPedido}" title="Total (R$)" readonly="true">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </p:inputText>
+                        <h:outputText value="Status Pedido" for="cmbStatus"/>
+                        <p:selectOneMenu id="cmbStatus">
+                            <f:selectItem itemLabel="Selecione" itemValue="#{mbPedido.statusPed}" noSelectionOption="true"/>
+                            <f:selectItems value="#{mbPedido.statusPedido}" />
+                        </p:selectOneMenu>
+
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{mbPedido.update}" value="#{bundle.Save}" update="display,:PedidoListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PedidoEditDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="PedidoEditDialog.hide()"/>
+
                 </h:panelGroup>
+
+                <p:panel header="Lista de Pedidos">
+                    <p:dataTable id="datalist" value="#{mbPedido.getItensPedido(mbPedido.selected.id)}" var="itempedido"
+                                 selectionMode="single" selection="#{mbPedido.selected}"
+                                 emptyMessage="Nenhum registro encontrado"
+                                 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                                 rowKey="#{itempedido.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPedidoTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{itempedido.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Quantidade" />
+                            </f:facet>
+                            <h:outputText value="#{itempedido.quantidade}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Produto" />
+                            </f:facet>
+                            <h:outputText value="#{itempedido.produto.descricao}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Valor (R$)" />
+                            </f:facet>
+                            <h:outputText value="#{itempedido.produto.precoVenda}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
             </h:form>
         </p:dialog>
 

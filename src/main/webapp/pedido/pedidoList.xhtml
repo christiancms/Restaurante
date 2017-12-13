@@ -18,7 +18,9 @@
             <p:panel header="Lista de Pedidos">
                 <p:dataTable id="datalist" value="#{mbPedido.getItems(false)}" var="item"
                              selectionMode="single" selection="#{mbPedido.selected}"
-                             paginator="true" style="" rowKey="#{item.id}"
+                             emptyMessage="Nenhum registro encontrado"
+                             paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                             style="" rowKey="#{item.id}"
                              rows="10" rowsPerPageTemplate="10,20,30,40,50">
 
                     <p:ajax event="rowSelect" update="createButton viewButton editButton deleteButton"/>
