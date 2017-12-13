@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MesaViewDlg" widgetVar="MesaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewMesaTitle}">
+            <h:form id="MesaViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{mbMesa.selected != null}">
+                        <h:outputText value="#{bundle.ViewMesaLabel_id}"/>
+                        <h:outputText value="#{mbMesa.selected.id}" title="#{bundle.ViewMesaTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewMesaLabel_descricao}"/>
+                        <h:outputText value="#{mbMesa.selected.descricao}" title="#{bundle.ViewMesaTitle_descricao}"/>
+                        <h:outputText value="#{bundle.ViewMesaLabel_livre}"/>
+                        <h:outputText value="#{mbMesa.selected.livre ? 'Sim':'Não'}" title="#{bundle.ViewMesaTitle_livre}"/>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

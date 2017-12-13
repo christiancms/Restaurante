@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MesaCreateDlg" widgetVar="MesaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateMesaTitle}">
+            <h:form id="MesaCreateForm">
+            <p:tabView>
+                <p:tab title="Geral">
+
+                        <h:panelGroup id="display">
+                            <p:panelGrid columns="2" rendered="#{mbMesa.selected != null}">
+                                <p:outputLabel value="#{bundle.CreateMesaLabel_id}" for="id" />
+                                <p:inputText id="id" value="#{mbMesa.selected.id}" title="#{bundle.CreateMesaTitle_id}"
+                                             disabled="true" requiredMessage="#{bundle.CreateMesaRequiredMessage_id}"/>
+                                <p:outputLabel value="#{bundle.CreateMesaLabel_descricao}" for="descricao" />
+                                <p:inputText id="descricao" value="#{mbMesa.selected.descricao}" title="#{bundle.CreateMesaTitle_descricao}"
+                                             required="#{empty !mbMesa.quantidade}" requiredMessage="#{bundle.CreateMesaRequiredMessage_descricao}"/>
+                            </p:panelGrid>
+                            <p:commandButton actionListener="#{mbMesa.create}" value="#{bundle.Save}" update="display,:MesaListForm:datalist,:growl" oncomplete="handleSubmit(args,'MesaCreateDialog');"/>
+                            <p:commandButton value="#{bundle.Cancel}" onclick="MesaCreateDialog.hide()"/>
+                        </h:panelGroup>
+
+
+                </p:tab>
+                <p:tab title="Em Série">
+                    <h:panelGroup id="display2">
+                        <p:panelGrid columns="2" rendered="#{mbMesa.selected != null}">
+                            <p:outputLabel value="Quantidade" for="txtQuantidade" />
+                            <p:inputText id="txtQuantidade" value="#{mbMesa.quantidade}" title=""/>
+                            <p:outputLabel value="Nº Inicial" for="txtNrInicial" />
+                            <p:inputText id="txtNrInicial" value="#{mbMesa.nrInicial}" title="txtNrInicial"/>
+                        </p:panelGrid>
+                        <p:commandButton actionListener="#{mbMesa.create}" value="#{bundle.Save}" update="display2,:MesaListForm:datalist,:growl" oncomplete="handleSubmit(args,'MesaCreateDialog');"/>
+                        <p:commandButton value="#{bundle.Cancel}" onclick="MesaCreateDialog.hide()"/>
+                    </h:panelGroup>
+                </p:tab>
+            </p:tabView>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
