@@ -1,6 +1,7 @@
 package br.com.ezzysoft.restaurante.ws.service;
 
 import br.com.ezzysoft.restaurante.entidade.Usuario;
+import br.com.ezzysoft.restaurante.facade.AbstractFacade;
 import br.com.ezzysoft.restaurante.ws.UsuarioTransporter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

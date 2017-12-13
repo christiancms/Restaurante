@@ -1,6 +1,7 @@
 package br.com.ezzysoft.restaurante.ws.service;
 
 import br.com.ezzysoft.restaurante.entidade.Colaborador;
+import br.com.ezzysoft.restaurante.facade.AbstractFacade;
 import br.com.ezzysoft.restaurante.ws.ColaboradorTransporter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("/colaborador")
-public class ColaboradorService extends AbstractFacade<Colaborador>{
+public class ColaboradorService extends AbstractFacade<Colaborador> {
 
 @PersistenceContext(unitName = "EzzysoftPU")    
 private EntityManager em;

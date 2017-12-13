@@ -1,6 +1,8 @@
 package br.com.ezzysoft.restaurante.ws.service;
 
 import br.com.ezzysoft.restaurante.entidade.ItemPedido;
+import br.com.ezzysoft.restaurante.facade.AbstractFacade;
+
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -21,7 +23,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("/itenspedido")
-public class ItenspedidoService extends AbstractFacade<ItemPedido>{
+public class ItenspedidoService extends AbstractFacade<ItemPedido> {
  
     @PersistenceContext(unitName = "EzzysoftPU")
     private EntityManager em;

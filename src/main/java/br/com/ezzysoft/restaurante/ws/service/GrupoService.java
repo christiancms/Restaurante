@@ -1,6 +1,7 @@
 package br.com.ezzysoft.restaurante.ws.service;
 
 import br.com.ezzysoft.restaurante.entidade.Grupo;
+import br.com.ezzysoft.restaurante.facade.AbstractFacade;
 import br.com.ezzysoft.restaurante.facade.GrupoFacade;
 import br.com.ezzysoft.restaurante.ws.GrupoTransporter;
 import com.fasterxml.jackson.core.JsonProcessingException;
