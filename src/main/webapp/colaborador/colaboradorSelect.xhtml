@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <link rel="icon" type="image/x-icon" href="resources/images/logo-web.png"/>
+</h:head>
+<h:body>
+    <h:form>
+        <div style="margin-top: 5px; margin-bottom: 20px">
+            <p:inputText id="hdId" value="#{mbGarcomSelect.id}" type="hidden"/>
+            <p:inputText id="nome" size="40" value="#{mbGarcomSelect.nome}" placeholder="Nome do garçom"/>
+            <p:spacer width="10px"/>
+            <p:commandButton value="Pesquisar" action="#{mbGarcomSelect.pesquisar}" update="@form"/>
+        </div>
+        <p:dataTable value="#{mbGarcomSelect.garconsFiltrados}" var="garcom"
+                     emptyMessage="Nenhum garçom encontrado" rows="10"
+                     paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+            <p:column headerText="Código" style="width: 105px">
+                <h:outputText value="#{garcom.id}"/>
+            </p:column>
+            <p:column headerText="Descrição">
+                <h:outputText value="#{garcom.nome}"/>
+            </p:column>
+            <p:column style="width: 30px; text-align: center">
+                <p:commandButton icon="ui-icon-check" title="Selecionar"
+                                 action="#{mbGarcomSelect.selecionar(garcom)}"
+                                 process="@this"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>

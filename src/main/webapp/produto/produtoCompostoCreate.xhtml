@@ -22,15 +22,15 @@
                             <p:outputLabel value="Cardápio" for="cardapio"/>
                             <p:selectBooleanCheckbox value="#{mbProdutoComposto.selected.cardapio}" id="cardapio"/>
                             <p:outputLabel value="#{bundle.CreateProdutoLabel_id}" for="id"/>
-                            <p:inputText id="id" value="#{mbProdutoComposto.selected.id}" required="false" disabled="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_id}"/>
+                            <p:inputText id="id" value="#{mbProdutoComposto.selected.id}" disabled="true"/>
                             <p:outputLabel value="#{bundle.CreateProdutoLabel_descricao}" for="descricao"/>
-                            <p:inputText id="descricao" value="#{mbProdutoComposto.selected.descricao}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_descricao}"/>
+                            <p:inputText id="descricao" value="#{mbProdutoComposto.selected.descricao}"/>
                             <p:outputLabel value="#{bundle.CreateProdutoLabel_precoCompra}" for="precoCompra"/>
                             <p:inputText id="precoCompra" value="#{mbProdutoComposto.selected.precoCompra}" disabled="true">
                                 <f:convertNumber pattern="#0.00" locale="pt_BR"/>
                             </p:inputText>
                             <h:outputText value="Margem de lucro" for="txtMargemLuc"/>
-                            <p:inputText id="txtMargemLuc" value="#{mbProdutoComposto.selected.percLucro}" name="txtMargemLuc">
+                            <p:inputText id="txtMargemLuc" value="#{mbProdutoComposto.selected.percLucro}" readonly="true" name="txtMargemLuc">
                                 <f:convertNumber pattern="#0.00" locale="pt_BR"/>
                                 <p:ajax event="blur" update="precoVenda"/>
                             </p:inputText>
@@ -39,64 +39,64 @@
                                 <f:convertNumber pattern="#0.00" locale="pt_BR"/>
                             </p:inputText>
                             <p:outputLabel value="#{bundle.CreateProdutoLabel_dataCadastro}" for="dataCadastro"/>
-                            <p:calendar id="dataCadastro" pattern="dd/MM/yyyy" value="#{mbProdutoComposto.selected.dataCadastro}" mask="99/99/9999" mindate="today"
-                                        required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_dataCadastro}" showOn="button"/>
+                            <p:calendar id="dataCadastro" pattern="dd/MM/yyyy" value="#{mbProdutoComposto.selected.dataCadastro}" readonly="true" mask="99/99/9999" mindate="today"
+                                        showOn="button"/>
                             <p:outputLabel value="Grupo:" for="grupoId"/>
-                            <p:selectOneMenu id="grupoId" value="#{mbProdutoComposto.selected.grupo.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">
+                            <p:selectOneMenu id="grupoId" value="#{mbProdutoComposto.selected.grupo.id}" disabled="true">
                                 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
                                 <f:selectItems value="#{mbProdutoComposto.grupos}" var="grupoIdItem" itemValue="#{grupoIdItem}"/>
                             </p:selectOneMenu>
                             <p:outputLabel value="Marca:" for="marcaId"/>
-                            <p:selectOneMenu id="marcaId" value="#{mbProdutoComposto.selected.marca.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_marcaId}">
+                            <p:selectOneMenu id="marcaId" value="#{mbProdutoComposto.selected.marca.id}" disabled="true">
                                 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
                                 <f:selectItems value="#{mbProdutoComposto.marcas}" var="marcaIdItem" itemValue="#{marcaIdItem}"/>
                             </p:selectOneMenu>
                             <p:outputLabel value="Unidade:" for="unidadeId"/>
-                            <p:selectOneMenu id="unidadeId" value="#{mbProdutoComposto.selected.unidade.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_unidadeId}">
+                            <p:selectOneMenu id="unidadeId" value="#{mbProdutoComposto.selected.unidade.id}" disabled="true">
                                 <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
                                 <f:selectItems value="#{mbProdutoComposto.unidades}" var="unidadeIdItem" itemValue="#{unidadeIdItem}"/>
                             </p:selectOneMenu>
                         </p:panelGrid>
                         <p:commandButton actionListener="#{mbProdutoComposto.create}" value="#{bundle.Save}"
                                          update="display,:ProdutoCListForm:datalist,:growl" oncomplete="handleSubmit(args,'ProdutoCCreateDialog');"/>
-                        <p:commandButton value="#{bundle.Cancel}" onclick="ProdutoCCreateDialog.hide()"/>
                         <p:inputText type="hidden" id="hdProduto" value="#{mbProdutoComposto.selected.versao}"/>
                     </h:panelGroup>
                 </p:tab>
                 <p:tab title="Itens">
                     <p:panelGrid columns="2" rendered="true">
-                        <p:outputLabel value="Código" for="idItem"/>
-                        <p:inputText id="idItem" value="#{mbProdutoComposto.selectedIProd.id}" required="false"
-                                     disabled="true"/>
                         <p:outputLabel value="Código Composto" for="idProdComposto"/>
-                        <p:inputText id="idProdComposto" value="#{mbProdutoComposto.selectedIProd.idProdutoComposto}"
-                                     required="true" disabled="true"/>
-
-                        <p:outputLabel value="Código Produto Item" for="idProdItem"/>
                         <h:panelGroup>
-                            <p:inputText id="idProdItem" value="#{mbProdutoComposto.selectedIProd.produto.id}"
-                                         required="true" disabled="false"/>
+                        <p:inputText id="idProdComposto" value="#{mbProdutoComposto.selectedIProd.idProdutoComposto}" disabled="true" size="5"/>
+                        <p:inputText id="idItem" value="#{mbProdutoComposto.selectedIProd.id}" type="hidden"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="Código Produto" for="idProdItem"/>
+                        <h:panelGroup>
+                            <p:inputText id="idProdItem" value="#{mbProdutoComposto.selectedIProd.produto.id}" disabled="false" size="5"/>
+                            <p:inputText id="descProdItem" value="#{mbProdutoComposto.selectedIProd.produto.descricao}" disabled="false"/>
                             <p:commandButton icon="ui-icon-search" title="Pesquisa"
                                              action="#{mbProdutoSelect.abrirDialogo}" process="@this" update="@none">
-                                <p:ajax event="dialogReturn" listener="#{mbProdutoComposto.produtoSelecionado}"
-                                        process="@this" update="idProdItem"/>
-                                <p:resetInput target="idProdItem"/>
+                                <p:ajax event="dialogReturn" listener="#{mbProdutoComposto.produtoSelecionado}" process="@this"
+                                        update="idProdItem,descProdItem, tabelaItens"/>
                             </p:commandButton>
                         </h:panelGroup>
                         <p:outputLabel value="Quantidade" for="qtde"/>
-                        <p:inputText id="qtde" value="#{mbProdutoComposto.selectedIProd.quantidade}" required="true"
-                                     disabled="true"/>
+                        <p:inputText id="qtde" value="#{mbProdutoComposto.selectedIProd.quantidade}" size="5" required="true"/>
                     </p:panelGrid>
+                    <p:commandButton actionListener="#{mbProdutoComposto.createItem}" value="Salvar" update="tabelaItens, display"/>
                     <p:panel header="Lista de Itens do Produto">
-                        <p:dataTable id="datalist"
+                        <p:dataTable id="tabelaItens"
                                      value="#{mbProdutoComposto.getItensProduto(mbProdutoComposto.selected.id)}"
                                      var="itemproduto" selectionMode="single" selection="#{mbProdutoComposto.selected}"
                                      paginator="true"
                                      rowKey="#{itemproduto.id}"
                                      rows="10"
+                                     rowIndexVar="index"
                                      rowsPerPageTemplate="10,20,30,40,50">
+                            <p:column headerText="Código" width="30px">
+                                <h:outputText value="#{index+1}"/>
+                            </p:column>
                             <p:column headerText="#{bundle.ListPedidoTitle_id}">
-                                <h:outputText value="#{itemproduto.id}"/>
+                                <h:outputText value="#{itemproduto.produto.id}"/>
                             </p:column>
                             <p:column headerText="Quantidade">
                                 <h:outputText value="#{itemproduto.quantidade}">
@@ -105,6 +105,12 @@
                             </p:column>
                             <p:column headerText="Produto">
                                 <h:outputText value="#{itemproduto.produto.descricao}"/>
+                            </p:column>
+                            <p:column width="20px">
+                                <p:commandButton icon="ui-icon-trash" title="Remover"
+                                                 action="#{mbProdutoComposto.remove(itemproduto.id)}"
+                                                 update="tabelaItens"
+                                                 process="@this" />
                             </p:column>
                         </p:dataTable>
                     </p:panel>

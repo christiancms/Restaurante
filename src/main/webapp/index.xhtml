@@ -8,11 +8,20 @@
 
 <ui:composition template="/template.xhtml">
     <ui:define name="body">
-        <h:panelGroup >
+        <h:panelGroup>
             <h1> Bem vindo ao EzzySoft</h1>
             <h:outputText value="#{mbLogin.sessionUser.username}" style="text-transform: capitalize"/>
         </h:panelGroup><br/>
-        <h:outputText value="Browser: #{mbConfig.browserName}" />
+        <h:outputText value="Browser: #{mbConfig.browserName}"/>
+
+        <p:fieldset legend="Monitoramento">
+            <h:panelGrid columns="2">
+
+                <p:chart type="metergauge" model="#{mbGrafico.meterGaugeModel2}" style="width:500px;height:400px"/>
+                <p:chart type="pie" model="#{mbGrafico.pieModel2}" style="width:500px;height:400px"/>
+
+            </h:panelGrid>
+        </p:fieldset>
     </ui:define>
 </ui:composition>
 </html>

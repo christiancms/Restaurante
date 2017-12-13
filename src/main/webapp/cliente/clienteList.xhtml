@@ -16,19 +16,7 @@
     <f:ajax event="load" listener="#{mbCliente.init}"/>
     <ui:define name="body">
         <h:form id="ClienteListForm">
-            <p:panelGrid columns="2">
-                <p:outputLabel value="Cliente" for="cliente"/>
-                <h:panelGroup>
-                    <p:inputText id="clienteId" value="#{mbCliente.selected.id}" style="width: 50px"/>
-                    <p:inputText id="cliente" value="#{mbCliente.selected.nome}" readonly="true"/>
-                    <p:commandButton icon="ui-icon-search" title="Pesquisa" action="#{mbClienteSelect.abrirDialogo}"
-                                     process="@this" update="@none">
-                        <p:ajax event="dialogReturn" listener="#{mbCliente.clienteSelecionado}" process="@this"
-                                update="cliente, clienteId"/>
-                        <p:resetInput target="cliente"/>
-                    </p:commandButton>
-                </h:panelGroup>
-            </p:panelGrid>
+
             <p:panel header="Lista de Clientes">
                 <p:dataTable id="datalist" value="#{mbCliente.items}" var="item"
                              selectionMode="single" selection="#{mbCliente.selected}"

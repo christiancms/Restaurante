@@ -12,6 +12,10 @@
             <h:form id="ProdutoViewForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{mbProduto.selected != null}">
+                        <p:outputLabel value="Produto Composto" for="composto"/>
+                        <p:selectBooleanCheckbox value="#{mbProduto.selected.composto}" id="composto" disabled="true"/>
+                        <p:outputLabel value="Cardápio" for="cardapio"/>
+                        <p:selectBooleanCheckbox value="#{mbProduto.selected.cardapio}" id="cardapio" disabled="true"/>
                         <h:outputText value="#{bundle.ViewProdutoLabel_id}" style="font-weight: bold"/>
                         <h:outputText value="#{mbProduto.selected.id}" title="Id"/>
                         <h:outputText value="#{bundle.ViewProdutoLabel_descricao}" style="font-weight: bold"/>

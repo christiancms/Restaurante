@@ -22,12 +22,19 @@
         <p:growl id="growl" life="3000"/>
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="false">
+            <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="false" style="overflow:hidden !important">
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:graphicImage value="/resources/images/logo-web.png" style="width: 10%; height: 10%"/>
+                        <p:graphicImage value="/resources/images/logo-web.png" style="width: 7%; height: 7%"/>
                         <p:spacer/>
                         <h:outputText value="EzzySoft - Controle de pedidos para restaurantes." style="font-size: x-large"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="center">
+                        <p:commandButton icon="fa fa fa-android" title="Android" style="background: aliceblue"/>
+                        <p:commandButton icon="fa fa-facebook-official" title="Facebook" style="background: aliceblue"/>
+                        <p:commandButton icon="fa fa-instagram" title="Instagram" style="background: aliceblue"/>
+                        <p:commandButton icon="fa fa-twitter-square" title="Twitter" style="background: aliceblue"/>
+                        <p:commandButton icon="fa fa-whatsapp" title="Whatsapp" style="background: aliceblue"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <h:outputText value="#{mbLogin.sessionUser.username}"/>
@@ -44,43 +51,39 @@
 
             <p:layoutUnit position="west" size="220" header="Ocultar" collapsible="true">
                 <p:menu toggleable="true">
-                    <p:menuitem value="EzzySoft" outcome="/index" icon="fa fa-home"/>
+                    <p:menuitem value="&#160; EzzySoft" outcome="/index" icon="fa fa-home"/>
                     <p:submenu label="Cadastro" expanded="false">
-                        <p:menuitem value=" Cliente" outcome="/cliente/clienteList" icon="fa fa-user"/>
-                        <p:menuitem value=" Colaborador" outcome="/colaborador/colaboradorList" icon="fa fa-user-plus"/>
-                        <p:menuitem value=" Grupo" outcome="/grupo/grupoList" icon="fa fa-group"/>
-                        <p:menuitem value=" Marca" outcome="/marca/marcaList" icon="fa fa-cutlery"/>
-                        <p:menuitem value=" Produto" outcome="/produto/produtoList" icon="fa fa-cutlery"/>
-                        <p:menuitem value=" Produto Composto" outcome="/produto/produtoCompostoList" icon="fa fa-cutlery"/>
-                        <p:menuitem value=" Unidade" outcome="/unidade/unidadeList" icon="fa fa-cutlery"/>
+                        <p:menuitem value="&#160; Cliente" outcome="/cliente/clienteList" icon="fa fa-user"/>
+                        <p:menuitem value="&#160; Colaborador" outcome="/colaborador/colaboradorList" icon="fa fa-user-plus"/>
+                        <p:menuitem value="&#160; Grupo" outcome="/grupo/grupoList" icon="fa fa-group"/>
+                        <p:menuitem value="&#160; Marca" outcome="/marca/marcaList" icon="fa fa-cutlery"/>
+                        <p:menuitem value="&#160; Mesa" outcome="/mesa/mesaList" icon="fa fa-cutlery"/>
+                        <p:menuitem value="&#160; Produto" outcome="/produto/produtoList" icon="fa fa-cutlery"/>
+                        <p:menuitem value="&#160; Produto Composto" outcome="/produto/produtoCompostoList" icon="fa fa-cutlery"/>
+                        <p:menuitem value="&#160; Unidade" outcome="/unidade/unidadeList" icon="fa fa-cutlery"/>
                     </p:submenu>
                     <p:submenu label="Caixa" expanded="false">
-                        <p:menuitem value=" PDV" outcome="/caixaFilter" icon="fa fa-cutlery"/>
+                        <p:menuitem value="&#160; PDV" outcome="/caixaFilter" icon="fa fa-money"/>
                     </p:submenu>
                     <p:submenu label="Config" expanded="false">
-                        <p:menuitem value=" Configuração" outcome="/config/configList" icon="fa fa-android"/>
-                        <p:menuitem value=" Empresa" outcome="/empresa/empresaList" icon="fa fa-institution"/>
+                        <p:menuitem value="&#160; Configuração" outcome="/config/configList" icon="fa fa-wrench"/>
+                        <p:menuitem value="&#160; Empresa" outcome="/empresa/empresaList" icon="fa fa-institution"/>
                     </p:submenu>
                     <p:submenu label="Financeiro" expanded="false">
-                        <p:menuitem value=" Lançamento" outcome="/grafico" icon="fa fa-pie-chart"/>
+                        <p:menuitem value="&#160; Lançamento" outcome="/grafico" icon="fa fa-dollar"/>
                     </p:submenu>
                     <p:submenu label="Gráfico" expanded="false">
-                        <p:menuitem value=" Produto" outcome="/grafico" icon="fa fa-pie-chart"/>
-                        <p:menuitem value=" Vendas" outcome="/graficoVendas" icon="fa fa-pie-chart"/>
+                        <p:menuitem value="&#160; Produtos" outcome="/grafico" icon="fa fa-pie-chart"/>
+                        <p:menuitem value="&#160; Vendas" outcome="/graficoVendas" icon="fa fa-pie-chart"/>
                     </p:submenu>
                     <p:submenu label="Pedido" expanded="false">
-                        <p:menuitem value=" Cardápio" outcome="/cardapio/mobi" icon="fa fa-shopping-cart"/>
-                        <p:menuitem value=" Visualizar" outcome="/pedido/pedidoList" icon="fa fa-shopping-cart"/>
+                        <p:menuitem value="&#160; Cardápio" outcome="/cardapio/mobi" icon="fa fa-shopping-cart"/>
+                        <p:menuitem value="&#160; Visualizar" outcome="/pedido/pedidoList" icon="fa fa-shopping-cart"/>
                     </p:submenu>
                     <p:submenu label="Relatório" expanded="false">
-                        <p:menuitem value=" Produtos" outcome="/produto/produtoReport" icon="fa fa-line-chart"/>
-                        <p:menuitem value=" Vendas" outcome="/pedido/pedidoReport" icon="fa fa-line-chart"/>
+                        <p:menuitem value="&#160; Produtos" outcome="/produto/produtoReport" icon="fa fa-line-chart"/>
+                        <p:menuitem value="&#160; Vendas" outcome="/pedido/pedidoReport" icon="fa fa-line-chart"/>
                     </p:submenu>
-                    <p:submenu label="Testes" expanded="false">
-                        <p:menuitem value=" Cliente Diálogo" outcome="/cliente/clienteSelect"/>
-                        <p:menuitem value=" Produto Diálogo" outcome="/produto/produtoSelect"/>
-                    </p:submenu>
-
                 </p:menu>
             </p:layoutUnit>
 

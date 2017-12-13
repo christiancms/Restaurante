@@ -19,7 +19,7 @@
         <!--</f:metadata>-->
         <h:form id="ProdutoCListForm">
 
-            <p:panel header="Lista de Produtos">
+            <p:panel header="Lista de Produtos Compostos">
 
                 <p:dataTable id="datalist" value="#{mbProdutoComposto.items}" var="item"
                              selectionMode="single" selection="#{mbProdutoComposto.selected}"
@@ -77,9 +77,10 @@
                         <h:outputText value="#{item.unidade.sigla}"/>
                     </p:column>
                     <f:facet name="footer">
-                        <p:commandButton id="createButton" icon="ui-icon-plus" value="#{bundle.Create}"
+                        <p:commandButton id="createButton" icon="ui-icon-plus" value="Add Itens"
                                          rendered="#{mbUsuario.selected.gerente || mbUsuario.selected.adm}"
-                                         actionListener="#{mbProdutoComposto.prepareCreate}"
+                                         actionListener="#{mbProdutoComposto.prepareItem}"
+                                         disabled="#{empty mbProdutoComposto.selected}"
                                          update=":ProdutoCCreateForm" oncomplete="PF('ProdutoCCreateDialog').show()"/>
                         <p:commandButton id="viewButton" icon="ui-icon-search" value="#{bundle.View}"
                                          update=":ProdutoCViewForm" oncomplete="PF('ProdutoCViewDialog').show()"

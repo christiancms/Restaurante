@@ -14,6 +14,8 @@
                 <p:panelGrid columns="2" rendered="#{mbProduto.selected != null}">
                     <p:outputLabel value="Produto Composto" for="composto"/>
                     <p:selectBooleanCheckbox value="#{mbProduto.selected.composto}" id="composto"/>
+                    <p:outputLabel value="Cardápio" for="cardapio"/>
+                    <p:selectBooleanCheckbox value="#{mbProduto.selected.cardapio}" id="cardapio"/>
                     <p:outputLabel value="SKU" for="id"/>
                     <p:inputText id="id" value="#{mbProduto.selected.id}" disabled="false" requiredMessage="#{bundle.CreateProdutoRequiredMessage_id}">
                         <p:ajax event="blur" listener="#{mbProduto.onBlur}" update="display"/>
@@ -21,9 +23,9 @@
                     <p:outputLabel value="#{bundle.CreateProdutoLabel_descricao}" for="descricao"/>
                     <p:inputText id="descricao" value="#{mbProduto.selected.descricao}" maxlength="50" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_descricao}"/>
                     <p:outputLabel value="Cód de Barras" for="codbarras"/>
-                    <p:inputText id="codbarras" value="#{mbProduto.selected.codigoBarras}" required="#{!mbProduto.selected.composto}" type="number" maxlength="13" requiredMessage="Cód. Barras Campo obrigatório"/>
+                    <p:inputText id="codbarras" value="#{mbProduto.selected.codigoBarras}" required="#{mbProduto.selected.composto}" type="number" maxlength="13" requiredMessage="Cód. Barras Campo obrigatório"/>
                     <p:outputLabel value="#{bundle.CreateProdutoLabel_precoCompra}" for="precoCompra"/>
-                    <p:inputText id="precoCompra" value="#{mbProduto.selected.precoCompra}" onblur="this.value = this.value.replace(',','.')" required="true" name="txtPrecoCompra"
+                    <p:inputText id="precoCompra" value="#{mbProduto.selected.precoCompra}" onblur="this.value = this.value.replace(',','.')" required="#{mbProduto.selected.composto}" name="txtPrecoCompra"
                                  requiredMessage="#{bundle.CreateProdutoRequiredMessage_precoCompra}"/>
                     <h:outputText value="Margem de lucro" for="txtMargemLuc"/>
                     <p:inputText id="txtMargemLuc" value="#{mbProduto.selected.percLucro}" name="txtMargemLuc">

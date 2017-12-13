@@ -11,15 +11,15 @@
         <p:dialog id="PedidoEditDlg" widgetVar="PedidoEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditPedidoTitle}">
             <h:form id="PedidoEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{pedidoController.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbPedido.selected != null}">
                         <p:outputLabel value="#{bundle.EditPedidoLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{pedidoController.selected.id}" title="#{bundle.EditPedidoTitle_id}" required="true" requiredMessage="#{bundle.EditPedidoRequiredMessage_id}"/>
+                        <p:inputText id="id" value="#{mbPedido.selected.id}" title="#{bundle.EditPedidoTitle_id}" required="true" requiredMessage="#{bundle.EditPedidoRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditPedidoLabel_mesa}" for="mesa" />
-                        <p:inputText id="mesa" value="#{pedidoController.selected.mesa}" title="#{bundle.EditPedidoTitle_mesa}" />
+                        <p:inputText id="mesa" value="#{mbPedido.selected.mesa}" title="#{bundle.EditPedidoTitle_mesa}" />
                         <p:outputLabel value="#{bundle.EditPedidoLabel_garcom}" for="garcom" />
-                        <p:inputText id="garcom" value="#{pedidoController.selected.garcom}" title="#{bundle.EditPedidoTitle_garcom}" />
+                        <p:inputText id="garcom" value="#{mbPedido.selected.colaborador.nome}" title="#{bundle.EditPedidoTitle_garcom}" />
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{pedidoController.update}" value="#{bundle.Save}" update="display,:PedidoListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PedidoEditDialog');"/>
+                    <p:commandButton actionListener="#{mbPedido.update}" value="#{bundle.Save}" update="display,:PedidoListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PedidoEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="PedidoEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

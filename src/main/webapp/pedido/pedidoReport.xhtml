@@ -6,79 +6,476 @@
 
 <ui:composition template="/template.xhtml">
 
-<ui:define name="title">
-    <h:outputText value="Relatório de Vendas"/>
-</ui:define>
+    <ui:define name="title">
+        <h:outputText value="Relatório de Vendas"/>
+    </ui:define>
 
-<ui:define name="body">
-<h:form>
-    <p:dataTable id="tbl" var="item" value="#{mbPedido.getItems(true)}" widgetVar="vendasTable"
-                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-                 paginator="true" rows="30" style="margin-bottom:20px">
+    <ui:define name="body">
+        <h:form>
+            <p:tabView>
+                <p:tab title="Geral">
+                    <p:commandButton value="Impressão" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="tbl1" />
+                    </p:commandButton>
+                    <p:dataTable id="tbl1" var="item" value="#{mbPedido.getItems(true)}" widgetVar="vendasTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 emptyMessage="Nenhum registro encontrado"
+                                 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                                 rows="30" style="margin-bottom:20px">
 
-        <f:facet name="{Exporters}">
-            <h:commandLink>
-                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
-                <p:dataExporter type="pdf" target="tbl" fileName="vendas" encoding="iso-8859-1"
-                                preProcessor="#{mbPedido.preProcessPDF}"/>
-            </h:commandLink>
-        </f:facet>
-        <p:column style="width: 90px" filterBy="#{item.id}" filterMatchMode="contains">
-            <f:facet name="header">
-                <h:outputText value="Código" />
-            </f:facet>
-            <h:outputText value="#{item.id}" />
-        </p:column>
-        <p:column style="width: 100px" filterBy="#{item.mesa}" filterMatchMode="contains">
-            <f:facet name="header">
-                <h:outputText value="Mesa" />
-            </f:facet>
-            <h:outputText value="#{item.mesa}" />
-        </p:column>
-        <p:column style="width: 100px" filterBy="#{item.colaborador.nome}" filterMatchMode="exact">
-            <f:facet name="filter">
-                <p:selectOneMenu onchange="PF('vendasTable').filter()" >
-                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
-                    <f:selectItems value="#{mbPedido.garcons}" />
-                </p:selectOneMenu>
-            </f:facet>
-            <h:outputText value="#{item.colaborador.nome}" />
-        </p:column>
-        <p:column style="width: 100px">
-            <f:facet name="header">
-                <h:outputText value="Data" />
-            </f:facet>
-            <h:outputText value="#{item.dataPedido}" >
-                <f:convertDateTime pattern="dd/MM/yyyy" />
-            </h:outputText>
-        </p:column>
-        <p:column style="width: 105px;" filterBy="#{item.status.opcao}" filterMatchMode="exact">
-            <f:facet name="filter">
-                <p:selectOneMenu onchange="PF('vendasTable').filter()" >
-                    <f:selectItem itemLabel="Selecione" itemValue="#{item.status.opcao}" noSelectionOption="true" />
-                    <f:selectItems value="#{mbPedido.statusPedido}" />
-                </p:selectOneMenu>
-            </f:facet>
-            <h:outputText value="#{item.status.opcao}"/>
-        </p:column>
-        <p:column style="width: 90px">
-            <f:facet name="header">
-                <h:outputText value="V.Venda" />
-            </f:facet>
-            <h:outputText value="#{item.totalPedido}" >
-                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
-            </h:outputText>
-        </p:column>
-        <p:columnGroup type="footer">
-            <p:row>
-                <p:column colspan="2" style="text-align:right" footerText="Totais:" />
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="tbl1" fileName="vendasTotal" encoding="iso-8859-1"
+                                                preProcessor="#{mbPedido.preProcessPDF}"/>
+                            </h:commandLink>
+                        </f:facet>
+                        <p:column style="width: 90px">
+                            <f:facet name="header">
+                                <h:outputText value="Código"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Mesa"/>
+                            </f:facet>
+                            <h:outputText value="#{item.mesa}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Garçom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.colaborador.nome}"/>
+                        </p:column>
+                        <p:column style="width: 100px">
+                            <f:facet name="header">
+                                <h:outputText value="Data"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dataPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 105px;" >
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status.opcao}"/>
+                        </p:column>
+                        <p:column style="width: 90px;text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="V.Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{item.totalPedido}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" style="text-align:right" footerText="Total:"/>
+                                <p:column id="somaTotal" footerText="R$ #{mbPedido.getItems(true).stream().map(item->item.totalPedido).sum()}"/>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Aprovado">
+                    <p:commandButton value="Impressão" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="tbl2" />
+                    </p:commandButton>
+                    <p:dataTable id="tbl2" var="aprovado" value="#{mbPedido.porStatus('APROVADO')}" widgetVar="vendasTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 emptyMessage="Nenhum registro encontrado"
+                                 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                                 rows="30" style="margin-bottom:20px">
 
-                <p:column footerText="$#{mbPedido.total}" />
-            </p:row>
-        </p:columnGroup>
-    </p:dataTable>
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="tbl2" fileName="vendasAprovado" encoding="iso-8859-1"
+                                                preProcessor="#{mbPedido.preProcessPDF}"/>
+                            </h:commandLink>
+                        </f:facet>
+                        <p:column style="width: 90px" >
+                            <f:facet name="header">
+                                <h:outputText value="Código"/>
+                            </f:facet>
+                            <h:outputText value="#{aprovado.id}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Mesa"/>
+                            </f:facet>
+                            <h:outputText value="#{aprovado.mesa}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Garçom"/>
+                            </f:facet>
+                            <h:outputText value="#{aprovado.colaborador.nome}"/>
+                        </p:column>
+                        <p:column style="width: 100px">
+                            <f:facet name="header">
+                                <h:outputText value="Data"/>
+                            </f:facet>
+                            <h:outputText value="#{aprovado.dataPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 105px;" >
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{aprovado.status.opcao}"/>
+                        </p:column>
+                        <p:column style="width: 90px;text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="V.Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{aprovado.totalPedido}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" style="text-align:right" footerText="Total Aprovado:"/>
+                                <p:column id="somaAprovado"
+                                          footerText="R$ #{mbPedido.totalAprovado}"/>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Cancelado">
+                    <p:commandButton value="Impressão" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="tbl3" />
+                    </p:commandButton>
+                    <p:dataTable id="tbl3" var="cancelado" value="#{mbPedido.porStatus('CANCELADO')}" widgetVar="vendasTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 emptyMessage="Nenhum registro encontrado"
+                                 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                                 rows="30" style="margin-bottom:20px">
 
-</h:form>
-</ui:define>
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="tbl3" fileName="vendasCancelado" encoding="iso-8859-1"
+                                                preProcessor="#{mbPedido.preProcessPDF}"/>
+                            </h:commandLink>
+                        </f:facet>
+                        <p:column style="width: 90px" >
+                            <f:facet name="header">
+                                <h:outputText value="Código"/>
+                            </f:facet>
+                            <h:outputText value="#{cancelado.id}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Mesa"/>
+                            </f:facet>
+                            <h:outputText value="#{cancelado.mesa}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Garçom"/>
+                            </f:facet>
+                            <h:outputText value="#{cancelado.colaborador.nome}"/>
+                        </p:column>
+                        <p:column style="width: 100px">
+                            <f:facet name="header">
+                                <h:outputText value="Data"/>
+                            </f:facet>
+                            <h:outputText value="#{cancelado.dataPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 105px;" >
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{cancelado.status.opcao}"/>
+                        </p:column>
+                        <p:column style="width: 90px;text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="V.Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{cancelado.totalPedido}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" style="text-align:right" footerText="Total Cancelado:"/>
+                                <p:column id="somaCancelado"
+                                          footerText="R$ #{mbPedido.totalCancelado}"/>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Entregue">
+                    <p:commandButton value="Impressão" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="tbl4" />
+                    </p:commandButton>
+                    <p:dataTable id="tbl4" var="entregue" value="#{mbPedido.porStatus('ENTREGUE')}" widgetVar="vendasTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 emptyMessage="Nenhum registro encontrado"
+                                 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                                 rows="30" style="margin-bottom:20px">
+
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="tbl4" fileName="vendasEntregue" encoding="iso-8859-1"
+                                                preProcessor="#{mbPedido.preProcessPDF}"/>
+                            </h:commandLink>
+                        </f:facet>
+                        <p:column style="width: 90px" >
+                            <f:facet name="header">
+                                <h:outputText value="Código"/>
+                            </f:facet>
+                            <h:outputText value="#{entregue.id}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Mesa"/>
+                            </f:facet>
+                            <h:outputText value="#{entregue.mesa}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Garçom"/>
+                            </f:facet>
+                            <h:outputText value="#{entregue.colaborador.nome}"/>
+                        </p:column>
+                        <p:column style="width: 100px">
+                            <f:facet name="header">
+                                <h:outputText value="Data"/>
+                            </f:facet>
+                            <h:outputText value="#{entregue.dataPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 105px;" >
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{entregue.status.opcao}"/>
+                        </p:column>
+                        <p:column style="width: 90px;text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="V.Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{entregue.totalPedido}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" style="text-align:right" footerText="Total Entregue:"/>
+                                <p:column id="somaEntregue"
+                                          footerText="R$ #{mbPedido.totalEntregue}"/>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Faturado">
+                    <p:commandButton value="Impressão" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="tbl5" />
+                    </p:commandButton>
+                    <p:dataTable id="tbl5" var="faturado" value="#{mbPedido.porStatus('FATURADO')}" widgetVar="vendasTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 emptyMessage="Nenhum registro encontrado"
+                                 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                                 rows="30" style="margin-bottom:20px">
+
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="tbl5" fileName="vendasFaturado" encoding="iso-8859-1"
+                                                preProcessor="#{mbPedido.preProcessPDF}"/>
+                            </h:commandLink>
+                        </f:facet>
+                        <p:column style="width: 90px" >
+                            <f:facet name="header">
+                                <h:outputText value="Código"/>
+                            </f:facet>
+                            <h:outputText value="#{faturado.id}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Mesa"/>
+                            </f:facet>
+                            <h:outputText value="#{faturado.mesa}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Garçom"/>
+                            </f:facet>
+                            <h:outputText value="#{faturado.colaborador.nome}"/>
+                        </p:column>
+                        <p:column style="width: 100px">
+                            <f:facet name="header">
+                                <h:outputText value="Data"/>
+                            </f:facet>
+                            <h:outputText value="#{faturado.dataPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 105px;" >
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{faturado.status.opcao}"/>
+                        </p:column>
+                        <p:column style="width: 90px;text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="V.Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{faturado.totalPedido}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" style="text-align:right" footerText="Total Faturado:"/>
+                                <p:column id="somaFaturado"
+                                          footerText="R$ #{mbPedido.totalFaturado}"/>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Pendente">
+                    <p:commandButton value="Impressão" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="tbl6" />
+                    </p:commandButton>
+                    <p:dataTable id="tbl6" var="pendente" value="#{mbPedido.porStatus('PENDENTE')}" widgetVar="vendasTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 emptyMessage="Nenhum registro encontrado"
+                                 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                                 rows="30" style="margin-bottom:20px">
+
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="tbl6" fileName="vendasPendente" encoding="iso-8859-1"
+                                                preProcessor="#{mbPedido.preProcessPDF}"/>
+                            </h:commandLink>
+                        </f:facet>
+                        <p:column style="width: 90px" >
+                            <f:facet name="header">
+                                <h:outputText value="Código"/>
+                            </f:facet>
+                            <h:outputText value="#{pendente.id}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Mesa"/>
+                            </f:facet>
+                            <h:outputText value="#{pendente.mesa}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Garçom"/>
+                            </f:facet>
+                            <h:outputText value="#{pendente.colaborador.nome}"/>
+                        </p:column>
+                        <p:column style="width: 100px">
+                            <f:facet name="header">
+                                <h:outputText value="Data"/>
+                            </f:facet>
+                            <h:outputText value="#{pendente.dataPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 105px;" >
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{pendente.status.opcao}"/>
+                        </p:column>
+                        <p:column style="width: 90px;text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="V.Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{pendente.totalPedido}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" style="text-align:right" footerText="Total Pendente:"/>
+                                <p:column id="somaPendente"
+                                          footerText="R$ #{mbPedido.totalPendente}"/>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Pronto">
+                    <p:commandButton value="Impressão" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="tbl7" />
+                    </p:commandButton>
+                    <p:dataTable id="tbl7" var="pronto" value="#{mbPedido.porStatus('PRONTO')}" widgetVar="vendasTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 emptyMessage="Nenhum registro encontrado"
+                                 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                                 rows="30" style="margin-bottom:20px">
+
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="tbl7" fileName="vendasPronto" encoding="iso-8859-1"
+                                                preProcessor="#{mbPedido.preProcessPDF}"/>
+                            </h:commandLink>
+                        </f:facet>
+                        <p:column style="width: 90px" >
+                            <f:facet name="header">
+                                <h:outputText value="Código"/>
+                            </f:facet>
+                            <h:outputText value="#{pronto.id}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Mesa"/>
+                            </f:facet>
+                            <h:outputText value="#{pronto.mesa}"/>
+                        </p:column>
+                        <p:column style="width: 100px" >
+                            <f:facet name="header">
+                                <h:outputText value="Garçom"/>
+                            </f:facet>
+                            <h:outputText value="#{pronto.colaborador.nome}"/>
+                        </p:column>
+                        <p:column style="width: 100px">
+                            <f:facet name="header">
+                                <h:outputText value="Data"/>
+                            </f:facet>
+                            <h:outputText value="#{pronto.dataPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 105px;" >
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{pronto.status.opcao}"/>
+                        </p:column>
+                        <p:column style="width: 90px;text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="V.Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{pronto.totalPedido}">
+                                <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="5" style="text-align:right" footerText="Total Pronto:"/>
+                                <p:column id="somaPronto"
+                                          footerText="R$ #{mbPedido.totalPronto}"/>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+    </ui:define>
 </ui:composition>
 </html>

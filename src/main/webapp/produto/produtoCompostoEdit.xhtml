@@ -11,41 +11,44 @@
         <p:dialog id="ProdutoCEditDlg" widgetVar="ProdutoCEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProdutoTitle}">
             <h:form id="ProdutoCEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{mbProduto.selected != null}">
+                    <p:panelGrid columns="2" rendered="#{mbProdutoComposto.selected != null}">
                         <p:outputLabel value="#{bundle.EditProdutoLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{mbProduto.selected.id}" title="#{bundle.EditProdutoTitle_id}" required="true"
+                        <p:inputText id="id" value="#{mbProdutoComposto.selected.id}" title="#{bundle.EditProdutoTitle_id}" required="true"
                                      disabled="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditProdutoLabel_descricao}" for="descricao" />
-                        <p:inputText id="descricao" value="#{mbProduto.selected.descricao}" title="#{bundle.EditProdutoTitle_descricao}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_descricao}"/>
+                        <p:inputText id="descricao" value="#{mbProdutoComposto.selected.descricao}" title="#{bundle.EditProdutoTitle_descricao}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_descricao}"/>
                         <p:outputLabel value="Cód de Barras" for="codbarras" />
-                        <p:inputText id="codbarras" value="#{mbProduto.selected.codigoBarras}" title="Cód. Barras" required="true" requiredMessage="Cód. Barras Campo obrigatório" />
+                        <p:inputText id="codbarras" value="#{mbProdutoComposto.selected.codigoBarras}" title="Cód. Barras" required="false" requiredMessage="Cód. Barras Campo obrigatório" />
                         <p:outputLabel value="#{bundle.EditProdutoLabel_precoCompra}" for="precoCompra" />
-                        <p:inputText id="precoCompra" value="#{mbProduto.selected.precoCompra}"
-                                     onblur="this.value = this.value.replace(',','.')"
-                                     title="#{bundle.EditProdutoTitle_precoCompra}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_precoCompra}"/>
+                        <p:inputText id="precoCompra" value="#{mbProdutoComposto.selected.precoCompra}"
+                                     onblur="this.value = this.value.replace(',','.')" readonly="true"
+                                     title="#{bundle.EditProdutoTitle_precoCompra}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_precoCompra}">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </p:inputText>
                         <p:outputLabel value="#{bundle.EditProdutoLabel_precoVenda}" for="precoVenda"/>
-                        <p:inputText id="precoVenda" value="#{mbProduto.selected.precoVenda}"
-                                     onblur="this.value = this.value.replace(',','.')"
-                                     title="#{bundle.CreateProdutoTitle_precoVenda}"/>
-                        
+                        <p:inputText id="precoVenda" value="#{mbProdutoComposto.selected.precoVenda}"
+                                     onblur="this.value = this.value.replace(',','.')" readonly="true"
+                                     title="#{bundle.CreateProdutoTitle_precoVenda}">
+                            <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                        </p:inputText>
                         <p:outputLabel value="Grupo" for="grupoId" />
-                        <p:selectOneMenu id="grupoId" value="#{mbProduto.selected.grupo.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">
-                            <f:selectItems value="#{mbProduto.grupos}"
+                        <p:selectOneMenu id="grupoId" value="#{mbProdutoComposto.selected.grupo.id}" disabled="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_grupoId}">
+                            <f:selectItems value="#{mbProdutoComposto.grupos}"
                                            var="grupo"
-                                           itemValue="#{mbProduto.selectedGrupo}" />
+                                           itemValue="#{mbProdutoComposto.selectedGrupo}" />
                         </p:selectOneMenu>
                         
                         <p:outputLabel value="Marca" for="marcaId" />
-                        <p:selectOneMenu id="marcaId" value="#{mbProduto.selected.marca.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_marcaId}">
-                            <f:selectItems value="#{mbProduto.marcas}"/>
+                        <p:selectOneMenu id="marcaId" value="#{mbProdutoComposto.selected.marca.id}" disabled="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_marcaId}">
+                            <f:selectItems value="#{mbProdutoComposto.marcas}"/>
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Unidade" for="unidadeId" />
-                        <p:selectOneMenu id="unidadeId" value="#{mbProduto.selected.unidade.id}" required="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_unidadeId}">
-                            <f:selectItems value="#{mbProduto.unidades}" />
+                        <p:selectOneMenu id="unidadeId" value="#{mbProdutoComposto.selected.unidade.id}" disabled="true" requiredMessage="#{bundle.EditProdutoRequiredMessage_unidadeId}">
+                            <f:selectItems value="#{mbProdutoComposto.unidades}" />
                         </p:selectOneMenu>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{mbProduto.update}" value="Salvar" update="display,:ProdutoCListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProdutoCEditDialog');"/>
+                    <p:commandButton actionListener="#{mbProdutoComposto.update}" value="Salvar" update="display,:ProdutoCListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProdutoCEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="ProdutoEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>

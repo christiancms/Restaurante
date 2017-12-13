@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Relatório de Vendas"/>
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:toolbarGroup align="right">
+                <p:spacer width="10px"/>
+                <p:commandButton value="Pesquisar" action="#{mbPedido.pesquisar}" update="@form"/>
+            </p:toolbarGroup>
+
+            <h:panelGrid columns="4">
+                <h:outputText value="Data Inicial" for="txtDtInicial"/>
+                <p:calendar id="txtDtInicial" value="#{mbPedido.dtInicial}" showOn="button" size="10"/>
+                <h:outputText value="Data Final" for="txtDtFinal"/>
+                <p:calendar id="txtDtFinal" value="#{mbPedido.dtFinal}" showOn="button" size="10"/>
+                <h:outputText value="Status Pedido" for="cmbStatus"/>
+                <p:selectOneMenu id="cmbStatus">
+                    <f:selectItem itemLabel="Selecione" itemValue="#{mbPedido.statusPed}" noSelectionOption="true"/>
+                    <f:selectItems value="#{mbPedido.statusPedido}" />
+                </p:selectOneMenu>
+                <h:outputText value="Garçom" for="cmbGarcom"/>
+                <p:selectOneMenu id="cmbGarcom">
+                    <f:selectItem itemLabel="Selecione" itemValue="#{mbPedido.garcomPedido}" noSelectionOption="true"/>
+                    <f:selectItems value="#{mbPedido.garcons}"/>
+                </p:selectOneMenu>
+
+            </h:panelGrid>
+
+            <p:dataTable var="item" value="#{mbPedido.pedidosFiltrados}"
+                    emptyMessage="Nenhum cliente encontrado" rows="10"
+                    paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+            <p:column style="width: 90px">
+                    <f:facet name="header">
+                        <h:outputText value="Código"/>
+                    </f:facet>
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+                <p:column style="width: 100px">
+                    <f:facet name="header">
+                        <h:outputText value="Mesa"/>
+                    </f:facet>
+                    <h:outputText value="#{item.mesa}"/>
+                </p:column>
+                <p:column style="width: 100px">
+                    <f:facet name="header">
+                        <h:outputText value="Garçom"/>
+                    </f:facet>
+                    <h:outputText value="#{item.colaborador.nome}"/>
+                </p:column>
+                <p:column style="width: 100px">
+                    <f:facet name="header">
+                        <h:outputText value="Data"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dataPedido}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="width: 105px;" >
+                    <f:facet name="header">
+                        <h:outputText value="Status"/>
+                    </f:facet>
+                    <h:outputText value="#{item.status.opcao}"/>
+                </p:column>
+                <p:column style="width: 90px;text-align: center;">
+                    <f:facet name="header">
+                        <h:outputText value="V.Venda"/>
+                    </f:facet>
+                    <h:outputText value="#{item.totalPedido}">
+                        <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

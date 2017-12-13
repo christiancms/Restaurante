@@ -14,19 +14,26 @@
         <p:tabView>
             <p:tab title="Ajustes">
                 <h:form>
-                    <h:panelGrid columns="3" cellpadding="5">
+                    <h:panelGrid columns="2" cellpadding="5" rendered="#{mbUsuario.selected.adm}">
                         <h:outputLabel for="txtComissao" value="Comissão:"/>
                         <p:inputText id="txtComissao" value="#{mbConfig.selected.percComissao}">
                             <f:convertNumber pattern="#0.00" locale="pt_BR"/>
                         </p:inputText>
+                        <h:outputLabel for="txtToken" value="Token:"/>
+                        <p:inputText id="txtToken" value="#{mbConfig.selected.token}"/>
+                        <h:outputLabel for="txtSrvKey" value="ServerKey:"/>
+                        <p:inputText id="txtSrvKey" value="#{mbConfig.selected.serverkey}" size="50"/>
+                        <p:spacer/>
                         <p:commandButton actionListener="#{mbConfig.create}" value="#{bundle.Save}"/>
                     </h:panelGrid>
+                    <p:outputLabel value="Exige permissão de Administrador" rendered="#{!mbUsuario.selected.adm}"/>
                 </h:form>
             </p:tab>
             <p:tab title="Definir Padrões">
                 <h:form>
+                    <h:panelGroup rendered="#{mbUsuario.selected.adm}">
                     <p:outputLabel value="Criar registros no banco?"/>
-                    <h:panelGrid columns="2" cellpadding="5">
+                    <h:panelGrid columns="2" cellpadding="5" >
                         <h:outputLabel for="username" value="Usuário:"/>
                         <p:inputText id="username" value="#{mbConfig.username}" required="true" label="username"/>
 
@@ -37,6 +44,8 @@
                             <p:commandButton value="Autenticar" update=":growl" action="#{mbConfig.criarRegistros}"/>
                         </f:facet>
                     </h:panelGrid>
+                    </h:panelGroup>
+                    <p:outputLabel value="Exige permissão de Administrador" rendered="#{!mbUsuario.selected.adm}"/>
                 </h:form>
             </p:tab>
         </p:tabView>

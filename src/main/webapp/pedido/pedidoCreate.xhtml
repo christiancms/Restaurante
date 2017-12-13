@@ -65,34 +65,33 @@
                     </h:panelGroup>
 
                 <p:tab title="Itens">
-                    <p:dataTable value="#{mbPedido.selected.itensPedido}" var="item" id="tabelaItens" >
+                    <p:dataTable value="#{mbPedido.selected.itensPedido}" var="elem" id="tabelaItens" >
                         <p:column headerText="SKU" style="text-align: center; width: 100px">
-                            <h:outputText value="#{item.produto.id}" rendered="#{item.produtoAssociado}"/>
+                            <h:outputText value="#{elem.produto.id}" rendered="#{elem.produtoAssociado}"/>
 
-                            <p:inputText size="8" value="#{cadastroPedidoBean.sku}" label="SKU"
-                                         rendered="#{not item.produtoAssociado}">
+                            <p:inputText size="8" value="" label="SKU"
+                                         rendered="#{not elem.produtoAssociado}">
                                 <p:ajax event="change" process="@this"
-                                        update="tabelaItens :frmCadastro:totalPedido :frmCadastro:subtotal"
-                                        listener="#{cadastroPedidoBean.carregarProdutoPorSku}"/>
+                                        update="tabelaItens :frmCadastro:totalPedido :frmCadastro:subtotal" />
                             </p:inputText>
                         </p:column>
                         <p:column headerText="Produto">
-                            <h:outputText value="#{item.produto.descricao}" />
-                            <p:inputText value="#{item.produto.descricao}"/>
+                            <h:outputText value="#{elem.produto.descricao}" />
+                            <p:inputText value="#{elem.produto.descricao}"/>
                         </p:column>
                         <p:column headerText="Valor unitário" style="text-align: right; width: 120px">
-                            <h:outputText value="#{item.valorUnitario}">
+                            <h:outputText value="#{elem.valorUnitario}">
                                 <f:convertNumber type="currency"/>
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Quantidade" style="text-align: center; width: 100px">
-                            <p:inputText size="8" value="#{item.quantidade}"/>
+                            <p:inputText size="8" value="#{elem.quantidade}"/>
                         </p:column>
                         <p:column headerText="Estoque" style="text-align: center; width: 100px">
-                            <h:outputText value="#{item.produto.quantidadeEstoque}"/>
+                            <h:outputText value="#{elem.produto.quantidadeEstoque}"/>
                         </p:column>
                         <p:column headerText="Valor total" style="text-align: right; width: 100px">
-                            <h:outputText value="#{item.valorTotal}">
+                            <h:outputText value="#{elem.valorTotal}">
                                 <f:convertNumber type="currency"/>
                             </h:outputText>
                         </p:column>
@@ -102,7 +101,7 @@
                                 <p:column colspan="5" footerText="Subtotal" style="text-align: right"/>
                                 <p:column style="text-align: right">
                                     <f:facet name="footer">
-                                        <h:outputText value="#{cadastroPedidoBean.pedido.valorSubtotal}">
+                                        <h:outputText value="">
                                             <f:convertNumber type="currency"/>
                                         </h:outputText>
                                     </f:facet>
