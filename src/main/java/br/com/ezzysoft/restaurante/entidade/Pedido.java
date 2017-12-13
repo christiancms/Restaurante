@@ -18,8 +18,9 @@ import javax.validation.constraints.NotNull;
         @NamedQuery(name = "Pedido.findById", query = "SELECT p FROM Pedido p WHERE  p.id = :id"),
         @NamedQuery(name = "Pedido.listItens", query = "SELECT  p FROM Pedido p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id"),
         @NamedQuery(name = "Pedido.listItensByPedido", query = "SELECT  p FROM Pedido p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.id = :pedidoId"),
-        @NamedQuery(name = "Pedido.findByDate", query = "SELECT p FROM Pedido  p INNER JOIN ItemPedido ip ON p.id=ip.pedido.id WHERE p.dataPedido = :dataAtual ORDER BY p.id desc"),
-        @NamedQuery(name = "Pedido.grafico", query = "SELECT p FROM Pedido p INNER JOIN Status s ON p.status.id=s.id GROUP BY s.opcao, p.id")
+        @NamedQuery(name = "Pedido.findByDate", query = "SELECT p FROM Pedido p WHERE p.dataPedido = :dataAtual ORDER BY p.id desc"),
+        @NamedQuery(name = "Pedido.grafico", query = "SELECT p FROM Pedido p INNER JOIN Status s ON p.status.id=s.id GROUP BY s.opcao, p.id"),
+        @NamedQuery(name = "Pedido.porStatus", query = "SELECT p FROM Pedido p INNER JOIN Status s ON p.status.id=s.id WHERE s.opcao LIKE :opcao")
         })
 public class Pedido implements Serializable {
 
@@ -27,6 +28,7 @@ public class Pedido implements Serializable {
     public static final String LISTPEDIDOSATUAL = "Pedido.findByDate";
     public static final String PEDIDOSFINDALL = "Pedido.findAll";
     public static final String GRAFPEDXSTATUS = "Pedido.grafico";
+    public static final String PORSTATUS = "Pedido.porStatus";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

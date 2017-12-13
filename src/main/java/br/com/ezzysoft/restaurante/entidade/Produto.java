@@ -52,7 +52,7 @@ public class Produto implements Serializable {
     @Column(name = "data_cadastro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
-    @Column(name = "codigo_barras", length = 20, unique = true)
+    @Column(name = "codigo_barras", length = 20)
     private String codigoBarras = "";
     @Column(name = "percentual_lucro")
     private Double percLucro = 0d;

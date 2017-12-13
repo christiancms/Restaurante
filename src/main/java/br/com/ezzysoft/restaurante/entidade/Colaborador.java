@@ -11,10 +11,13 @@ import javax.persistence.*;
 @Table(name = "colaborador")
 @NamedQueries({
     @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c"),
-    @NamedQuery(name = "Colaborador.findById", query = "SELECT c FROM Colaborador c WHERE c.id = :id")})
+    @NamedQuery(name = "Colaborador.findById", query = "SELECT c FROM Colaborador c WHERE c.id = :id"),
+    @NamedQuery(name = "Colaborador.NomeSemelhante", query = "SELECT c FROM Colaborador c WHERE c.nome  LIKE :nome")
+})
 public class Colaborador extends Usuario implements Serializable {
 
     public static final String FINDBYID = "Colaborador.findById";
+    public static final String NOMESEMELHANTE = "Colaborador.NomeSemelhante";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

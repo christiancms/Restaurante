@@ -12,11 +12,13 @@ import java.io.Serializable;
 @NamedQueries({
         @NamedQuery(name = "ItemProduto.findAll", query = "SELECT o FROM ItemProduto o"),
         @NamedQuery(name = "ItemProduto.findById", query = "SELECT o FROM ItemProduto o WHERE o.id = :id"),
-        @NamedQuery(name = "ItemProduto.findByProduto", query = "SELECT o FROM ItemProduto o WHERE o.idProdutoComposto = :compostoId")
+        @NamedQuery(name = "ItemProduto.findByProduto", query = "SELECT o FROM ItemProduto o WHERE o.idProdutoComposto = :compostoId"),
+        @NamedQuery(name = "ItemProduto.findItensProduto", query = "SELECT o,p FROM ItemProduto o INNER JOIN Produto p ON o.produto.id=p.id WHERE o.idProdutoComposto = :compostoId")
 })
 public class ItemProduto implements Serializable {
 
     public static final String ITENSPORPRODUTO = "ItemProduto.findByProduto";
+    public static final String ITENSEPRODUTO = "ItemProduto.findItensProduto";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

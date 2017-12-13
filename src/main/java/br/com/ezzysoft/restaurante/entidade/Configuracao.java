@@ -18,6 +18,10 @@ public class Configuracao  implements Serializable {
     private Long id;
     @Column(name = "comissao")
     private Double percComissao;
+    @Column(name = "token")
+    private String token;
+    @Column(name = "serverkey")
+    private String serverkey;
 
     public Long getId() {
         return id;
@@ -33,5 +37,21 @@ public class Configuracao  implements Serializable {
 
     public void setPercComissao(Double percComissao) {
         this.percComissao = percComissao;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getServerkey() {
+        return serverkey;
+    }
+
+    public void setServerkey(String serverkey) {
+        this.serverkey = serverkey;
     }
 }
