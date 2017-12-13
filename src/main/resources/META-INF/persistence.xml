@@ -19,6 +19,7 @@
     <class>br.com.ezzysoft.restaurante.entidade.ItemPedido</class>
     <class>br.com.ezzysoft.restaurante.entidade.Logradouro</class>
     <class>br.com.ezzysoft.restaurante.entidade.Marca</class>
+    <class>br.com.ezzysoft.restaurante.entidade.Mesa</class>
     <class>br.com.ezzysoft.restaurante.entidade.Pais</class>
     <class>br.com.ezzysoft.restaurante.entidade.Pedido</class>
     <class>br.com.ezzysoft.restaurante.entidade.Pessoa</class>
