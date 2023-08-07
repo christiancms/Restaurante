@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-
 import static org.primefaces.component.focus.Focus.PropertyKeys.context;
 
 /**
@@ -30,7 +29,7 @@ import static org.primefaces.component.focus.Focus.PropertyKeys.context;
  */
 @ManagedBean(name = "mbColaborador")
 @SessionScoped
-public class MBColaborador implements Serializable {
+public class MBColaborador implements ColaboradorFacade {
 
     @ManagedProperty(value = "#{mbUsuario}")
     private MBUsuario mbUsuario = new MBUsuario();
@@ -88,7 +87,7 @@ public class MBColaborador implements Serializable {
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("resources/Bundle").getString("ColaboradorCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            items = null; // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -100,7 +99,7 @@ public class MBColaborador implements Serializable {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("resources/Bundle").getString("ColaboradorDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items = null; // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -131,11 +130,13 @@ public class MBColaborador implements Serializable {
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);
                 } else {
-                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
+                    JsfUtil.addErrorMessage(ex,
+                            ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
                 }
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
+                JsfUtil.addErrorMessage(ex,
+                        ResourceBundle.getBundle("resources/Bundle").getString("PersistenceErrorOccured"));
             }
         }
     }
@@ -160,8 +161,8 @@ public class MBColaborador implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            MBColaborador controller = (MBColaborador) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "mbColaborador");
+            MBColaborador controller = (MBColaborador) facesContext.getApplication().getELResolver()
+                    .getValue(facesContext.getELContext(), null, "mbColaborador");
             return controller.getColaborador(getKey(value));
         }
 
@@ -186,7 +187,9 @@ public class MBColaborador implements Serializable {
                 Colaborador o = (Colaborador) object;
                 return getStringKey(o.getId());
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Colaborador.class.getName()});
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                        "object {0} is of type {1}; expected type: {2}",
+                        new Object[] { object, object.getClass().getName(), Colaborador.class.getName() });
                 return null;
             }
         }
@@ -195,8 +198,34 @@ public class MBColaborador implements Serializable {
 
     @PostConstruct
     public void init() {
-        String userid = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
+        String userid = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userid");
         mbUsuario.setSelected(facadeUsuario.find(Long.parseLong(userid)));
     }
-    
+
+    private MBColaborador mbColaborador;
+
+    public MBColaboradorAdapter(MBColaborador mbColaborador) {
+        this.mbColaborador = mbColaborador;
+    }
+
+    @Override
+    public Colaborador find(Long id) {
+        return mbColaborador.getColaborador(id);
+    }
+
+    @Override
+    public List<Colaborador> findAll() {
+        return mbColaborador.getItems();
+    }
+
+    @Override
+    public void edit(Colaborador colaborador) {
+        mbColaborador.update();
+    }
+
+    @Override
+    public void remove(Colaborador colaborador) {
+        mbColaborador.destroy();
+    }
+
 }
